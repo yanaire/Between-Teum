@@ -1,0 +1,38 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Wiper",
+  "label": "와이퍼",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/wiper/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "Wiper",
+      "methods": [
+        "checkWiperStateCapabilities",
+        "getCurrentWiperState",
+        "registerWiperState",
+        "unregisterWiperState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "와이퍼 실제 동작 상태"
+    },
+    {
+      "key": "WiperSwitch",
+      "methods": [
+        "checkWiperSwitchCapabilities",
+        "getCurrentWiperSwitch",
+        "setWiperSwitch"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "와이퍼 스위치"
+    }
+  ]
+}

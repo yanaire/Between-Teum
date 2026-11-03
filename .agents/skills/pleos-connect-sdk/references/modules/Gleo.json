@@ -1,0 +1,64 @@
+{
+  "module": "Gleo Interface",
+  "checkedAt": "2026-11-02",
+  "sources": [
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/core-concepts",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/app-capability",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/action_callback",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/examples",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/deliver-schema",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/use-cases/radio-app"
+  ],
+  "schema": {
+    "path": "assets/schema.json",
+    "maxFunctions": 3,
+    "componentDispatch": {
+      "activity": "context.startActivity",
+      "service": "context.sendBroadcast / BroadcastReceiver"
+    },
+    "parameterTypes": [
+      "string",
+      "number",
+      "boolean",
+      "array"
+    ],
+    "enum": "strings only",
+    "functionName": "UPPER_SNAKE_CASE",
+    "descriptions": "English",
+    "required": "required parameter names only"
+  },
+  "action": {
+    "parameterExtra": "ACTION_PARAM",
+    "encoding": "JSON string",
+    "manifest": "intent filter for each action"
+  },
+  "callback": {
+    "action": "ai.pleos.playground.intent.action.APP_ACTION_RESPONSE",
+    "extras": [
+      "packageName",
+      "response"
+    ],
+    "requiredFields": [
+      "functionName",
+      "status",
+      "message"
+    ],
+    "statuses": [
+      "success",
+      "asking",
+      "fail"
+    ],
+    "modes": [
+      "voice",
+      "beep",
+      "silent"
+    ],
+    "data": "JSON array encoded as a string",
+    "timeoutSeconds": 7
+  },
+  "constraints": [
+    "The app implements the business function and validates inputs.",
+    "Schema review/approval and actual indexing/availability must be confirmed.",
+    "App development instructions spoken to the coding agent are not automatically requests for Gleo or STT."
+  ]
+}

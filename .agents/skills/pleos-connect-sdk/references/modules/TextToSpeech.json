@@ -1,0 +1,63 @@
+{
+  "sdk": "TextToSpeech",
+  "version": "3.3.1",
+  "checkedAt": "2026-11-02",
+  "groups": [
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts/text-to-speech/entry",
+      "methodNames": [
+        "addEventListener",
+        "initialize",
+        "registerApp",
+        "release",
+        "removeEventListener",
+        "setAudioAttributes",
+        "setAudioZoneId",
+        "setLocale",
+        "setSpeakerType",
+        "speak",
+        "stop"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts.listener/event-listener/entry",
+      "methodNames": [
+        "onDone",
+        "onError",
+        "onReady",
+        "onStart",
+        "onStop",
+        "onUpdatedRms"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts.listener/on-initialize-listener/entry",
+      "methodNames": [
+        "onFailure",
+        "onSuccess"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts.listener/on-server-connection-listener/entry",
+      "methodNames": [
+        "onConnected",
+        "onFailed"
+      ]
+    }
+  ],
+  "modes": [
+    "HYBRID",
+    "SERVER",
+    "ON_DEVICE"
+  ],
+  "properties": [
+    "version"
+  ],
+  "permissions": [
+    "pleos.car.permission.TTS_SERVICE"
+  ],
+  "constraints": [
+    "speak(text, isFinal) accepts chunks; the last chunk must be final.",
+    "Server use needs app registration and server connection."
+  ]
+}

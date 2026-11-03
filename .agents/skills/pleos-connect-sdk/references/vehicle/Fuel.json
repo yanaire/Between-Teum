@@ -1,0 +1,81 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Fuel",
+  "label": "연료·연비",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/fuel/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "InstantaneousFuelEconomy",
+      "methods": [
+        "checkInstantaneousFuelEconomyCapabilities",
+        "getInstantaneousFuelEconomy",
+        "registerInstantaneousFuelEconomy",
+        "unregisterInstantaneousFuelEconomy"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "순간 연비"
+    },
+    {
+      "key": "SinceChargeFuelEconomy",
+      "methods": [
+        "checkSinceChargeFuelEconomyCapabilities",
+        "getSinceChargeFuelEconomy",
+        "registerSinceChargeFuelEconomy",
+        "unregisterSinceChargeFuelEconomy"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "주유 이후 연비"
+    },
+    {
+      "key": "CumulativeFuelEconomy",
+      "methods": [
+        "checkCumulativeFuelEconomyCapabilities",
+        "getCumulativeFuelEconomy",
+        "registerCumulativeFuelEconomy",
+        "unregisterCumulativeFuelEconomy"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "누적 연비"
+    },
+    {
+      "key": "FuelEconomy",
+      "methods": [
+        "checkCurrentFuelEconomyCapabilities",
+        "getCurrentFuelEconomy",
+        "registerCurrentFuelEconomy",
+        "unregisterCurrentFuelEconomy"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "현재 연비"
+    },
+    {
+      "key": "FuelPercent",
+      "methods": [
+        "checkFuelPercentCapabilities",
+        "getFuelPercent",
+        "registerFuelPercent",
+        "unregisterFuelPercent"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "연료 잔량"
+    }
+  ]
+}
