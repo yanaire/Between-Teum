@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Pleos 개발 가능 기능</title>
+<style>
+@page { size:A4; margin:0; }
+* { box-sizing:border-box; }
+body { margin:0; color:#202020; background:#eee; font:11pt/1.5 "Apple SD Gothic Neo","Noto Sans KR",sans-serif; word-break:keep-all; font-synthesis:none; }
+.page { width:210mm; height:297mm; padding:16mm 16mm 19mm; margin:6mm auto; background:white; position:relative; break-after:page; }
+.page:last-child { break-after:auto; }
+h1 { font-size:20pt; line-height:1.2; margin:0 0 3mm; }
+h2 { font-size:15pt; line-height:1.25; margin:7mm 0 3mm; }
+p { margin:2mm 0; }
+.meta,.caption,.sources { font-size:9.5pt; color:#555; }
+table { width:100%; border-collapse:collapse; margin:3mm 0; font-size:10.5pt; line-height:1.45; }
+th,td { padding:2.5mm 2mm; border-bottom:1px solid #ddd; text-align:left; vertical-align:top; }
+th { font-weight:600; border-top:1px solid #999; background:#f6f6f6; }
+.compact { font-size:10pt; }
+.compact th,.compact td { padding:2mm; }
+.sources { margin-top:5mm; line-height:1.6; }
+a { color:#444; text-decoration:underline; text-underline-offset:2px; }
+figure { margin:4mm 0; break-inside:avoid; }
+img { display:block; max-width:100%; height:auto; }
+.speed { width:150mm; margin:4mm auto 0; }
+.blocked { width:150mm; margin:0 auto; }
+.climate { width:178mm; }
+.battery { width:150mm; margin:4mm auto; }
+.body-images { display:grid; grid-template-columns:64mm 1fr; gap:8mm; align-items:start; margin-top:5mm; }
+.body-images figure { margin:0; }
+.warning { padding-top:5mm; }
+figcaption { margin-top:2mm; font-size:9.5pt; color:#555; line-height:1.45; }
+.footer { position:absolute; bottom:9mm; left:16mm; right:16mm; font-size:9pt; color:#777; border-top:1px solid #ddd; padding-top:2mm; text-align:right; }
+@media print { body { background:white; } .page { margin:0; } * { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+<section class="page">
+  <h1>Pleos에서 개발할 수 있는 기능</h1>
+  <p class="meta">공식 SDK 기준 개발 범위 · 에뮬레이터 조작 화면은 3~4쪽</p>
+  <h2>차량 데이터를 사용하는 앱</h2>
+  <table>
+    <tr><th style="width:24%">기능</th><th style="width:43%">우리가 구현할 내용</th><th>필요한 데이터</th></tr>
+    <tr><td>출발 전 점검</td><td>열린 문·창문, 배터리 잔량을 한 화면에 모아 표시</td><td>Door, Window, EvBattery</td></tr>
+    <tr><td>배터리·충전 대시보드</td><td>잔량, 충전 상태, 잔여 주행거리를 표시하고 설정한 기준 이하에서 안내</td><td>EvBattery의 상태·충전 정보</td></tr>
+    <tr><td>운행 기록</td><td>주행거리와 시간을 저장하고 날짜별 기록·통계 표시</td><td>Odometer의 트립 거리·시간<br>저장·집계는 앱에서 구현</td></tr>
+    <tr><td>공조 상태 화면</td><td>공조 전원, 목표 온도, 풍량을 한 화면에 표시</td><td>HVAC 상태 정보<br>값을 바꾸려면 제어 권한 필요</td></tr>
+    <tr><td>차량 경고 모아보기</td><td>차량 경고와 타이어 상태를 읽어 점검 항목 표시</td><td>Safety, Tire<br>지원하는 항목만 사용</td></tr>
+    <tr><td>좌석·편의장치 상태 보기</td><td>좌석 위치·각도, 조명, 와이퍼 등 필요한 항목을 골라 표시</td><td>Seat, Light, Wiper 등</td></tr>
+    <tr><td>주행 상태에 따라 바뀌는 화면</td><td>주차 때는 상세 화면, 주행 중에는 허용된 정보만 표시하도록 전환</td><td>CarUxRestrictions<br>주행 중 사용을 위한 앱 설계 필요</td></tr>
+  </table>
+  <h2>앱에서 직접 만들어야 하는 부분</h2>
+  <p>차량 데이터로 무엇을 보여 줄지 판단하는 규칙, 화면 구성, 기록 저장, 통계, 사용자 설정은 우리가 구현한다. SDK는 필요한 차량 정보를 읽거나 변경 이벤트를 받는 데 사용한다.</p>
+  <h2>조회 기능의 공통 조건</h2>
+  <p>사용하려는 항목이 해당 차량에서 지원되는지 확인하고 읽기 권한을 선언해야 한다. 콘솔에서 값을 바꿀 수 있어도, 우리 앱에서 같은 항목에 접근할 수 있는지는 별도로 확인한다.</p>
+  <p class="sources">참고:
+    <a href="https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/intro">Vehicle SDK 기능</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/check-capability">지원 여부 확인</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle-permission">권한</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/vehicle-app-developer-guide/driving-restriction-development-guide">주행 제한</a>
+  </p>
+  <div class="footer">1 / 4</div>
+</section>
+<section class="page">
+  <h1>내비·음성·콘텐츠 연동</h1>
+  <table class="compact">
+    <tr><th style="width:24%">만들 수 있는 기능</th><th style="width:43%">구현 내용</th><th>필요한 연동·조건</th></tr>
+    <tr><td>목적지 즐겨찾기</td><td>저장한 장소를 선택하면 기본 내비게이션에 목적지 전달</td><td>NaviHelper<br>장소 좌표·주소 등 목적지 정보</td></tr>
+    <tr><td>여행 경유지 계획</td><td>방문할 장소를 추가·삭제하고 경유지가 포함된 경로 요청</td><td>NaviHelper의 경유지·경로 API<br>장소 목록은 앱에서 관리</td></tr>
+    <tr><td>충전소 안내</td><td>충전소 목록을 보여 주고 선택한 충전소로 길 안내 연결</td><td>NaviHelper + 외부 충전소 데이터<br>요금·실시간 이용 가능 정보는 별도 연동</td></tr>
+    <tr><td>음성으로 앱 기능 실행</td><td>메모 추가, 앱 안의 검색 등 우리가 정의한 기능을 음성 명령과 연결</td><td>Gleo Interface<br>App Schema 등록·연동 환경 확인</td></tr>
+    <tr><td>음악·오디오 앱</td><td>재생 목록, 즐겨찾기, 재생·일시정지 등 구현</td><td>Android 미디어 기능<br>음원 데이터와 오디오 포커스 처리</td></tr>
+    <tr><td>주차 중 콘텐츠 앱</td><td>영상, 학습 자료, 간단한 게임 등 차량 데이터 없이도 동작하는 앱</td><td>Android 앱 기능<br>주행 중 사용 제한에 맞춰 동작</td></tr>
+    <tr><td>차량 설정 프리셋</td><td>온도·풍량·열선 등 자주 쓰는 설정을 묶어 적용</td><td>Vehicle Control 사용 가능 여부와 제어 권한부터 확인</td></tr>
+  </table>
+  <h2>현재 문서의 SDK 사용 상태</h2>
+  <table class="compact">
+    <tr><th style="width:30%">구분</th><th>문서에 안내된 상태</th></tr>
+    <tr><td>Vehicle State, NaviHelper</td><td>별도 SDK 사용 신청 없이 이용 가능. 개별 API의 지원 여부와 권한 확인은 필요.</td></tr>
+    <tr><td>Vehicle Control, FusedLocation, TTS, STT</td><td>SDK 신청 가이드에는 ‘준비 중’으로 안내됨. 해당 기능에 의존하는 앱은 공모전 제공 권한과 프로젝트의 실제 사용 상태부터 확인.</td></tr>
+    <tr><td>Gleo Interface</td><td>앱 기능을 음성 명령과 연결하는 가이드가 공개돼 있음. 위 TTS/STT SDK의 신청 상태와는 구분해서 확인.</td></tr>
+  </table>
+  <p class="caption">내비·음성 연동과 차량 제어는 아직 우리 앱에서 실행해 본 기능이 아니다. 차량 데이터 조회부터 구현하고, 필요한 연동을 추가할 수 있다.</p>
+  <p class="sources">참고:
+    <a href="https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/NaviHelper/intro">NaviHelper</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/core-concepts">Gleo Interface</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/vehicle-app-developer-guide/music-audio-app-developement-guide">음악 앱</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/vehicle-app-developer-guide/audio-focus-development-guide/audio-focus-development">오디오 포커스</a> ·
+    <a href="https://document.pleos.ai/docs/pleos-only/create-my-project">SDK 사용 신청</a><br>
+    문서 확인: 2026년 11월 2일
+  </p>
+  <div class="footer">2 / 4</div>
+</section>
+<section class="page">
+  <h1>에뮬레이터에서 확인한 동작</h1>
+  <p class="meta">Pleos Connect 2.1.0 · Virtual Console로 직접 조작한 화면</p>
+  <h2>주차·주행</h2>
+  <table>
+    <tr><th style="width:36%">상태</th><th>동작</th></tr>
+    <tr><td>P · 0km/h</td><td>기본 앱 사용 가능</td></tr>
+    <tr><td>D · 가속</td><td>속도 증가, 앱 사용 제한 화면 표시</td></tr>
+    <tr><td>D · 다시 0km/h</td><td>정지해도 앱 사용 제한 유지</td></tr>
+    <tr><td>R / N · 0km/h</td><td>주행 제한 상태 유지</td></tr>
+    <tr><td>P로 변경</td><td>제한 해제, 앱 화면 복원</td></tr>
+  </table>
+  <p class="caption">주행 중 사용 허용 설정이 없는 기본 테스트 앱의 동작이다.</p>
+  <figure>
+    <img class="speed" src="assets/features/driving-speed.png" alt="D 기어, 속도 16km/h 표시">
+    <img class="blocked" src="assets/features/driving-block.png" alt="주행 중에는 사용할 수 없습니다 메시지">
+    <figcaption>이동 중 표시된 계기와 앱 사용 제한 메시지. 화면 일부를 확대했다.</figcaption>
+  </figure>
+  <h2>공조</h2>
+  <table>
+    <tr><th style="width:36%">기능</th><th>조작한 값</th></tr>
+    <tr><td>공조 전원</td><td>Off → On</td></tr>
+    <tr><td>운전석 목표 온도</td><td>22°C → 24°C</td></tr>
+    <tr><td>풍량</td><td>3 → 5</td></tr>
+  </table>
+  <figure>
+    <img class="climate" src="assets/features/climate.png" alt="차량 하단의 운전석 24도와 조수석 22도 공조 표시">
+    <figcaption>차량 하단에 운전석 24.0°C와 A/C 상태가 반영됐다. 풍량 5는 콘솔에서 확인했다.</figcaption>
+  </figure>
+  <div class="footer">3 / 4</div>
+</section>
+<section class="page">
+  <h1>배터리·도어·창문</h1>
+  <h2>배터리와 잔여 주행거리</h2>
+  <table>
+    <tr><th style="width:36%">기능</th><th>설정한 값</th><th>차량 화면</th></tr>
+    <tr><td>배터리 잔량</td><td>SOC 25%</td><td>배터리 잔량 도형 변경</td></tr>
+    <tr><td>잔여 주행거리</td><td>120,000m</td><td>120km로 표시</td></tr>
+  </table>
+  <figure>
+    <img class="battery" src="assets/features/battery.png" alt="배터리 잔량 도형과 120km 잔여거리">
+    <figcaption>배터리 잔량과 잔여거리는 각각 값을 설정할 수 있다.</figcaption>
+  </figure>
+  <h2>도어·창문·프렁크</h2>
+  <table>
+    <tr><th style="width:30%">기능</th><th>조작한 값</th><th>반영된 내용</th></tr>
+    <tr><td>앞왼쪽 도어</td><td>닫힘 → 열림</td><td>차량 그림의 문이 열림</td></tr>
+    <tr><td>앞왼쪽 창문</td><td>0% → 50%</td><td>콘솔에 50%로 표시</td></tr>
+    <tr><td>프렁크</td><td>닫힘 → 열림</td><td>열림 안내와 경고 창 표시</td></tr>
+  </table>
+  <div class="body-images">
+    <figure>
+      <img src="assets/features/door.png" alt="앞왼쪽 문이 열린 차량 그림과 프렁크를 닫으라는 안내">
+      <figcaption>도어 상태와 프렁크 안내.</figcaption>
+    </figure>
+    <figure class="warning">
+      <img src="assets/features/frunk-warning.png" alt="프렁크 열림 경고와 확인 버튼">
+      <figcaption>프렁크가 열린 상태에서 기어를 바꾸면 경고 창이 나타났다. 프렁크를 닫은 뒤에도 창은 남아 있어 ‘확인’을 눌러 닫았다.</figcaption>
+    </figure>
+  </div>
+  <div class="footer">4 / 4</div>
+</section>
+</body>
+</html>

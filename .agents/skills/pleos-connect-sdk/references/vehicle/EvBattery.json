@@ -1,0 +1,131 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "EvBattery",
+  "label": "전기차 배터리·충전·전비",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/ev-battery/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "InstantaneousEvEfficiency",
+      "methods": [
+        "checkInstantaneousEvEfficiencyCapabilities",
+        "getInstantaneousEvEfficiency",
+        "registerInstantaneousEvEfficiency",
+        "unregisterInstantaneousEvEfficiency"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "순간 전비"
+    },
+    {
+      "key": "SinceChargeEvEfficiency",
+      "methods": [
+        "checkSinceChargeEvEfficiencyCapabilities",
+        "getSinceChargeEvEfficiency",
+        "registerSinceChargeEvEfficiency",
+        "unregisterSinceChargeEvEfficiency"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "충전 이후 전비"
+    },
+    {
+      "key": "CumulativeEvEfficiency",
+      "methods": [
+        "checkCumulativeEvEfficiencyCapabilities",
+        "getCumulativeEvEfficiency",
+        "registerCumulativeEvEfficiency",
+        "unregisterCumulativeEvEfficiency"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "누적 전비"
+    },
+    {
+      "key": "EvEfficiency",
+      "methods": [
+        "checkCurrentEvEfficiencyCapabilities",
+        "getCurrentEvEfficiency",
+        "registerCurrentEvEfficiency",
+        "unregisterCurrentEvEfficiency"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "현재 전비"
+    },
+    {
+      "key": "EvBatteryStateOfCharge",
+      "methods": [
+        "checkEvBatteryStateOfChargeCapabilities",
+        "getEvBatteryStateOfCharge",
+        "registerEvBatteryStateOfCharge",
+        "unregisterEvBatteryStateOfCharge"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "배터리 충전 잔량 SOC"
+    },
+    {
+      "key": "EvChargeCurrentDrawLimit",
+      "methods": [
+        "checkEvChargeCurrentDrawLimitCapabilities",
+        "setEvChargeCurrentDrawLimit",
+        "getEvChargeCurrentDrawLimit"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "충전 전류 한도"
+    },
+    {
+      "key": "EvChargePercentLimit",
+      "methods": [
+        "checkEvChargePercentLimitCapabilities",
+        "setEvChargePercentLimit"
+      ],
+      "read": false,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "목표 충전 비율"
+    },
+    {
+      "key": "EvChargePortOpen",
+      "methods": [
+        "checkEvChargePortOpenCapabilities",
+        "setEvChargePortOpen"
+      ],
+      "read": false,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "충전 포트 열림 설정"
+    },
+    {
+      "key": "EvChargeSwitch",
+      "methods": [
+        "checkEvChargeSwitchCapabilities",
+        "setEvChargeSwitch",
+        "getEvChargeSwitchState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "충전 시작·정지"
+    }
+  ]
+}

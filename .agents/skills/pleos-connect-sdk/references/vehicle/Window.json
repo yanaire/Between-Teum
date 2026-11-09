@@ -1,0 +1,110 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Window",
+  "label": "창문·블라인드·스마트 글라스",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/window/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "WindowBlind",
+      "methods": [
+        "checkMoveWindowBlindCapabilities",
+        "checkWindowBlindPositionCapabilities",
+        "getCurrentWindowBlindPosition",
+        "moveWindowBlind",
+        "registerWindowBlindPosition",
+        "unregisterWindowBlindPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "창문 블라인드 위치·이동"
+    },
+    {
+      "key": "SmartGlass",
+      "methods": [
+        "checkSmartGlassStateCapabilities",
+        "getCurrentSmartGlassState",
+        "setSmartGlassState",
+        "registerSmartGlassState",
+        "unregisterSmartGlassState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "스마트 글라스 상태"
+    },
+    {
+      "key": "SmartGlassZone",
+      "methods": [
+        "checkSmartGlassZoneStateCapabilities",
+        "setSmartGlassZoneState"
+      ],
+      "read": false,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "스마트 글라스 패널별 설정"
+    },
+    {
+      "key": "SmartGlassLevel",
+      "methods": [
+        "checkSmartGlassLevelCapabilities",
+        "getCurrentSmartGlassLevel",
+        "setSmartGlassLevel",
+        "registerSmartGlassLevel",
+        "unregisterSmartGlassLevel"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "스마트 글라스 단계"
+    },
+    {
+      "key": "WindowLock",
+      "methods": [
+        "checkWindowLockCapabilities",
+        "setWindowLock",
+        "getCurrentWindowLockState",
+        "registerWindowLockState",
+        "unregisterWindowLockState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "창문 잠금"
+    },
+    {
+      "key": "WindowPosition",
+      "methods": [
+        "checkWindowPositionCapabilities",
+        "getCurrentWindowPosition",
+        "setWindowPosition",
+        "registerWindowPosition",
+        "unregisterWindowPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "창문 열림 위치"
+    },
+    {
+      "key": "SmartGlassConfig",
+      "methods": [
+        "getSmartGlassConfig"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": false,
+      "capability": false,
+      "label": "스마트 글라스 구성 정보"
+    }
+  ]
+}

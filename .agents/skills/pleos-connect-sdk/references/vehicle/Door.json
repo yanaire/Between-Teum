@@ -1,0 +1,56 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Door",
+  "label": "도어·글로브 박스",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/door/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "GloveBoxLock",
+      "methods": [
+        "checkGloveBoxLockCapabilities",
+        "setGloveBoxLock",
+        "getCurrentGloveBoxLockState",
+        "registerGloveBoxLockState",
+        "unregisterGloveBoxLockState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "글로브 박스 잠금"
+    },
+    {
+      "key": "DoorLock",
+      "methods": [
+        "checkDoorLockCapabilities",
+        "getDoorLockState",
+        "setDoorLock",
+        "registerDoorLockState",
+        "unregisterDoorLockState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "도어 잠금"
+    },
+    {
+      "key": "DoorPosition",
+      "methods": [
+        "checkDoorPositionCapabilities",
+        "getCurrentDoorPosition",
+        "setDoorPosition",
+        "registerDoorPosition",
+        "unregisterDoorPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "도어 열림 위치"
+    }
+  ]
+}

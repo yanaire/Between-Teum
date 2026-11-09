@@ -1,0 +1,25 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Brake",
+  "label": "브레이크",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/brake/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "BrakePedalStatus",
+      "methods": [
+        "checkBrakePedalStatusCapabilities",
+        "getCurrentBrakePedalStatus",
+        "registerBrakePedalStatus",
+        "unregisterBrakePedalStatus"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "브레이크 페달 작동 상태"
+    }
+  ]
+}

@@ -1,0 +1,1743 @@
+{
+  "checkedAt": "2026-11-02",
+  "vehicleVersion": "2.3.2",
+  "documentedDomainCount": 19,
+  "documentedMethodNameCount": 458,
+  "featureGroupCount": 102,
+  "vehicle": [
+    {
+      "domain": "Brake",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/brake/entry",
+      "features": [
+        {
+          "key": "BrakePedalStatus",
+          "methods": [
+            "checkBrakePedalStatusCapabilities",
+            "getCurrentBrakePedalStatus",
+            "registerBrakePedalStatus",
+            "unregisterBrakePedalStatus"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "CarInfo",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/car-info/entry",
+      "features": [
+        {
+          "key": "CRNInfo",
+          "methods": [
+            "checkCRNInfoCapabilities",
+            "getCRNInfo"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "VINInfo",
+          "methods": [
+            "checkVINInfoCapabilities",
+            "getVINInfo"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Display",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/display/entry",
+      "features": [
+        {
+          "key": "TemperatureDisplayUnit",
+          "methods": [
+            "checkTemperatureDisplayUnitCapabilities",
+            "getCurrentTemperatureDisplayUnit",
+            "registerTemperatureDisplayUnit",
+            "unregisterTemperatureDisplayUnit"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Door",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/door/entry",
+      "features": [
+        {
+          "key": "GloveBoxLock",
+          "methods": [
+            "checkGloveBoxLockCapabilities",
+            "setGloveBoxLock",
+            "getCurrentGloveBoxLockState",
+            "registerGloveBoxLockState",
+            "unregisterGloveBoxLockState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "DoorLock",
+          "methods": [
+            "checkDoorLockCapabilities",
+            "getDoorLockState",
+            "setDoorLock",
+            "registerDoorLockState",
+            "unregisterDoorLockState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "DoorPosition",
+          "methods": [
+            "checkDoorPositionCapabilities",
+            "getCurrentDoorPosition",
+            "setDoorPosition",
+            "registerDoorPosition",
+            "unregisterDoorPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "DrivingMode",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/driving-mode/entry",
+      "features": [
+        {
+          "key": "CruiseControlTargetSpeed",
+          "methods": [
+            "checkCruiseControlTargetSpeedCapabilities",
+            "getCruiseControlTargetSpeed",
+            "registerCruiseControlTargetSpeed",
+            "unregisterCruiseControlTargetSpeed"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "CruiseControl",
+          "methods": [
+            "checkCruiseControlStateCapabilities",
+            "getCruiseControlState",
+            "registerCruiseControlState",
+            "unregisterCruiseControlState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "DrivingMode",
+          "methods": [
+            "checkDrivingModeStateCapabilities",
+            "getCurrentDrivingModeState",
+            "registerDrivingModeState",
+            "unregisterDrivingModeState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "EvBattery",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/ev-battery/entry",
+      "features": [
+        {
+          "key": "InstantaneousEvEfficiency",
+          "methods": [
+            "checkInstantaneousEvEfficiencyCapabilities",
+            "getInstantaneousEvEfficiency",
+            "registerInstantaneousEvEfficiency",
+            "unregisterInstantaneousEvEfficiency"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SinceChargeEvEfficiency",
+          "methods": [
+            "checkSinceChargeEvEfficiencyCapabilities",
+            "getSinceChargeEvEfficiency",
+            "registerSinceChargeEvEfficiency",
+            "unregisterSinceChargeEvEfficiency"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "CumulativeEvEfficiency",
+          "methods": [
+            "checkCumulativeEvEfficiencyCapabilities",
+            "getCumulativeEvEfficiency",
+            "registerCumulativeEvEfficiency",
+            "unregisterCumulativeEvEfficiency"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "EvEfficiency",
+          "methods": [
+            "checkCurrentEvEfficiencyCapabilities",
+            "getCurrentEvEfficiency",
+            "registerCurrentEvEfficiency",
+            "unregisterCurrentEvEfficiency"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "EvBatteryStateOfCharge",
+          "methods": [
+            "checkEvBatteryStateOfChargeCapabilities",
+            "getEvBatteryStateOfCharge",
+            "registerEvBatteryStateOfCharge",
+            "unregisterEvBatteryStateOfCharge"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "EvChargeCurrentDrawLimit",
+          "methods": [
+            "checkEvChargeCurrentDrawLimitCapabilities",
+            "setEvChargeCurrentDrawLimit",
+            "getEvChargeCurrentDrawLimit"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "EvChargePercentLimit",
+          "methods": [
+            "checkEvChargePercentLimitCapabilities",
+            "setEvChargePercentLimit"
+          ],
+          "read": false,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "EvChargePortOpen",
+          "methods": [
+            "checkEvChargePortOpenCapabilities",
+            "setEvChargePortOpen"
+          ],
+          "read": false,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "EvChargeSwitch",
+          "methods": [
+            "checkEvChargeSwitchCapabilities",
+            "setEvChargeSwitch",
+            "getEvChargeSwitchState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Fuel",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/fuel/entry",
+      "features": [
+        {
+          "key": "InstantaneousFuelEconomy",
+          "methods": [
+            "checkInstantaneousFuelEconomyCapabilities",
+            "getInstantaneousFuelEconomy",
+            "registerInstantaneousFuelEconomy",
+            "unregisterInstantaneousFuelEconomy"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SinceChargeFuelEconomy",
+          "methods": [
+            "checkSinceChargeFuelEconomyCapabilities",
+            "getSinceChargeFuelEconomy",
+            "registerSinceChargeFuelEconomy",
+            "unregisterSinceChargeFuelEconomy"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "CumulativeFuelEconomy",
+          "methods": [
+            "checkCumulativeFuelEconomyCapabilities",
+            "getCumulativeFuelEconomy",
+            "registerCumulativeFuelEconomy",
+            "unregisterCumulativeFuelEconomy"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "FuelEconomy",
+          "methods": [
+            "checkCurrentFuelEconomyCapabilities",
+            "getCurrentFuelEconomy",
+            "registerCurrentFuelEconomy",
+            "unregisterCurrentFuelEconomy"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "FuelPercent",
+          "methods": [
+            "checkFuelPercentCapabilities",
+            "getFuelPercent",
+            "registerFuelPercent",
+            "unregisterFuelPercent"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "HVAC",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/h-v-a-c/entry",
+      "features": [
+        {
+          "key": "HvacAc",
+          "methods": [
+            "checkHvacAcCapabilities",
+            "setHvacAc",
+            "getHvacAcState",
+            "registerHvacAcState",
+            "unregisterHvacAcState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacAuto",
+          "methods": [
+            "checkHvacAutoCapabilities",
+            "setHvacAuto",
+            "getHvacAutoState",
+            "registerHvacAutoState",
+            "unregisterHvacAutoState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacRecirculation",
+          "methods": [
+            "checkHvacRecirculationCapabilities",
+            "setHvacRecirculation",
+            "getHvacRecirculationState",
+            "registerHvacRecirculationState",
+            "unregisterHvacRecirculationState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacDefroster",
+          "methods": [
+            "checkHvacDefrosterCapabilities",
+            "setHvacDefroster",
+            "getHvacDefrosterState",
+            "registerHvacDefrosterState",
+            "unregisterHvacDefrosterState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacDual",
+          "methods": [
+            "checkHvacDualCapabilities",
+            "setHvacDual",
+            "getHvacDualState",
+            "registerHvacDualState",
+            "unregisterHvacDualState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacFanDirection",
+          "methods": [
+            "checkHvacFanDirectionCapabilities",
+            "setHvacFanDirection",
+            "getHvacFanDirection"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "HvacFanSpeed",
+          "methods": [
+            "checkHvacFanSpeedCapabilities",
+            "setHvacFanSpeed",
+            "getHvacFanSpeed",
+            "registerHvacFanSpeed",
+            "unregisterHvacFanSpeed"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacMaxAc",
+          "methods": [
+            "checkHvacMaxAcCapabilities",
+            "setHvacMaxAc",
+            "getHvacMaxAcState",
+            "registerHvacMaxAcState",
+            "unregisterHvacMaxAcState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacMaxDefrost",
+          "methods": [
+            "checkHvacMaxDefrostCapabilities",
+            "setHvacMaxDefrost",
+            "getHvacMaxDefrostState",
+            "registerHvacMaxDefrostState",
+            "unregisterHvacMaxDefrostState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacPower",
+          "methods": [
+            "checkHvacPowerCapabilities",
+            "setHvacPower",
+            "getHvacPowerState",
+            "registerHvacPowerState",
+            "unregisterHvacPowerState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacAutoRecirculation",
+          "methods": [
+            "checkHvacAutoRecirculationCapabilities",
+            "setHvacAutoRecirculation",
+            "getHvacAutoRecirculationState",
+            "registerHvacAutoRecirculationState",
+            "unregisterHvacAutoRecirculationState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacAirCleaner",
+          "methods": [
+            "checkHvacAirCleanerCapabilities",
+            "setHvacAirCleaner",
+            "getHvacAirCleanerState",
+            "registerHvacAirCleanerState",
+            "unregisterHvacAirCleanerState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacTemperature",
+          "methods": [
+            "checkHvacTemperatureCapabilities",
+            "getHvacTemperature",
+            "setHvacTemperature",
+            "registerHvacTemperature",
+            "unregisterHvacTemperature"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacTemperatureCurrent",
+          "methods": [
+            "checkHvacTemperatureCurrentCapabilities",
+            "getHvacTemperatureCurrent",
+            "registerHvacTemperatureCurrent",
+            "unregisterHvacTemperatureCurrent"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Light",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/light/entry",
+      "features": [
+        {
+          "key": "ReadingLight",
+          "methods": [
+            "checkReadingLightSwitchCapabilities",
+            "checkReadingLightStateCapabilities",
+            "getReadingLightSwitch",
+            "setReadingLightSwitch",
+            "getCurrentReadingLightState",
+            "registerReadingLightState",
+            "unregisterReadingLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "CabinLight",
+          "methods": [
+            "checkCabinLightSwitchCapabilities",
+            "checkCabinLightStateCapabilities",
+            "getCabinLightSwitch",
+            "setCabinLightSwitch",
+            "getCurrentCabinLightState",
+            "registerCabinLightState",
+            "unregisterCabinLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HighBeamLight",
+          "methods": [
+            "checkHighBeamLightSwitchCapabilities",
+            "checkHighBeamLightStateCapabilities",
+            "getCurrentHighBeamLightState",
+            "getHighBeamLightSwitch",
+            "setHighBeamLightSwitch",
+            "registerHighBeamLightState",
+            "unregisterHighBeamLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "LowBeamLight",
+          "methods": [
+            "checkLowBeamLightSwitchCapabilities",
+            "checkLowBeamLightStateCapabilities",
+            "setLowBeamLightSwitch",
+            "getLowBeamLightSwitch",
+            "getCurrentLowBeamLightState",
+            "registerLowBeamLightState",
+            "unregisterLowBeamLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TailLampLight",
+          "methods": [
+            "checkTailLampLightSwitchCapabilities",
+            "checkTailLampLightStateCapabilities",
+            "getCurrentTailLampLightState",
+            "getTailLampLightSwitch",
+            "setTailLampLightSwitch",
+            "registerTailLampLightState",
+            "unregisterTailLampLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "FrontFogLight",
+          "methods": [
+            "checkFrontFogLightSwitchCapabilities",
+            "checkFrontFogLightStateCapabilities",
+            "getCurrentFrontFogLightState",
+            "getFrontFogLightSwitch",
+            "setFrontFogLightSwitch",
+            "registerFrontFogLightState",
+            "unregisterFrontFogLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "RearFogLight",
+          "methods": [
+            "checkRearFogLightSwitchCapabilities",
+            "checkRearFogLightStateCapabilities",
+            "getCurrentRearFogLightState",
+            "getRearFogLightSwitch",
+            "setRearFogLightSwitch",
+            "registerRearFogLightState",
+            "unregisterRearFogLightState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "AmbientLightBrightness",
+          "methods": [
+            "checkAmbientLightBrightnessCapabilities",
+            "getAmbientLightBrightness",
+            "setAmbientLightBrightness",
+            "registerAmbientLightBrightnessListener",
+            "unregisterAmbientLightBrightnessListener"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "AmbientLightBrightnessColor",
+          "methods": [
+            "checkAmbientLightBrightnessColorCapabilities",
+            "getAmbientLightBrightnessColor",
+            "setAmbientLightBrightnessColor",
+            "registerAmbientLightBrightnessColorListener",
+            "unregisterAmbientLightBrightnessColorListener"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "AmbientLight",
+          "methods": [
+            "checkAmbientLightSwitchCapabilities",
+            "checkAmbientLightStateCapabilities",
+            "getAmbientLightSwitch",
+            "setAmbientLightSwitch",
+            "getAmbientLightState",
+            "registerAmbientLightStateListener",
+            "unregisterAmbientLightStateListener"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "AmbientColorAutoByDriveModeEnabled",
+          "methods": [
+            "checkAmbientColorAutoByDriveModeEnabledCapabilities",
+            "getAmbientColorAutoByDriveModeEnabled",
+            "setAmbientColorAutoByDriveModeEnabled",
+            "registerAmbientColorAutoByDriveModeEnabled",
+            "unregisterAmbientColorAutoByDriveModeEnabled"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Odometer",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/odometer/entry",
+      "features": [
+        {
+          "key": "DistanceDriven",
+          "methods": [
+            "checkCurrentDistanceDrivenCapabilities",
+            "getCurrentDistanceDriven",
+            "registerDistanceDriven",
+            "unregisterDistanceDriven"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripDrivingTime",
+          "methods": [
+            "checkTripDrivingTimeCapabilities"
+          ],
+          "read": false,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "TripCurrentDrivingTime",
+          "methods": [
+            "checkTripCurrentDrivingTimeCapabilities",
+            "getTripCurrentDrivingTime",
+            "registerTripCurrentDrivingTime",
+            "unregisterTripCurrentDrivingTime"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripCumulativeDrivingTime",
+          "methods": [
+            "checkTripCumulativeDrivingTimeCapabilities",
+            "getTripCumulativeDrivingTime",
+            "registerTripCumulativeDrivingTime",
+            "unregisterTripCumulativeDrivingTime"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripSinceRefillDrivingTime",
+          "methods": [
+            "checkTripSinceRefillDrivingTimeCapabilities",
+            "getTripSinceRefillDrivingTime",
+            "registerTripSinceRefillDrivingTime",
+            "unregisterTripSinceRefillDrivingTime"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripDrivingDistance",
+          "methods": [
+            "checkTripDrivingDistanceCapabilities"
+          ],
+          "read": false,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "TripCurrentDrivingDistance",
+          "methods": [
+            "checkTripCurrentDrivingDistanceCapabilities",
+            "getTripCurrentDrivingDistance",
+            "registerTripCurrentDrivingDistance",
+            "unregisterTripCurrentDrivingDistance"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripInstantaneousDrivingDistance",
+          "methods": [
+            "checkTripInstantaneousDrivingDistanceCapabilities",
+            "getTripInstantaneousDrivingDistance",
+            "registerTripInstantaneousDrivingDistance",
+            "unregisterTripInstantaneousDrivingDistance"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripCumulativeDrivingDistance",
+          "methods": [
+            "checkTripCumulativeDrivingDistanceCapabilities",
+            "getTripCumulativeDrivingDistance",
+            "registerTripCumulativeDrivingDistance",
+            "unregisterTripCumulativeDrivingDistance"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TripSinceRefillDrivingDistance",
+          "methods": [
+            "checkTripSinceRefillDrivingDistanceCapabilities",
+            "getTripSinceRefillDrivingDistance",
+            "registerTripSinceRefillDrivingDistance",
+            "unregisterTripSinceRefillDrivingDistance"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "RangeRemainingDistance",
+          "methods": [
+            "setRangeRemainingDistance"
+          ],
+          "read": false,
+          "write": true,
+          "subscribe": false,
+          "capability": false
+        }
+      ]
+    },
+    {
+      "domain": "Safety",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/safety/entry",
+      "features": [
+        {
+          "key": "AirbagEnabled",
+          "methods": [
+            "checkAirbagCapabilities",
+            "hasSeatAirbagEnabled",
+            "registerSeatAirbagEnabled",
+            "unregisterSeatAirbagEnabled"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "AirbagDeployed",
+          "methods": [
+            "checkAirbagDeployedCapabilities",
+            "hasSeatAirbagBeenDeployed",
+            "registerSeatAirbagDeployed",
+            "unregisterSeatAirbagDeployed"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatBuckled",
+          "methods": [
+            "checkSeatBuckledCapabilities"
+          ],
+          "read": false,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "SeatBeltNotBuckledWarning",
+          "methods": [
+            "checkSeatNotBuckledWarningCapabilities",
+            "hasSeatBeltNotBuckledWarning",
+            "registerSeatBeltNotBuckledWarning",
+            "unregisterSeatBeltNotBuckledWarning"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "EngineOilLevel",
+          "methods": [
+            "checkEngineOilLevelStateCapabilities",
+            "getEngineOilLevelState",
+            "registerEngineOilLevelState",
+            "unregisterEngineOilLevelState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "BrakeFluidLevel",
+          "methods": [
+            "checkBrakeFluidLevelStateCapabilities",
+            "getBrakeFluidLevelState",
+            "registerBrakeFluidLevelState",
+            "unregisterBrakeFluidLevelState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "TransmissionOilLevel",
+          "methods": [
+            "checkTransmissionOilLevelStateCapabilities",
+            "getTransmissionOilLevelState",
+            "registerTransmissionOilLevelState",
+            "unregisterTransmissionOilLevelState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "LowWasherFluidWarning",
+          "methods": [
+            "checkLowWasherFluidWarningStateCapabilities",
+            "hasLowWasherFluidWarning",
+            "registerLowWasherFluidWaringState",
+            "unregisterLowWasherFluidWaringState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "PowerDownWarningIndicator",
+          "methods": [
+            "checkPowerDownWarningIndicatorCapabilities",
+            "hasPowerDownWarningIndicator",
+            "registerPowerDownWarningIndicator",
+            "unregisterPowerDownWarningIndicator"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "Telltales",
+          "methods": [
+            "checkTelltalesCapabilities",
+            "getTelltalesInfo",
+            "registerTelltales",
+            "unregisterTelltales"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Seat",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/seat/entry",
+      "features": [
+        {
+          "key": "SeatOccupancy",
+          "methods": [
+            "checkSeatOccupancyCapabilities",
+            "getCurrentSeatOccupancy",
+            "registerSeatOccupancy",
+            "unregisterSeatOccupancy"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatBeltBuckled",
+          "methods": [
+            "checkSeatBeltBuckledCapabilities",
+            "getCurrentSeatBeltBuckledState",
+            "registerSeatBeltBuckledState",
+            "unregisterSeatBeltBuckledState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatBackrestAngle",
+          "methods": [
+            "checkSeatBackrestAngleCapabilities",
+            "checkSeatBackrestAnglePositionCapabilities",
+            "checkMoveSeatBackrestAngleCapabilities",
+            "moveSeatBackrestAngle",
+            "getCurrentSeatBackrestAnglePosition",
+            "registerSeatBackrestAnglePosition",
+            "unregisterSeatBackrestAnglePosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatHeadrestAngle",
+          "methods": [
+            "checkSeatHeadrestAngleCapabilities",
+            "checkSeatHeadrestAnglePositionCapabilities",
+            "checkMoveSeatHeadrestAngleCapabilities",
+            "moveSeatHeadrestAngle",
+            "getCurrentSeatHeadrestAnglePosition",
+            "registerSeatHeadrestAnglePosition",
+            "unregisterSeatHeadrestAnglePosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatHeadrestForeAft",
+          "methods": [
+            "checkSeatHeadrestForeAftCapabilities",
+            "checkSeatHeadrestForeAftPositionCapabilities",
+            "checkMoveSeatHeadrestForeAftCapabilities",
+            "moveSeatHeadrestForeAft",
+            "getCurrentSeatHeadrestForeAftPosition",
+            "registerSeatHeadrestForeAftPosition",
+            "unregisterSeatHeadrestForeAftPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatHeadrestHeight",
+          "methods": [
+            "checkSeatHeadrestHeightCapabilities",
+            "checkSeatHeadrestHeightPositionCapabilities",
+            "checkMoveSeatHeadrestHeightCapabilities",
+            "moveSeatHeadrestHeight",
+            "getCurrentSeatHeadrestHeightAftPosition",
+            "registerSeatHeadrestHeightAftPosition",
+            "unregisterSeatHeadrestHeightAftPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatHeight",
+          "methods": [
+            "checkSeatHeightCapabilities",
+            "checkSeatHeightPositionCapabilities",
+            "checkMoveSeatHeightCapabilities",
+            "moveSeatHeight",
+            "getCurrentSeatHeightPosition",
+            "registerSeatHeightPosition",
+            "unregisterSeatHeightPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatLumbarForeAft",
+          "methods": [
+            "checkSeatLumbarForeAftCapabilities",
+            "checkSeatLumbarForeAftPositionCapabilities",
+            "checkMoveSeatLumbarForeAftCapabilities",
+            "moveSeatLumbarForeAft",
+            "getCurrentSeatLumbarForeAftPosition",
+            "registerSeatLumbarForeAftPosition",
+            "unregisterSeatLumbarForeAftPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatLumbarSideSupport",
+          "methods": [
+            "checkSeatLumbarSideSupportCapabilities",
+            "checkSeatLumbarSideSupportPositionCapabilities",
+            "checkMoveSeatLumbarSideSupportCapabilities",
+            "moveSeatLumbarSideSupport",
+            "getCurrentSeatLumbarSideSupportPosition",
+            "registerSeatLumbarSideSupportPosition",
+            "unregisterSeatLumbarSideSupportPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatTilt",
+          "methods": [
+            "checkSeatTiltCapabilities",
+            "checkSeatTiltPositionCapabilities",
+            "checkMoveSeatTiltCapabilities",
+            "moveSeatTilt",
+            "getCurrentSeatTiltPosition",
+            "registerSeatTiltPosition",
+            "unregisterSeatTiltPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatDepth",
+          "methods": [
+            "checkSeatDepthCapabilities",
+            "checkSeatDepthPositionCapabilities",
+            "checkMoveSeatDepthCapabilities",
+            "moveSeatDepth",
+            "getCurrentSeatDepthPosition",
+            "registerSeatDepthPosition",
+            "unregisterSeatDepthPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatForeAft",
+          "methods": [
+            "checkSeatForeAftCapabilities",
+            "checkSeatForeAftPositionCapabilities",
+            "checkMoveSeatForeAftCapabilities",
+            "getCurrentSeatForeAftPosition",
+            "moveSeatForeAft",
+            "registerSeatForeAftPosition",
+            "unregisterSeatForeAftPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatBeltHeight",
+          "methods": [
+            "checkSeatBeltHeightCapabilities",
+            "checkSeatBeltHeightPositionCapabilities",
+            "checkMoveSeatBeltHeightCapabilities",
+            "moveSeatBeltHeight",
+            "getCurrentSeatBeltHeightPosition",
+            "registerSeatBeltHeightPosition",
+            "unregisterSeatBeltHeightPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacSeatTemperature",
+          "methods": [
+            "checkSeatTemperatureCapabilities",
+            "setHvacSeatTemperature",
+            "getHvacSeatTemperature",
+            "registerHvacSeatTemperature",
+            "unregisterHvacSeatTemperature"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "HvacSeatVentilation",
+          "methods": [
+            "checkSeatVentilationCapabilities",
+            "getHvacSeatVentilationState",
+            "setHvacSeatVentilation",
+            "registerHvacSeatVentilation",
+            "unregisterHvacSeatVentilation"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SeatMemory",
+          "methods": [
+            "checkSeatMemoryCapabilities",
+            "selectSeatMemory"
+          ],
+          "read": false,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "SideMirror",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/side-mirror/entry",
+      "features": [
+        {
+          "key": "HvacSideMirrorHeat",
+          "methods": [
+            "checkHvacSideMirrorHeatCapabilities",
+            "getHvacSideMirrorHeatState",
+            "setHvacSideMirrorHeat",
+            "registerHvacSideMirrorHeatState",
+            "unregisterHvacSideMirrorHeatState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "SteeringWheel",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/steering-wheel/entry",
+      "features": [
+        {
+          "key": "HvacSteeringWheelHeat",
+          "methods": [
+            "checkHvacSteeringWheelHeatCapabilities",
+            "getHvacSteeringWheelHeatState",
+            "setHvacSteeringWheelHeat",
+            "registerHvacSteeringWheelHeatState",
+            "unregisterHvacSteeringWheelHeatState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SteeringWheelAngle",
+          "methods": [
+            "checkSteeringWheelAngleCapabilities",
+            "getCurrentSteeringWheelAngle",
+            "registerSteeringWheelAngle",
+            "unregisterSteeringWheelAngle"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Tire",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/tire/entry",
+      "features": [
+        {
+          "key": "WheelArea",
+          "methods": [
+            "checkWheelAreaCapabilities"
+          ],
+          "read": false,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "LowTirePressure",
+          "methods": [
+            "checkLowTirePressureCapabilities",
+            "getLowTirePressure"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": false,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Toll",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/toll/entry",
+      "features": [
+        {
+          "key": "EtcsVoiceGuidanceVolume",
+          "methods": [
+            "checkEtcsVoiceGuidanceVolumeCapabilities",
+            "getCurrentEtcsVoiceGuidanceVolume",
+            "setEtcsVoiceGuidanceVolume",
+            "registerEtcsVoiceGuidanceVolume",
+            "unregisterEtcsVoiceGuidanceVolume"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "TurnSignal",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/turn-signal/entry",
+      "features": [
+        {
+          "key": "TurnSignal",
+          "methods": [
+            "checkTurnSignalStateCapabilities",
+            "getCurrentTurnSignalState",
+            "registerTurnSignalState",
+            "unregisterTurnSignalState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        }
+      ]
+    },
+    {
+      "domain": "Window",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/window/entry",
+      "features": [
+        {
+          "key": "WindowBlind",
+          "methods": [
+            "checkMoveWindowBlindCapabilities",
+            "checkWindowBlindPositionCapabilities",
+            "getCurrentWindowBlindPosition",
+            "moveWindowBlind",
+            "registerWindowBlindPosition",
+            "unregisterWindowBlindPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SmartGlass",
+          "methods": [
+            "checkSmartGlassStateCapabilities",
+            "getCurrentSmartGlassState",
+            "setSmartGlassState",
+            "registerSmartGlassState",
+            "unregisterSmartGlassState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SmartGlassZone",
+          "methods": [
+            "checkSmartGlassZoneStateCapabilities",
+            "setSmartGlassZoneState"
+          ],
+          "read": false,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        },
+        {
+          "key": "SmartGlassLevel",
+          "methods": [
+            "checkSmartGlassLevelCapabilities",
+            "getCurrentSmartGlassLevel",
+            "setSmartGlassLevel",
+            "registerSmartGlassLevel",
+            "unregisterSmartGlassLevel"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "WindowLock",
+          "methods": [
+            "checkWindowLockCapabilities",
+            "setWindowLock",
+            "getCurrentWindowLockState",
+            "registerWindowLockState",
+            "unregisterWindowLockState"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "WindowPosition",
+          "methods": [
+            "checkWindowPositionCapabilities",
+            "getCurrentWindowPosition",
+            "setWindowPosition",
+            "registerWindowPosition",
+            "unregisterWindowPosition"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "SmartGlassConfig",
+          "methods": [
+            "getSmartGlassConfig"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": false,
+          "capability": false
+        }
+      ]
+    },
+    {
+      "domain": "Wiper",
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/wiper/entry",
+      "features": [
+        {
+          "key": "Wiper",
+          "methods": [
+            "checkWiperStateCapabilities",
+            "getCurrentWiperState",
+            "registerWiperState",
+            "unregisterWiperState"
+          ],
+          "read": true,
+          "write": false,
+          "subscribe": true,
+          "capability": true
+        },
+        {
+          "key": "WiperSwitch",
+          "methods": [
+            "checkWiperSwitchCapabilities",
+            "getCurrentWiperSwitch",
+            "setWiperSwitch"
+          ],
+          "read": true,
+          "write": true,
+          "subscribe": false,
+          "capability": true
+        }
+      ]
+    }
+  ],
+  "undocumentedJarNames": [
+    {
+      "domain": "CarInfo",
+      "methods": [
+        "getCapabilityInfo"
+      ]
+    },
+    {
+      "domain": "EvBattery",
+      "methods": [
+        "getEvBatteryLevel",
+        "isEvChargePortOpen",
+        "getEvBatteryCapacity",
+        "registerEvBatteryLevel",
+        "unregisterEvBatteryLevel",
+        "registerEvChargePortOpen",
+        "unregisterEvChargePortOpen"
+      ]
+    },
+    {
+      "domain": "Odometer",
+      "methods": [
+        "getRangeRemainingDistance",
+        "registerRangeRemainingListener",
+        "unregisterRangeRemainingListener"
+      ]
+    },
+    {
+      "domain": "Tire",
+      "methods": [
+        "checkTirePressureCapabilities",
+        "getTirePressure",
+        "registerTirePressure",
+        "unregisterTirePressure"
+      ]
+    }
+  ],
+  "integrations": [
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/NaviHelper/navi-helper/ai.pleos.playground.navi.helper/navi-helper/entry",
+      "methodNames": [
+        "addListener",
+        "addWaypoint",
+        "cancelRoute",
+        "changeRouteOption",
+        "getBookmarkInfo",
+        "getChargerOperatorInfo",
+        "getCurrentLocationInfo",
+        "getDestinationInfo",
+        "getRecentDestinationInfo",
+        "getRouteStateInfo",
+        "getTBTInfo",
+        "getWaypointInfo",
+        "initialize",
+        "release",
+        "removeListener",
+        "removeWaypoint",
+        "requestNavigationScreen",
+        "requestReRoute",
+        "requestRoute",
+        "requestRouteWithWaypoints",
+        "requestTrip"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/NaviHelper/navi-helper/ai.pleos.playground.navi.helper.listener/navi-helper-event-listener/entry",
+      "methodNames": [
+        "onBookMarkChanged",
+        "onBookmarkInfo",
+        "onCameraAlert",
+        "onCautionPointInfo",
+        "onChargerOperatorInfo",
+        "onCurrentLocationInfo",
+        "onCurrentRoadSpeedLimit",
+        "onDestinationArrived",
+        "onDestinationChanged",
+        "onDestinationInfo",
+        "onDrivingInfo",
+        "onError",
+        "onNavigationStatus",
+        "onRecentDestinationInfo",
+        "onReRouteEnded",
+        "onRouteCancelled",
+        "onRouteOptionChanged",
+        "onRouteStarted",
+        "onRouteStateInfo",
+        "onRoutingCompleted",
+        "onTBTInfo",
+        "onTripInfo",
+        "onWayPointArrived",
+        "onWaypointChanged",
+        "onWayPointInfo"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/FusedLocation/fused-location/ai.pleos.playground.location.fused/fused-location/entry",
+      "methodNames": [
+        "addProximityAlert",
+        "getLastKnownLocation",
+        "initialize",
+        "isSupported",
+        "registerFusedLocationCallback",
+        "release",
+        "removeProximityAlert",
+        "showLocationAccessBlockedPopup",
+        "unregisterFusedLocationCallback"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/FusedLocation/fused-location/ai.pleos.playground.location.fused.listener/fused-location-listener/entry",
+      "methodNames": [
+        "onChanged",
+        "onError"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/FusedLocation/fused-location/ai.pleos.playground.location.fused.listener/proximity-alert-listener/entry",
+      "methodNames": [
+        "onError",
+        "onRegistered",
+        "onTransition"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts/text-to-speech/entry",
+      "methodNames": [
+        "addEventListener",
+        "initialize",
+        "registerApp",
+        "release",
+        "removeEventListener",
+        "setAudioAttributes",
+        "setAudioZoneId",
+        "setLocale",
+        "setSpeakerType",
+        "speak",
+        "stop"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts.listener/event-listener/entry",
+      "methodNames": [
+        "onDone",
+        "onError",
+        "onReady",
+        "onStart",
+        "onStop",
+        "onUpdatedRms"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts.listener/on-initialize-listener/entry",
+      "methodNames": [
+        "onFailure",
+        "onSuccess"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/TextToSpeech/text-to-speech/ai.pleos.playground.tts.listener/on-server-connection-listener/entry",
+      "methodNames": [
+        "onConnected",
+        "onFailed"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt/speech-to-text/entry",
+      "methodNames": [
+        "addListener",
+        "completeAudioSend",
+        "initialize",
+        "registerApp",
+        "release",
+        "removeListener",
+        "request",
+        "sendAudio",
+        "setLocale",
+        "stop"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt.listener/on-initialize-listener/entry",
+      "methodNames": [
+        "onFailure",
+        "onSuccess"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt.listener/on-server-connection-listener/entry",
+      "methodNames": [
+        "onConnected",
+        "onFailed"
+      ]
+    },
+    {
+      "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt.listener/result-listener/entry",
+      "methodNames": [
+        "onEndedRecognition",
+        "onError",
+        "onReady",
+        "onStartedRecognition",
+        "onUpdated",
+        "onUpdatedEpdData",
+        "onUpdatedRms"
+      ]
+    }
+  ],
+  "speechProperties": [
+    "TextToSpeech.version",
+    "SpeechToText.version"
+  ],
+  "gleoSources": [
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/core-concepts",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/app-capability",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/action_callback",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/examples",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/guide/deliver-schema",
+    "https://document.pleos.ai/docs/pleos-only/app-integration-guide/use-cases/radio-app"
+  ],
+  "entry": {
+    "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle/vehicle/entry",
+    "methods": [
+      "getBrake",
+      "getCarInfo",
+      "getDisplay",
+      "getDoor",
+      "getDrivingMode",
+      "getEvBattery",
+      "getFuel",
+      "getHVAC",
+      "getLight",
+      "getOdometer",
+      "getSafety",
+      "getSeat",
+      "getSideMirror",
+      "getSteeringWheel",
+      "getTire",
+      "getToll",
+      "getTurnSignal",
+      "getWindow",
+      "getWiper",
+      "initialize",
+      "release"
+    ]
+  }
+}

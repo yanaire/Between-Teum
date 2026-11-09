@@ -1,0 +1,214 @@
+{
+  "checkedAt": "2026-11-02",
+  "scope": "Skill metadata, references and SDK routing only; this does not claim the requested sample app features were implemented or runtime-tested.",
+  "structure": {
+    "name": true,
+    "description": true,
+    "userRegistration": true,
+    "jsonFiles": 25,
+    "vehicleDomains": 19,
+    "vehicleGroups": 102,
+    "vehicleMethods": 458,
+    "missingSkillRefs": []
+  },
+  "routingChecks": {
+    "allEight": true,
+    "soc": true,
+    "window": true,
+    "temperature": true,
+    "tire": true,
+    "trip": true,
+    "pcm": true,
+    "gleo": true,
+    "drivingUi": true
+  },
+  "cases": [
+    {
+      "request": "배터리 잔량을 퍼센트로 보여주는 위젯 추가해줘.",
+      "sdk": [
+        "Vehicle / EvBattery"
+      ],
+      "methods": [
+        "checkEvBatteryStateOfChargeCapabilities",
+        "getEvBatteryStateOfCharge",
+        "registerEvBatteryStateOfCharge",
+        "unregisterEvBatteryStateOfCharge"
+      ],
+      "requiredChecks": [
+        "현재 SDK 시그니처와 @RequiresPermission 검증 필요.",
+        "읽기 지원 여부 확인; SOC 단위는 %.",
+        "위젯 생명주기에 맞춘 구독 해제와 오류·미지원 상태 처리."
+      ],
+      "blockedAssumptions": [
+        "getEvBatteryLevel 또는 배터리 에너지·용량을 SOC로 취급하지 않는다.",
+        "한국어 개발 지시를 STT·Gleo 요청으로 해석하지 않는다."
+      ]
+    },
+    {
+      "request": "앞왼쪽 창문을 반만 내리는 버튼을 넣어줘.",
+      "sdk": [
+        "Vehicle / Window"
+      ],
+      "methods": [
+        "checkWindowPositionCapabilities",
+        "getCurrentWindowPosition",
+        "setWindowPosition",
+        "registerWindowPosition",
+        "unregisterWindowPosition"
+      ],
+      "requiredChecks": [
+        "현재 SDK 시그니처, 읽기·제어 @RequiresPermission 검증 필요.",
+        "앞왼쪽 영역의 AccessType 및 Map<Area, AreaBounds<...>> 확인.",
+        "현재 계약의 열림 방향·위치 의미를 확인하여 반열림 값을 산정.",
+        "setter 완료와 실제 상태 반영을 구분; CarUxRestrictions에 맞춰 조작 제한."
+      ],
+      "blockedAssumptions": [
+        "콘솔의 0~100 범위 또는 값 50을 하드코딩하지 않는다.",
+        "setter 콜백을 실제 창문 위치로 간주하지 않는다."
+      ]
+    },
+    {
+      "request": "운전석 온도를 24도로 맞추는 버튼을 추가해줘.",
+      "sdk": [
+        "Vehicle / HVAC"
+      ],
+      "methods": [
+        "checkHvacTemperatureCapabilities",
+        "getHvacTemperature",
+        "setHvacTemperature",
+        "registerHvacTemperature",
+        "unregisterHvacTemperature"
+      ],
+      "requiredChecks": [
+        "현재 SDK 시그니처와 읽기·제어 @RequiresPermission 검증 필요.",
+        "운전석 영역, 쓰기 지원, AreaBounds의 °C 범위에서 24°C 허용 여부 확인.",
+        "구독 또는 조회로 실제 목표 온도 반영 확인; 현재 CarUxRestrictions 준수."
+      ],
+      "blockedAssumptions": [
+        "목표 온도 설정을 현재 실내 온도 조회인 getHvacTemperatureCurrent와 혼동하지 않는다.",
+        "요청 완료가 실내 온도 24°C 도달을 뜻하지 않는다."
+      ]
+    },
+    {
+      "request": "현재 타이어 공기압을 보여줘.",
+      "sdk": [
+        "Vehicle / Tire"
+      ],
+      "methods": [
+        "checkWheelAreaCapabilities",
+        "checkTirePressureCapabilities",
+        "getTirePressure",
+        "registerTirePressure",
+        "unregisterTirePressure"
+      ],
+      "requiredChecks": [
+        "현재 검증 필수: checkTirePressureCapabilities, getTirePressure, registerTirePressure, unregisterTirePressure는 스냅샷 당시 SDK에서만 확인됐고 공개 API 목차에는 없었다.",
+        "references/compatibility.md 및 현재 공식 문서·설치 SDK로 공개 사용 계약, 권한, 시그니처, 압력 단위와 영역 지원 확인.",
+        "해당 계약이 확인되지 않으면 허용된 AAOS 대안을 검증하고, 확인 전 지원 가능하다고 확정하지 않는다."
+      ],
+      "blockedAssumptions": [
+        "getLowTirePressure는 저압 기준값이며 현재 공기압이 아니다.",
+        "SDK에 이름이 있다는 이유로 승인된 공개 API라고 단정하지 않는다."
+      ]
+    },
+    {
+      "request": "목적지까지 갔을 때 남을 배터리랑 도착 시간을 보여줘.",
+      "sdk": [
+        "NaviHelper"
+      ],
+      "methods": [
+        "initialize",
+        "addListener",
+        "getDestinationInfo",
+        "onDestinationInfo",
+        "requestTrip",
+        "onTripInfo",
+        "onError",
+        "removeListener",
+        "release"
+      ],
+      "requiredChecks": [
+        "현재 requestTrip 입력·응답 시그니처와 메서드별 권한 계약 검증 필요.",
+        "실제 목적지 좌표·필수 식별자를 확보하고 initialize 및 listener 등록 후 요청.",
+        "Trip의 estimatedSocAtDest는 %, eta는 seconds; 절대 도착 시각 표시는 ETA 기준 시점·시간대를 확인해 앱에서 계산.",
+        "경로·Trip 결과의 가용성 및 오류 상태 확인."
+      ],
+      "blockedAssumptions": [
+        "현재 SOC를 목적지 도착 예상 SOC로 표시하지 않는다.",
+        "eta를 절대 시각으로 해석하지 않는다.",
+        "requestTrip 호출 성공만으로 결과 수신을 확정하지 않는다."
+      ]
+    },
+    {
+      "request": "외부 PCM 음성 데이터를 받아 텍스트로 바꾸는 기능을 넣어줘.",
+      "sdk": [
+        "SpeechToText"
+      ],
+      "methods": [
+        "initialize",
+        "addListener",
+        "setLocale",
+        "sendAudio",
+        "completeAudioSend",
+        "onUpdated",
+        "onError",
+        "onEndedRecognition",
+        "stop",
+        "removeListener",
+        "release"
+      ],
+      "requiredChecks": [
+        "현재 SDK의 ON_DEVICE 지원, PCM 포맷·샘플레이트·채널·버퍼 계약과 결과 콜백 시그니처 검증 필요.",
+        "pleos.car.permission.STT_SERVICE 및 현재 메서드별 권한 확인.",
+        "첫 PCM 버퍼로 인식 시작; 입력 종료 시 completeAudioSend 사용.",
+        "중간·최종 결과, 오류·취소·종료를 구분하고 리스너 해제."
+      ],
+      "blockedAssumptions": [
+        "sendAudio/completeAudioSend를 SERVER 또는 HYBRID 경로로 취급하지 않는다.",
+        "PCM 경로에서 request가 필요하거나 onReady/onUpdatedRms가 발생한다고 가정하지 않는다.",
+        "인식 텍스트 자체가 앱 명령을 실행하지 않는다."
+      ]
+    },
+    {
+      "request": "Gleo에게 말해서 메모를 추가하는 기능을 넣어줘.",
+      "sdk": [
+        "Gleo Interface"
+      ],
+      "methods": [
+        "context.sendBroadcast",
+        "BroadcastReceiver"
+      ],
+      "requiredChecks": [
+        "메모 저장은 앱 로직으로 분리하고 ACTION_PARAM JSON 입력을 검증.",
+        "assets/schema.json과 Manifest action filter, service 디스패치 계약 확인.",
+        "ai.pleos.playground.intent.action.APP_ACTION_RESPONSE로 packageName과 response 반환; functionName/status/message 및 success/asking/fail 계약 준수.",
+        "현재 검증 필수: 스키마 함수 수·타입·타임아웃, 심사·승인 및 실제 인덱싱·가용성. 스냅샷 한도는 함수 3개와 7초.",
+        "voice/beep/silent 응답 모드와 음성 중복 방지 확인."
+      ],
+      "blockedAssumptions": [
+        "component=\"service\"를 startService로 실행하지 않는다.",
+        "Gleo 연동에 별도 SpeechToText 또는 TextToSpeech가 자동으로 필요하지 않는다.",
+        "메모 저장 전 success를 반환하지 않는다."
+      ]
+    },
+    {
+      "request": "주행 중에는 설정 버튼을 숨기고 주차하면 다시 보여줘.",
+      "sdk": [
+        "Android Automotive OS / CarUxRestrictionsManager"
+      ],
+      "methods": [],
+      "requiredChecks": [
+        "현재 공식 AAOS 계약에서 CarUxRestrictionsManager의 현재 제한 조회·변경 리스너 등록·해제 메서드와 권한 검증 필요; 제공 자료에는 정확한 메서드명이 없다.",
+        "CarUxRestrictions의 현재값과 변경 이벤트로 설정 버튼 표시를 결정.",
+        "DO 요구 상태와 개별 ActiveRestrictions를 구분.",
+        "P, D·정지, 이동, P 복귀에서 정책에 따른 표시 전환 확인."
+      ],
+      "blockedAssumptions": [
+        "속도 0을 주차 또는 제한 해제로 간주하지 않는다.",
+        "기어만으로 플랫폼 제한을 대체하지 않는다.",
+        "에뮬레이터에서 관찰한 기어별 제한을 모든 차량의 고정 규칙으로 적용하지 않는다.",
+        "주행 규제 강제 해제나 DO 선언만으로 제한을 우회하지 않는다."
+      ]
+    }
+  ]
+}

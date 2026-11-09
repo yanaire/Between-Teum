@@ -1,0 +1,53 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "DrivingMode",
+  "label": "주행 모드·크루즈 상태",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/driving-mode/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "CruiseControlTargetSpeed",
+      "methods": [
+        "checkCruiseControlTargetSpeedCapabilities",
+        "getCruiseControlTargetSpeed",
+        "registerCruiseControlTargetSpeed",
+        "unregisterCruiseControlTargetSpeed"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "크루즈 목표 속도"
+    },
+    {
+      "key": "CruiseControl",
+      "methods": [
+        "checkCruiseControlStateCapabilities",
+        "getCruiseControlState",
+        "registerCruiseControlState",
+        "unregisterCruiseControlState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "크루즈 제어 상태"
+    },
+    {
+      "key": "DrivingMode",
+      "methods": [
+        "checkDrivingModeStateCapabilities",
+        "getCurrentDrivingModeState",
+        "registerDrivingModeState",
+        "unregisterDrivingModeState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "주행 모드"
+    }
+  ]
+}

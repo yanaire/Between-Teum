@@ -1,0 +1,26 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "SideMirror",
+  "label": "사이드미러",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/side-mirror/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "HvacSideMirrorHeat",
+      "methods": [
+        "checkHvacSideMirrorHeatCapabilities",
+        "getHvacSideMirrorHeatState",
+        "setHvacSideMirrorHeat",
+        "registerHvacSideMirrorHeatState",
+        "unregisterHvacSideMirrorHeatState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "사이드미러 열선"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "sdk": "FusedLocation",
+  "version": "1.1.3",
+  "checkedAt": "2026-11-02",
+  "groups": [
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/FusedLocation/fused-location/ai.pleos.playground.location.fused/fused-location/entry",
+      "methodNames": [
+        "addProximityAlert",
+        "getLastKnownLocation",
+        "initialize",
+        "isSupported",
+        "registerFusedLocationCallback",
+        "release",
+        "removeProximityAlert",
+        "showLocationAccessBlockedPopup",
+        "unregisterFusedLocationCallback"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/FusedLocation/fused-location/ai.pleos.playground.location.fused.listener/fused-location-listener/entry",
+      "methodNames": [
+        "onChanged",
+        "onError"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/FusedLocation/fused-location/ai.pleos.playground.location.fused.listener/proximity-alert-listener/entry",
+      "methodNames": [
+        "onError",
+        "onRegistered",
+        "onTransition"
+      ]
+    }
+  ],
+  "permissions": [
+    "pleos.car.permission.FUSED_LOCATION"
+  ],
+  "locationFields": [
+    "latitude",
+    "longitude",
+    "altitude",
+    "heading",
+    "confidence",
+    "timestampMillis"
+  ],
+  "proximity": {
+    "parameters": [
+      "latitude",
+      "longitude",
+      "radiusMeters",
+      "transitionTypes"
+    ],
+    "transitions": [
+      "ENTER",
+      "EXIT"
+    ],
+    "radius": "finite and greater than zero"
+  },
+  "constraints": [
+    "isSupported reports service package presence, not location accuracy."
+  ]
+}

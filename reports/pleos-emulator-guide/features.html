@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Pleos 에뮬레이터 기능</title>
+<style>
+@page { size:A4; margin:0; }
+* { box-sizing:border-box; }
+body { margin:0; color:#202020; background:#eee; font:11pt/1.5 "Apple SD Gothic Neo","Noto Sans KR",sans-serif; word-break:keep-all; font-synthesis:none; }
+.page { width:210mm; height:297mm; padding:16mm 16mm 19mm; margin:6mm auto; background:white; position:relative; break-after:page; }
+.page:last-child { break-after:auto; }
+h1 { font-size:20pt; line-height:1.2; margin:0 0 2mm; }
+h2 { font-size:15pt; line-height:1.25; margin:7mm 0 3mm; }
+p { margin:2mm 0; }
+.meta,.caption { font-size:9.5pt; color:#555; }
+table { width:100%; border-collapse:collapse; margin:3mm 0; font-size:10.5pt; line-height:1.4; }
+th,td { padding:2.3mm 2mm; border-bottom:1px solid #ddd; text-align:left; vertical-align:top; }
+th { font-weight:600; border-top:1px solid #999; background:#f6f6f6; }
+figure { margin:4mm 0; break-inside:avoid; }
+img { display:block; max-width:100%; height:auto; }
+.speed { width:150mm; margin:4mm auto 0; }
+.blocked { width:150mm; margin:0 auto; }
+.climate { width:178mm; }
+.battery { width:150mm; margin:4mm auto; }
+.body-images { display:grid; grid-template-columns:64mm 1fr; gap:8mm; align-items:start; margin-top:5mm; }
+.body-images figure { margin:0; }
+.warning { padding-top:5mm; }
+figcaption { margin-top:2mm; font-size:9.5pt; color:#555; line-height:1.45; }
+.footer { position:absolute; bottom:9mm; left:16mm; right:16mm; font-size:9pt; color:#777; border-top:1px solid #ddd; padding-top:2mm; text-align:right; }
+@media print { body { background:white; } .page { margin:0; } * { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+<section class="page">
+  <h1>Pleos 에뮬레이터 기능</h1>
+  <p class="meta">Pleos Connect 2.1.0 · Virtual Console에서 직접 조작한 기능</p>
+  <h2>주차·주행</h2>
+  <table>
+    <tr><th style="width:36%">상태</th><th>동작</th></tr>
+    <tr><td>P · 0km/h</td><td>기본 앱 사용 가능</td></tr>
+    <tr><td>D · 가속</td><td>속도 증가, 앱 사용 제한 화면 표시</td></tr>
+    <tr><td>D · 다시 0km/h</td><td>정지해도 앱 사용 제한 유지</td></tr>
+    <tr><td>R / N · 0km/h</td><td>주행 제한 상태 유지</td></tr>
+    <tr><td>P로 변경</td><td>제한 해제, 앱 화면 복원</td></tr>
+  </table>
+  <p class="caption">주행 중 사용 허용 설정이 없는 기본 테스트 앱의 동작이다.</p>
+  <figure>
+    <img class="speed" src="assets/features/driving-speed.png" alt="D 기어, 속도 16km/h 표시">
+    <img class="blocked" src="assets/features/driving-block.png" alt="주행 중에는 사용할 수 없습니다 메시지">
+    <figcaption>이동 중 표시된 계기와 앱 사용 제한 메시지. 화면 일부를 확대했다.</figcaption>
+  </figure>
+  <h2>공조</h2>
+  <table>
+    <tr><th style="width:36%">기능</th><th>조작한 값</th></tr>
+    <tr><td>공조 전원</td><td>Off → On</td></tr>
+    <tr><td>운전석 목표 온도</td><td>22°C → 24°C</td></tr>
+    <tr><td>풍량</td><td>3 → 5</td></tr>
+  </table>
+  <figure>
+    <img class="climate" src="assets/features/climate.png" alt="차량 하단의 운전석 24도와 조수석 22도 공조 표시">
+    <figcaption>차량 하단에 운전석 24.0°C와 A/C 상태가 반영됐다. 풍량 5는 콘솔에서 확인했다.</figcaption>
+  </figure>
+  <div class="footer">1 / 2</div>
+</section>
+<section class="page">
+  <h1>배터리·도어·창문</h1>
+  <h2>배터리와 잔여 주행거리</h2>
+  <table>
+    <tr><th style="width:36%">기능</th><th>설정한 값</th><th>차량 화면</th></tr>
+    <tr><td>배터리 잔량</td><td>SOC 25%</td><td>배터리 잔량 도형 변경</td></tr>
+    <tr><td>잔여 주행거리</td><td>120,000m</td><td>120km로 표시</td></tr>
+  </table>
+  <figure>
+    <img class="battery" src="assets/features/battery.png" alt="배터리 잔량 도형과 120km 잔여거리">
+    <figcaption>배터리 잔량과 잔여거리는 각각 값을 설정할 수 있다.</figcaption>
+  </figure>
+  <h2>도어·창문·프렁크</h2>
+  <table>
+    <tr><th style="width:30%">기능</th><th>조작한 값</th><th>반영된 내용</th></tr>
+    <tr><td>앞왼쪽 도어</td><td>닫힘 → 열림</td><td>차량 그림의 문이 열림</td></tr>
+    <tr><td>앞왼쪽 창문</td><td>0% → 50%</td><td>콘솔에 50%로 표시</td></tr>
+    <tr><td>프렁크</td><td>닫힘 → 열림</td><td>열림 안내와 경고 창 표시</td></tr>
+  </table>
+  <div class="body-images">
+    <figure>
+      <img src="assets/features/door.png" alt="앞왼쪽 문이 열린 차량 그림과 프렁크를 닫으라는 안내">
+      <figcaption>도어 상태와 프렁크 안내.</figcaption>
+    </figure>
+    <figure class="warning">
+      <img src="assets/features/frunk-warning.png" alt="프렁크 열림 경고와 확인 버튼">
+      <figcaption>프렁크가 열린 상태에서 기어를 바꾸면 경고 창이 나타났다. 프렁크를 닫은 뒤에도 창은 남아 있어 ‘확인’을 눌러 닫았다.</figcaption>
+    </figure>
+  </div>
+  <div class="footer">2 / 2</div>
+</section>
+</body>
+</html>

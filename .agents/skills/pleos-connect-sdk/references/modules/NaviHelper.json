@@ -1,0 +1,79 @@
+{
+  "sdk": "NaviHelper",
+  "version": "3.0.5",
+  "checkedAt": "2026-11-02",
+  "groups": [
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/NaviHelper/navi-helper/ai.pleos.playground.navi.helper/navi-helper/entry",
+      "methodNames": [
+        "addListener",
+        "addWaypoint",
+        "cancelRoute",
+        "changeRouteOption",
+        "getBookmarkInfo",
+        "getChargerOperatorInfo",
+        "getCurrentLocationInfo",
+        "getDestinationInfo",
+        "getRecentDestinationInfo",
+        "getRouteStateInfo",
+        "getTBTInfo",
+        "getWaypointInfo",
+        "initialize",
+        "release",
+        "removeListener",
+        "removeWaypoint",
+        "requestNavigationScreen",
+        "requestReRoute",
+        "requestRoute",
+        "requestRouteWithWaypoints",
+        "requestTrip"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/NaviHelper/navi-helper/ai.pleos.playground.navi.helper.listener/navi-helper-event-listener/entry",
+      "methodNames": [
+        "onBookMarkChanged",
+        "onBookmarkInfo",
+        "onCameraAlert",
+        "onCautionPointInfo",
+        "onChargerOperatorInfo",
+        "onCurrentLocationInfo",
+        "onCurrentRoadSpeedLimit",
+        "onDestinationArrived",
+        "onDestinationChanged",
+        "onDestinationInfo",
+        "onDrivingInfo",
+        "onError",
+        "onNavigationStatus",
+        "onRecentDestinationInfo",
+        "onReRouteEnded",
+        "onRouteCancelled",
+        "onRouteOptionChanged",
+        "onRouteStarted",
+        "onRouteStateInfo",
+        "onRoutingCompleted",
+        "onTBTInfo",
+        "onTripInfo",
+        "onWayPointArrived",
+        "onWaypointChanged",
+        "onWayPointInfo"
+      ]
+    }
+  ],
+  "permissions": [
+    "pleos.car.permission.NAVI_ROUTE",
+    "pleos.car.permission.NAVI_ROUTE_SEARCH",
+    "pleos.car.permission.NAVI_CUSTOM_MAP"
+  ],
+  "tripFields": {
+    "distance": "m",
+    "eta": "seconds",
+    "estimatedSocAtDest": "%",
+    "energyConsumption": "Wh",
+    "summary": "route summary"
+  },
+  "constraints": [
+    "Requests are forwarded to the Navigation app; completion is confirmed by events.",
+    "Charger operator information is not a live charging-station availability feed."
+  ]
+}

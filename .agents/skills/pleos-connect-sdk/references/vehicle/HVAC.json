@@ -1,0 +1,218 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "HVAC",
+  "label": "공조",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/h-v-a-c/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "HvacAc",
+      "methods": [
+        "checkHvacAcCapabilities",
+        "setHvacAc",
+        "getHvacAcState",
+        "registerHvacAcState",
+        "unregisterHvacAcState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "에어컨"
+    },
+    {
+      "key": "HvacAuto",
+      "methods": [
+        "checkHvacAutoCapabilities",
+        "setHvacAuto",
+        "getHvacAutoState",
+        "registerHvacAutoState",
+        "unregisterHvacAutoState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "자동 공조"
+    },
+    {
+      "key": "HvacRecirculation",
+      "methods": [
+        "checkHvacRecirculationCapabilities",
+        "setHvacRecirculation",
+        "getHvacRecirculationState",
+        "registerHvacRecirculationState",
+        "unregisterHvacRecirculationState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "내기순환"
+    },
+    {
+      "key": "HvacDefroster",
+      "methods": [
+        "checkHvacDefrosterCapabilities",
+        "setHvacDefroster",
+        "getHvacDefrosterState",
+        "registerHvacDefrosterState",
+        "unregisterHvacDefrosterState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "성에 제거"
+    },
+    {
+      "key": "HvacDual",
+      "methods": [
+        "checkHvacDualCapabilities",
+        "setHvacDual",
+        "getHvacDualState",
+        "registerHvacDualState",
+        "unregisterHvacDualState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌우 온도 연동"
+    },
+    {
+      "key": "HvacFanDirection",
+      "methods": [
+        "checkHvacFanDirectionCapabilities",
+        "setHvacFanDirection",
+        "getHvacFanDirection"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "송풍 방향"
+    },
+    {
+      "key": "HvacFanSpeed",
+      "methods": [
+        "checkHvacFanSpeedCapabilities",
+        "setHvacFanSpeed",
+        "getHvacFanSpeed",
+        "registerHvacFanSpeed",
+        "unregisterHvacFanSpeed"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "풍량"
+    },
+    {
+      "key": "HvacMaxAc",
+      "methods": [
+        "checkHvacMaxAcCapabilities",
+        "setHvacMaxAc",
+        "getHvacMaxAcState",
+        "registerHvacMaxAcState",
+        "unregisterHvacMaxAcState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "최대 냉방"
+    },
+    {
+      "key": "HvacMaxDefrost",
+      "methods": [
+        "checkHvacMaxDefrostCapabilities",
+        "setHvacMaxDefrost",
+        "getHvacMaxDefrostState",
+        "registerHvacMaxDefrostState",
+        "unregisterHvacMaxDefrostState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "최대 성에 제거"
+    },
+    {
+      "key": "HvacPower",
+      "methods": [
+        "checkHvacPowerCapabilities",
+        "setHvacPower",
+        "getHvacPowerState",
+        "registerHvacPowerState",
+        "unregisterHvacPowerState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "공조 전원"
+    },
+    {
+      "key": "HvacAutoRecirculation",
+      "methods": [
+        "checkHvacAutoRecirculationCapabilities",
+        "setHvacAutoRecirculation",
+        "getHvacAutoRecirculationState",
+        "registerHvacAutoRecirculationState",
+        "unregisterHvacAutoRecirculationState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "자동 내기순환"
+    },
+    {
+      "key": "HvacAirCleaner",
+      "methods": [
+        "checkHvacAirCleanerCapabilities",
+        "setHvacAirCleaner",
+        "getHvacAirCleanerState",
+        "registerHvacAirCleanerState",
+        "unregisterHvacAirCleanerState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "공기 청정"
+    },
+    {
+      "key": "HvacTemperature",
+      "methods": [
+        "checkHvacTemperatureCapabilities",
+        "getHvacTemperature",
+        "setHvacTemperature",
+        "registerHvacTemperature",
+        "unregisterHvacTemperature"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "목표 온도"
+    },
+    {
+      "key": "HvacTemperatureCurrent",
+      "methods": [
+        "checkHvacTemperatureCurrentCapabilities",
+        "getHvacTemperatureCurrent",
+        "registerHvacTemperatureCurrent",
+        "unregisterHvacTemperatureCurrent"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "현재 실내 온도"
+    }
+  ]
+}
