@@ -1,0 +1,102 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="dev.pleos.starter"
+4    android:versionCode="1"
+5    android:versionName="0.1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="28"
+9        android:targetSdkVersion="35" />
+10
+11    <uses-feature
+11-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:3:5-93
+12        android:name="android.hardware.type.automotive"
+12-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:3:19-66
+13        android:required="true" />
+13-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:3:67-90
+14    <uses-feature
+14-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:4:5-90
+15        android:name="android.hardware.touchscreen"
+15-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:4:19-62
+16        android:required="false" />
+16-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:4:63-87
+17
+18    <uses-permission android:name="ai.pleos.playground.service.vehicle.VEHICLE_BINDING" />
+18-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:8:5-91
+18-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:8:22-88
+19
+20    <queries>
+20-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:10:5-14:15
+21        <intent>
+21-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:11:9-13:18
+22            <action android:name="ai.pleos.playground.vehicle.VEHICLE_START" />
+22-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:12:13-80
+22-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:12:21-77
+23        </intent>
+24    </queries>
+25
+26    <application
+26-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:6:5-22:19
+27        android:allowBackup="false"
+27-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:7:9-36
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:24:18-86
+29        android:dataExtractionRules="@xml/data_extraction_rules"
+29-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:9:9-65
+30        android:debuggable="true"
+31        android:extractNativeLibs="false"
+32        android:fullBackupContent="false"
+32-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:8:9-42
+33        android:icon="@drawable/ic_launcher"
+33-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:10:9-45
+34        android:label="@string/app_name"
+34-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:11:9-41
+35        android:supportsRtl="true"
+35-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:12:9-35
+36        android:theme="@android:style/Theme.Material.Light.NoActionBar" >
+36-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:13:9-72
+37        <activity
+37-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:14:9-21:20
+38            android:name="dev.pleos.starter.MainActivity"
+38-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:15:13-41
+39            android:exported="true" >
+39-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:16:13-36
+40            <intent-filter>
+40-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:17:13-20:29
+41                <action android:name="android.intent.action.MAIN" />
+41-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:18:17-69
+41-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:18:25-66
+42
+43                <category android:name="android.intent.category.LAUNCHER" />
+43-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:19:17-77
+43-->/Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:19:27-74
+44            </intent-filter>
+45        </activity>
+46
+47        <meta-data
+47-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:17:9-19:38
+48            android:name="ai.pleos.playground.service.vehicle.min_version_name"
+48-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:18:13-80
+49            android:value="2.3.13" />
+49-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:19:13-35
+50        <meta-data
+50-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:20:9-22:34
+51            android:name="ai.pleos.playground.service.vehicle.min_version_code"
+51-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:21:13-80
+52            android:value="65" />
+52-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:22:13-31
+53        <meta-data
+53-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:23:9-25:37
+54            android:name="ai.pleos.playground.sdk.vehicle.current_version_name"
+54-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:24:13-80
+55            android:value="2.3.2" />
+55-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:25:13-34
+56        <meta-data
+56-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:26:9-28:34
+57            android:name="ai.pleos.playground.sdk.vehicle.current_version_code"
+57-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:27:13-80
+58            android:value="73" />
+58-->[ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:28:13-31
+59    </application>
+60
+61</manifest>

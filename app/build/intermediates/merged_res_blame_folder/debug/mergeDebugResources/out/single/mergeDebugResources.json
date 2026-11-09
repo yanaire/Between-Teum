@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "dev.pleos.starter.app-debug-15:/layout_activity_main.xml.flat",
+        "source": "dev.pleos.starter.app-main-17:/layout/activity_main.xml"
+    },
+    {
+        "merged": "dev.pleos.starter.app-debug-15:/xml_data_extraction_rules.xml.flat",
+        "source": "dev.pleos.starter.app-main-17:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "dev.pleos.starter.app-debug-15:/drawable_ic_launcher.xml.flat",
+        "source": "dev.pleos.starter.app-main-17:/drawable/ic_launcher.xml"
+    }
+]

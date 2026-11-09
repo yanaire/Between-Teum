@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "dev.pleos.starter.app-mergeDebugResources-13:/values-as/values-as.xml",
+            "map": [
+                {
+                    "source": "/Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/res/values-as/values-as.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

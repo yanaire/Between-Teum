@@ -1,0 +1,181 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:2:1-23:12
+MERGED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:2:1-31:12
+MERGED from [ai.pleos.playground:vehicle-aidl:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/0312d428c8522e9198d92088346103c1/transformed/vehicle-aidl-1.1.1/AndroidManifest.xml:2:1-7:12
+MERGED from [ai.pleos.playground:vehicle-data:1.1.11] /Users/yanaire/.gradle/caches/8.10.2/transforms/07fd215170df0fe0ad8c2573c94b07b5/transformed/vehicle-data-1.1.11/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.dagger:hilt-android:2.51.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/41b886b912af8c46dcf3356904bf0c77/transformed/hilt-android-2.51.1/AndroidManifest.xml:16:1-19:12
+MERGED from [androidx.fragment:fragment:1.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/016842fe7c3570b498593b04f8c7b45e/transformed/fragment-1.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/07a1afb40b8cf2e15f7b6016865bbc52/transformed/activity-1.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/72a8c1cc9f77058ca60283151820d113/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/5cb869aa3e5a133c4dc28b5600226e28/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/13afceb35459e6e7a5d14fad75c7553d/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/fdf9b1caee39800c46c9538ab04716e9/transformed/core-ktx-1.8.0/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/2d88a7f139716fed7bfb124e98ea30cc/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/458a13ba7ffa6970518a968dc695494f/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b396561f9229a2e122a39b7cdc86bcc/transformed/annotation-experimental-1.3.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/31fbf3bc418637b223a65fe110bb3de8/transformed/savedstate-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/2d0b3eae42fd129b63927481f3f97fa4/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/af38e220899c5cbd0863b1745a15208b/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/3dbfa7d09d128b674a38194fb871440d/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/caaa6721bab07f38b76e2fa0bce2d840/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/1037d36254b2ea1fc9950c5ae9da4ba4/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/092b11479c0cc22e33659b6d5c086324/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/f5a0ac79deff6f57a6f003f911a0eaf3/transformed/dagger-lint-aar-2.51.1/AndroidManifest.xml:16:1-19:12
+	package
+		INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:2:11-69
+uses-feature#android.hardware.type.automotive
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:3:5-93
+	android:required
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:3:67-90
+	android:name
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:3:19-66
+uses-feature#android.hardware.touchscreen
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:4:5-90
+	android:required
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:4:63-87
+	android:name
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:4:19-62
+application
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:6:5-22:19
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:6:5-22:19
+MERGED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:16:5-29:19
+MERGED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:16:5-29:19
+MERGED from [androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/caaa6721bab07f38b76e2fa0bce2d840/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/caaa6721bab07f38b76e2fa0bce2d840/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:12:9-35
+	android:label
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:11:9-41
+	android:fullBackupContent
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:8:9-42
+	android:icon
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:10:9-45
+	android:allowBackup
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:7:9-36
+	android:theme
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:13:9-72
+	android:dataExtractionRules
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:9:9-65
+activity#dev.pleos.starter.MainActivity
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:14:9-21:20
+	android:exported
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:16:13-36
+	android:name
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:15:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:17:13-20:29
+action#android.intent.action.MAIN
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:18:17-69
+	android:name
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:18:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:19:17-77
+	android:name
+		ADDED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml:19:27-74
+uses-sdk
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+MERGED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:6:5-44
+MERGED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:6:5-44
+MERGED from [ai.pleos.playground:vehicle-aidl:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/0312d428c8522e9198d92088346103c1/transformed/vehicle-aidl-1.1.1/AndroidManifest.xml:5:5-44
+MERGED from [ai.pleos.playground:vehicle-aidl:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/0312d428c8522e9198d92088346103c1/transformed/vehicle-aidl-1.1.1/AndroidManifest.xml:5:5-44
+MERGED from [ai.pleos.playground:vehicle-data:1.1.11] /Users/yanaire/.gradle/caches/8.10.2/transforms/07fd215170df0fe0ad8c2573c94b07b5/transformed/vehicle-data-1.1.11/AndroidManifest.xml:5:5-44
+MERGED from [ai.pleos.playground:vehicle-data:1.1.11] /Users/yanaire/.gradle/caches/8.10.2/transforms/07fd215170df0fe0ad8c2573c94b07b5/transformed/vehicle-data-1.1.11/AndroidManifest.xml:5:5-44
+MERGED from [com.google.dagger:hilt-android:2.51.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/41b886b912af8c46dcf3356904bf0c77/transformed/hilt-android-2.51.1/AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:hilt-android:2.51.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/41b886b912af8c46dcf3356904bf0c77/transformed/hilt-android-2.51.1/AndroidManifest.xml:18:3-42
+MERGED from [androidx.fragment:fragment:1.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/016842fe7c3570b498593b04f8c7b45e/transformed/fragment-1.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/016842fe7c3570b498593b04f8c7b45e/transformed/fragment-1.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/07a1afb40b8cf2e15f7b6016865bbc52/transformed/activity-1.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/07a1afb40b8cf2e15f7b6016865bbc52/transformed/activity-1.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.loader:loader:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/72a8c1cc9f77058ca60283151820d113/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/72a8c1cc9f77058ca60283151820d113/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/5cb869aa3e5a133c4dc28b5600226e28/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/5cb869aa3e5a133c4dc28b5600226e28/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/13afceb35459e6e7a5d14fad75c7553d/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/13afceb35459e6e7a5d14fad75c7553d/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/fdf9b1caee39800c46c9538ab04716e9/transformed/core-ktx-1.8.0/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/fdf9b1caee39800c46c9538ab04716e9/transformed/core-ktx-1.8.0/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/2d88a7f139716fed7bfb124e98ea30cc/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/2d88a7f139716fed7bfb124e98ea30cc/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/458a13ba7ffa6970518a968dc695494f/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/458a13ba7ffa6970518a968dc695494f/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.8.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.3.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b396561f9229a2e122a39b7cdc86bcc/transformed/annotation-experimental-1.3.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b396561f9229a2e122a39b7cdc86bcc/transformed/annotation-experimental-1.3.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/31fbf3bc418637b223a65fe110bb3de8/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/31fbf3bc418637b223a65fe110bb3de8/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/2d0b3eae42fd129b63927481f3f97fa4/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/2d0b3eae42fd129b63927481f3f97fa4/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/af38e220899c5cbd0863b1745a15208b/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/af38e220899c5cbd0863b1745a15208b/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/3dbfa7d09d128b674a38194fb871440d/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/3dbfa7d09d128b674a38194fb871440d/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/caaa6721bab07f38b76e2fa0bce2d840/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/caaa6721bab07f38b76e2fa0bce2d840/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/1037d36254b2ea1fc9950c5ae9da4ba4/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/1037d36254b2ea1fc9950c5ae9da4ba4/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/092b11479c0cc22e33659b6d5c086324/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/yanaire/.gradle/caches/8.10.2/transforms/092b11479c0cc22e33659b6d5c086324/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/f5a0ac79deff6f57a6f003f911a0eaf3/transformed/dagger-lint-aar-2.51.1/AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] /Users/yanaire/.gradle/caches/8.10.2/transforms/f5a0ac79deff6f57a6f003f911a0eaf3/transformed/dagger-lint-aar-2.51.1/AndroidManifest.xml:18:3-42
+	android:targetSdkVersion
+		INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/yanaire/OmO Projects/project/app/src/main/AndroidManifest.xml
+uses-permission#ai.pleos.playground.service.vehicle.VEHICLE_BINDING
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:8:5-91
+	android:name
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:8:22-88
+queries
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:10:5-14:15
+	tools:node
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:10:14-32
+intent#action:name:ai.pleos.playground.vehicle.VEHICLE_START
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:11:9-13:18
+action#ai.pleos.playground.vehicle.VEHICLE_START
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:12:13-80
+	android:name
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:12:21-77
+meta-data#ai.pleos.playground.service.vehicle.min_version_name
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:17:9-19:38
+	android:value
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:19:13-35
+	android:name
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:18:13-80
+meta-data#ai.pleos.playground.service.vehicle.min_version_code
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:20:9-22:34
+	android:value
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:22:13-31
+	android:name
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:21:13-80
+meta-data#ai.pleos.playground.sdk.vehicle.current_version_name
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:23:9-25:37
+	android:value
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:25:13-34
+	android:name
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:24:13-80
+meta-data#ai.pleos.playground.sdk.vehicle.current_version_code
+ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:26:9-28:34
+	android:value
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:28:13-31
+	android:name
+		ADDED from [ai.pleos.playground:Vehicle:2.3.2] /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/AndroidManifest.xml:27:13-80
