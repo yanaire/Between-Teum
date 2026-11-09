@@ -1,0 +1,18 @@
+dev.pleos.starter.app-fragment-1.5.1-0 /Users/yanaire/.gradle/caches/8.10.2/transforms/016842fe7c3570b498593b04f8c7b45e/transformed/fragment-1.5.1/res
+dev.pleos.starter.app-activity-1.5.1-1 /Users/yanaire/.gradle/caches/8.10.2/transforms/07a1afb40b8cf2e15f7b6016865bbc52/transformed/activity-1.5.1/res
+dev.pleos.starter.app-lifecycle-viewmodel-savedstate-2.5.1-2 /Users/yanaire/.gradle/caches/8.10.2/transforms/13afceb35459e6e7a5d14fad75c7553d/transformed/lifecycle-viewmodel-savedstate-2.5.1/res
+dev.pleos.starter.app-lifecycle-runtime-2.5.1-3 /Users/yanaire/.gradle/caches/8.10.2/transforms/2d0b3eae42fd129b63927481f3f97fa4/transformed/lifecycle-runtime-2.5.1/res
+dev.pleos.starter.app-savedstate-1.2.0-4 /Users/yanaire/.gradle/caches/8.10.2/transforms/31fbf3bc418637b223a65fe110bb3de8/transformed/savedstate-1.2.0/res
+dev.pleos.starter.app-lifecycle-livedata-core-2.5.1-5 /Users/yanaire/.gradle/caches/8.10.2/transforms/3dbfa7d09d128b674a38194fb871440d/transformed/lifecycle-livedata-core-2.5.1/res
+dev.pleos.starter.app-lifecycle-viewmodel-2.5.1-6 /Users/yanaire/.gradle/caches/8.10.2/transforms/5cb869aa3e5a133c4dc28b5600226e28/transformed/lifecycle-viewmodel-2.5.1/res
+dev.pleos.starter.app-core-1.8.0-7 /Users/yanaire/.gradle/caches/8.10.2/transforms/78e76a80aca16b751577239b47edea7f/transformed/core-1.8.0/res
+dev.pleos.starter.app-Vehicle-2.3.2-8 /Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/res
+dev.pleos.starter.app-annotation-experimental-1.3.1-9 /Users/yanaire/.gradle/caches/8.10.2/transforms/7b396561f9229a2e122a39b7cdc86bcc/transformed/annotation-experimental-1.3.1/res
+dev.pleos.starter.app-core-ktx-1.8.0-10 /Users/yanaire/.gradle/caches/8.10.2/transforms/fdf9b1caee39800c46c9538ab04716e9/transformed/core-ktx-1.8.0/res
+dev.pleos.starter.app-pngs-11 /Users/yanaire/OmO Projects/project/app/build/generated/res/pngs/debug
+dev.pleos.starter.app-resValues-12 /Users/yanaire/OmO Projects/project/app/build/generated/res/resValues/debug
+dev.pleos.starter.app-packageDebugResources-13 /Users/yanaire/OmO Projects/project/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+dev.pleos.starter.app-packageDebugResources-14 /Users/yanaire/OmO Projects/project/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+dev.pleos.starter.app-debug-15 /Users/yanaire/OmO Projects/project/app/build/intermediates/merged_res/debug/mergeDebugResources
+dev.pleos.starter.app-debug-16 /Users/yanaire/OmO Projects/project/app/src/debug/res
+dev.pleos.starter.app-main-17 /Users/yanaire/OmO Projects/project/app/src/main/res

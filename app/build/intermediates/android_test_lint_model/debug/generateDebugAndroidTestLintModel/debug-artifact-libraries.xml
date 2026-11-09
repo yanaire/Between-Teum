@@ -1,0 +1,29 @@
+<libraries>
+  <library
+      name=":@@:app::debug"
+      project=":app"/>
+  <library
+      name="ai.pleos.playground:Vehicle:2.3.2@aar"
+      jars="/Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2/jars/classes.jar"
+      resolved="ai.pleos.playground:Vehicle:2.3.2"
+      provided="true"
+      folder="/Users/yanaire/.gradle/caches/8.10.2/transforms/7b1e2b925c1d4053288132c23b651fa4/transformed/Vehicle-2.3.2"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="org.jetbrains.kotlin:kotlin-stdlib:2.0.0@jar"
+      jars="/Users/yanaire/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.0.0/b48df2c4aede9586cc931ead433bc02d6fd7879e/kotlin-stdlib-2.0.0.jar"
+      resolved="org.jetbrains.kotlin:kotlin-stdlib:2.0.0"
+      provided="true"/>
+  <library
+      name="org.jetbrains:annotations:13.0@jar"
+      jars="/Users/yanaire/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar"
+      resolved="org.jetbrains:annotations:13.0"
+      provided="true"/>
+</libraries>

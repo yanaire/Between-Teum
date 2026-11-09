@@ -1,0 +1,3 @@
+http://schemas.android.com/apk/res-auto;;${\:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/ic_launcher.xml,${\:app*debug*MAIN*sourceProvider*0*resDir*0}/layout/activity_main.xml,${\:app*debug*MAIN*sourceProvider*0*resDir*0}/values/strings.xml,${\:app*debug*MAIN*sourceProvider*0*resDir*0}/xml/data_extraction_rules.xml,+drawable:ic_launcher,0,F;+layout:activity_main,1,F;+string:app_name,2,V400020037,3200020065,;"Pleos Starter";setup_description,2,V40003006a,84000300ea,;"Android development environment
+Vehicle SDK 2.3.2 included
+Ready for app development";+xml:data_extraction_rules,3,F;
