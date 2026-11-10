@@ -1,0 +1,148 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Safety",
+  "label": "안전·경고",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/safety/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "AirbagEnabled",
+      "methods": [
+        "checkAirbagCapabilities",
+        "hasSeatAirbagEnabled",
+        "registerSeatAirbagEnabled",
+        "unregisterSeatAirbagEnabled"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 에어백 활성 상태"
+    },
+    {
+      "key": "AirbagDeployed",
+      "methods": [
+        "checkAirbagDeployedCapabilities",
+        "hasSeatAirbagBeenDeployed",
+        "registerSeatAirbagDeployed",
+        "unregisterSeatAirbagDeployed"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "에어백 전개 상태"
+    },
+    {
+      "key": "SeatBuckled",
+      "methods": [
+        "checkSeatBuckledCapabilities"
+      ],
+      "read": false,
+      "write": false,
+      "subscribe": false,
+      "capability": true,
+      "label": "안전벨트 착용 항목 지원 확인"
+    },
+    {
+      "key": "SeatBeltNotBuckledWarning",
+      "methods": [
+        "checkSeatNotBuckledWarningCapabilities",
+        "hasSeatBeltNotBuckledWarning",
+        "registerSeatBeltNotBuckledWarning",
+        "unregisterSeatBeltNotBuckledWarning"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "안전벨트 미착용 경고"
+    },
+    {
+      "key": "EngineOilLevel",
+      "methods": [
+        "checkEngineOilLevelStateCapabilities",
+        "getEngineOilLevelState",
+        "registerEngineOilLevelState",
+        "unregisterEngineOilLevelState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "엔진오일 수준 상태"
+    },
+    {
+      "key": "BrakeFluidLevel",
+      "methods": [
+        "checkBrakeFluidLevelStateCapabilities",
+        "getBrakeFluidLevelState",
+        "registerBrakeFluidLevelState",
+        "unregisterBrakeFluidLevelState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "브레이크액 수준 상태"
+    },
+    {
+      "key": "TransmissionOilLevel",
+      "methods": [
+        "checkTransmissionOilLevelStateCapabilities",
+        "getTransmissionOilLevelState",
+        "registerTransmissionOilLevelState",
+        "unregisterTransmissionOilLevelState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "변속기오일 수준 상태"
+    },
+    {
+      "key": "LowWasherFluidWarning",
+      "methods": [
+        "checkLowWasherFluidWarningStateCapabilities",
+        "hasLowWasherFluidWarning",
+        "registerLowWasherFluidWaringState",
+        "unregisterLowWasherFluidWaringState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "워셔액 부족 경고"
+    },
+    {
+      "key": "PowerDownWarningIndicator",
+      "methods": [
+        "checkPowerDownWarningIndicatorCapabilities",
+        "hasPowerDownWarningIndicator",
+        "registerPowerDownWarningIndicator",
+        "unregisterPowerDownWarningIndicator"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "출력 저하 경고"
+    },
+    {
+      "key": "Telltales",
+      "methods": [
+        "checkTelltalesCapabilities",
+        "getTelltalesInfo",
+        "registerTelltales",
+        "unregisterTelltales"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "차량 경고등 정보"
+    }
+  ]
+}

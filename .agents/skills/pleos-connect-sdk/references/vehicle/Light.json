@@ -1,0 +1,192 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Light",
+  "label": "조명",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/light/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "ReadingLight",
+      "methods": [
+        "checkReadingLightSwitchCapabilities",
+        "checkReadingLightStateCapabilities",
+        "getReadingLightSwitch",
+        "setReadingLightSwitch",
+        "getCurrentReadingLightState",
+        "registerReadingLightState",
+        "unregisterReadingLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "독서등 스위치·상태"
+    },
+    {
+      "key": "CabinLight",
+      "methods": [
+        "checkCabinLightSwitchCapabilities",
+        "checkCabinLightStateCapabilities",
+        "getCabinLightSwitch",
+        "setCabinLightSwitch",
+        "getCurrentCabinLightState",
+        "registerCabinLightState",
+        "unregisterCabinLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "실내등 스위치·상태"
+    },
+    {
+      "key": "HighBeamLight",
+      "methods": [
+        "checkHighBeamLightSwitchCapabilities",
+        "checkHighBeamLightStateCapabilities",
+        "getCurrentHighBeamLightState",
+        "getHighBeamLightSwitch",
+        "setHighBeamLightSwitch",
+        "registerHighBeamLightState",
+        "unregisterHighBeamLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "상향등 스위치·상태"
+    },
+    {
+      "key": "LowBeamLight",
+      "methods": [
+        "checkLowBeamLightSwitchCapabilities",
+        "checkLowBeamLightStateCapabilities",
+        "setLowBeamLightSwitch",
+        "getLowBeamLightSwitch",
+        "getCurrentLowBeamLightState",
+        "registerLowBeamLightState",
+        "unregisterLowBeamLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "하향등 스위치·상태"
+    },
+    {
+      "key": "TailLampLight",
+      "methods": [
+        "checkTailLampLightSwitchCapabilities",
+        "checkTailLampLightStateCapabilities",
+        "getCurrentTailLampLightState",
+        "getTailLampLightSwitch",
+        "setTailLampLightSwitch",
+        "registerTailLampLightState",
+        "unregisterTailLampLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "미등 스위치·상태"
+    },
+    {
+      "key": "FrontFogLight",
+      "methods": [
+        "checkFrontFogLightSwitchCapabilities",
+        "checkFrontFogLightStateCapabilities",
+        "getCurrentFrontFogLightState",
+        "getFrontFogLightSwitch",
+        "setFrontFogLightSwitch",
+        "registerFrontFogLightState",
+        "unregisterFrontFogLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "전방 안개등 스위치·상태"
+    },
+    {
+      "key": "RearFogLight",
+      "methods": [
+        "checkRearFogLightSwitchCapabilities",
+        "checkRearFogLightStateCapabilities",
+        "getCurrentRearFogLightState",
+        "getRearFogLightSwitch",
+        "setRearFogLightSwitch",
+        "registerRearFogLightState",
+        "unregisterRearFogLightState"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "후방 안개등 스위치·상태"
+    },
+    {
+      "key": "AmbientLightBrightness",
+      "methods": [
+        "checkAmbientLightBrightnessCapabilities",
+        "getAmbientLightBrightness",
+        "setAmbientLightBrightness",
+        "registerAmbientLightBrightnessListener",
+        "unregisterAmbientLightBrightnessListener"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "앰비언트 밝기"
+    },
+    {
+      "key": "AmbientLightBrightnessColor",
+      "methods": [
+        "checkAmbientLightBrightnessColorCapabilities",
+        "getAmbientLightBrightnessColor",
+        "setAmbientLightBrightnessColor",
+        "registerAmbientLightBrightnessColorListener",
+        "unregisterAmbientLightBrightnessColorListener"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "앰비언트 색상"
+    },
+    {
+      "key": "AmbientLight",
+      "methods": [
+        "checkAmbientLightSwitchCapabilities",
+        "checkAmbientLightStateCapabilities",
+        "getAmbientLightSwitch",
+        "setAmbientLightSwitch",
+        "getAmbientLightState",
+        "registerAmbientLightStateListener",
+        "unregisterAmbientLightStateListener"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "앰비언트 스위치·상태"
+    },
+    {
+      "key": "AmbientColorAutoByDriveModeEnabled",
+      "methods": [
+        "checkAmbientColorAutoByDriveModeEnabledCapabilities",
+        "getAmbientColorAutoByDriveModeEnabled",
+        "setAmbientColorAutoByDriveModeEnabled",
+        "registerAmbientColorAutoByDriveModeEnabled",
+        "unregisterAmbientColorAutoByDriveModeEnabled"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "주행 모드별 앰비언트 자동색"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "CarInfo",
+  "label": "차량 식별 정보",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/car-info/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "CRNInfo",
+      "methods": [
+        "checkCRNInfoCapabilities",
+        "getCRNInfo"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": false,
+      "capability": true,
+      "label": "차량 연결 식별자 CRN"
+    },
+    {
+      "key": "VINInfo",
+      "methods": [
+        "checkVINInfoCapabilities",
+        "getVINInfo"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": false,
+      "capability": true,
+      "label": "차대번호 VIN"
+    }
+  ]
+}

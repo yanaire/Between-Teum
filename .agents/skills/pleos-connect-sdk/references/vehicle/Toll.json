@@ -1,0 +1,26 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Toll",
+  "label": "ETCS",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/toll/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "EtcsVoiceGuidanceVolume",
+      "methods": [
+        "checkEtcsVoiceGuidanceVolumeCapabilities",
+        "getCurrentEtcsVoiceGuidanceVolume",
+        "setEtcsVoiceGuidanceVolume",
+        "registerEtcsVoiceGuidanceVolume",
+        "unregisterEtcsVoiceGuidanceVolume"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "ETCS 음성 안내 음량"
+    }
+  ]
+}

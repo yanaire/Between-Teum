@@ -1,0 +1,268 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Seat",
+  "label": "좌석",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/seat/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "SeatOccupancy",
+      "methods": [
+        "checkSeatOccupancyCapabilities",
+        "getCurrentSeatOccupancy",
+        "registerSeatOccupancy",
+        "unregisterSeatOccupancy"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 탑승 상태"
+    },
+    {
+      "key": "SeatBeltBuckled",
+      "methods": [
+        "checkSeatBeltBuckledCapabilities",
+        "getCurrentSeatBeltBuckledState",
+        "registerSeatBeltBuckledState",
+        "unregisterSeatBeltBuckledState"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "안전벨트 체결 상태"
+    },
+    {
+      "key": "SeatBackrestAngle",
+      "methods": [
+        "checkSeatBackrestAngleCapabilities",
+        "checkSeatBackrestAnglePositionCapabilities",
+        "checkMoveSeatBackrestAngleCapabilities",
+        "moveSeatBackrestAngle",
+        "getCurrentSeatBackrestAnglePosition",
+        "registerSeatBackrestAnglePosition",
+        "unregisterSeatBackrestAnglePosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "등받이 각도·위치"
+    },
+    {
+      "key": "SeatHeadrestAngle",
+      "methods": [
+        "checkSeatHeadrestAngleCapabilities",
+        "checkSeatHeadrestAnglePositionCapabilities",
+        "checkMoveSeatHeadrestAngleCapabilities",
+        "moveSeatHeadrestAngle",
+        "getCurrentSeatHeadrestAnglePosition",
+        "registerSeatHeadrestAnglePosition",
+        "unregisterSeatHeadrestAnglePosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "헤드레스트 각도·위치"
+    },
+    {
+      "key": "SeatHeadrestForeAft",
+      "methods": [
+        "checkSeatHeadrestForeAftCapabilities",
+        "checkSeatHeadrestForeAftPositionCapabilities",
+        "checkMoveSeatHeadrestForeAftCapabilities",
+        "moveSeatHeadrestForeAft",
+        "getCurrentSeatHeadrestForeAftPosition",
+        "registerSeatHeadrestForeAftPosition",
+        "unregisterSeatHeadrestForeAftPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "헤드레스트 앞뒤 위치"
+    },
+    {
+      "key": "SeatHeadrestHeight",
+      "methods": [
+        "checkSeatHeadrestHeightCapabilities",
+        "checkSeatHeadrestHeightPositionCapabilities",
+        "checkMoveSeatHeadrestHeightCapabilities",
+        "moveSeatHeadrestHeight",
+        "getCurrentSeatHeadrestHeightAftPosition",
+        "registerSeatHeadrestHeightAftPosition",
+        "unregisterSeatHeadrestHeightAftPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "헤드레스트 높이"
+    },
+    {
+      "key": "SeatHeight",
+      "methods": [
+        "checkSeatHeightCapabilities",
+        "checkSeatHeightPositionCapabilities",
+        "checkMoveSeatHeightCapabilities",
+        "moveSeatHeight",
+        "getCurrentSeatHeightPosition",
+        "registerSeatHeightPosition",
+        "unregisterSeatHeightPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 높이"
+    },
+    {
+      "key": "SeatLumbarForeAft",
+      "methods": [
+        "checkSeatLumbarForeAftCapabilities",
+        "checkSeatLumbarForeAftPositionCapabilities",
+        "checkMoveSeatLumbarForeAftCapabilities",
+        "moveSeatLumbarForeAft",
+        "getCurrentSeatLumbarForeAftPosition",
+        "registerSeatLumbarForeAftPosition",
+        "unregisterSeatLumbarForeAftPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "요추 지지대 앞뒤 위치"
+    },
+    {
+      "key": "SeatLumbarSideSupport",
+      "methods": [
+        "checkSeatLumbarSideSupportCapabilities",
+        "checkSeatLumbarSideSupportPositionCapabilities",
+        "checkMoveSeatLumbarSideSupportCapabilities",
+        "moveSeatLumbarSideSupport",
+        "getCurrentSeatLumbarSideSupportPosition",
+        "registerSeatLumbarSideSupportPosition",
+        "unregisterSeatLumbarSideSupportPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "요추 측면 지지대"
+    },
+    {
+      "key": "SeatTilt",
+      "methods": [
+        "checkSeatTiltCapabilities",
+        "checkSeatTiltPositionCapabilities",
+        "checkMoveSeatTiltCapabilities",
+        "moveSeatTilt",
+        "getCurrentSeatTiltPosition",
+        "registerSeatTiltPosition",
+        "unregisterSeatTiltPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 기울기"
+    },
+    {
+      "key": "SeatDepth",
+      "methods": [
+        "checkSeatDepthCapabilities",
+        "checkSeatDepthPositionCapabilities",
+        "checkMoveSeatDepthCapabilities",
+        "moveSeatDepth",
+        "getCurrentSeatDepthPosition",
+        "registerSeatDepthPosition",
+        "unregisterSeatDepthPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 깊이"
+    },
+    {
+      "key": "SeatForeAft",
+      "methods": [
+        "checkSeatForeAftCapabilities",
+        "checkSeatForeAftPositionCapabilities",
+        "checkMoveSeatForeAftCapabilities",
+        "getCurrentSeatForeAftPosition",
+        "moveSeatForeAft",
+        "registerSeatForeAftPosition",
+        "unregisterSeatForeAftPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 앞뒤 위치"
+    },
+    {
+      "key": "SeatBeltHeight",
+      "methods": [
+        "checkSeatBeltHeightCapabilities",
+        "checkSeatBeltHeightPositionCapabilities",
+        "checkMoveSeatBeltHeightCapabilities",
+        "moveSeatBeltHeight",
+        "getCurrentSeatBeltHeightPosition",
+        "registerSeatBeltHeightPosition",
+        "unregisterSeatBeltHeightPosition"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "안전벨트 높이"
+    },
+    {
+      "key": "HvacSeatTemperature",
+      "methods": [
+        "checkSeatTemperatureCapabilities",
+        "setHvacSeatTemperature",
+        "getHvacSeatTemperature",
+        "registerHvacSeatTemperature",
+        "unregisterHvacSeatTemperature"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 열선·냉방 단계"
+    },
+    {
+      "key": "HvacSeatVentilation",
+      "methods": [
+        "checkSeatVentilationCapabilities",
+        "getHvacSeatVentilationState",
+        "setHvacSeatVentilation",
+        "registerHvacSeatVentilation",
+        "unregisterHvacSeatVentilation"
+      ],
+      "read": true,
+      "write": true,
+      "subscribe": true,
+      "capability": true,
+      "label": "좌석 통풍"
+    },
+    {
+      "key": "SeatMemory",
+      "methods": [
+        "checkSeatMemoryCapabilities",
+        "selectSeatMemory"
+      ],
+      "read": false,
+      "write": true,
+      "subscribe": false,
+      "capability": true,
+      "label": "좌석 메모리 선택"
+    }
+  ]
+}

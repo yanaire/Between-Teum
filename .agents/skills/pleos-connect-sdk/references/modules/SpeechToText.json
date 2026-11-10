@@ -1,0 +1,65 @@
+{
+  "sdk": "SpeechToText",
+  "version": "3.3.1",
+  "checkedAt": "2026-11-02",
+  "groups": [
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt/speech-to-text/entry",
+      "methodNames": [
+        "addListener",
+        "completeAudioSend",
+        "initialize",
+        "registerApp",
+        "release",
+        "removeListener",
+        "request",
+        "sendAudio",
+        "setLocale",
+        "stop"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt.listener/on-initialize-listener/entry",
+      "methodNames": [
+        "onFailure",
+        "onSuccess"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt.listener/on-server-connection-listener/entry",
+      "methodNames": [
+        "onConnected",
+        "onFailed"
+      ]
+    },
+    {
+      "path": "/docs/pleos-only/connect-sdk-pleos/SpeechToText/speech-to-text/ai.pleos.playground.stt.listener/result-listener/entry",
+      "methodNames": [
+        "onEndedRecognition",
+        "onError",
+        "onReady",
+        "onStartedRecognition",
+        "onUpdated",
+        "onUpdatedEpdData",
+        "onUpdatedRms"
+      ]
+    }
+  ],
+  "modes": [
+    "HYBRID",
+    "SERVER",
+    "ON_DEVICE"
+  ],
+  "properties": [
+    "version"
+  ],
+  "permissions": [
+    "pleos.car.permission.STT_SERVICE"
+  ],
+  "constraints": [
+    "sendAudio/completeAudioSend are ON_DEVICE-only.",
+    "First PCM buffer starts recognition; request is not required for this path.",
+    "The PCM path does not call onReady or onUpdatedRms.",
+    "Recognition text does not itself execute an app command."
+  ]
+}

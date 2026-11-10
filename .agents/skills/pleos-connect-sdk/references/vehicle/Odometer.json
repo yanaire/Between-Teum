@@ -1,0 +1,156 @@
+{
+  "sdk": "Vehicle",
+  "version": "2.3.2",
+  "checkedAt": "2026-11-02",
+  "domain": "Odometer",
+  "label": "주행거리·트립",
+  "source": "https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/odometer/entry",
+  "permissionRule": "Read the exact @RequiresPermission of the selected method; do not infer permission from the domain alone.",
+  "features": [
+    {
+      "key": "DistanceDriven",
+      "methods": [
+        "checkCurrentDistanceDrivenCapabilities",
+        "getCurrentDistanceDriven",
+        "registerDistanceDriven",
+        "unregisterDistanceDriven"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "총 주행거리"
+    },
+    {
+      "key": "TripDrivingTime",
+      "methods": [
+        "checkTripDrivingTimeCapabilities"
+      ],
+      "read": false,
+      "write": false,
+      "subscribe": false,
+      "capability": true,
+      "label": "트립 시간 항목 지원 확인"
+    },
+    {
+      "key": "TripCurrentDrivingTime",
+      "methods": [
+        "checkTripCurrentDrivingTimeCapabilities",
+        "getTripCurrentDrivingTime",
+        "registerTripCurrentDrivingTime",
+        "unregisterTripCurrentDrivingTime"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "현재 트립 시간"
+    },
+    {
+      "key": "TripCumulativeDrivingTime",
+      "methods": [
+        "checkTripCumulativeDrivingTimeCapabilities",
+        "getTripCumulativeDrivingTime",
+        "registerTripCumulativeDrivingTime",
+        "unregisterTripCumulativeDrivingTime"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "누적 트립 시간"
+    },
+    {
+      "key": "TripSinceRefillDrivingTime",
+      "methods": [
+        "checkTripSinceRefillDrivingTimeCapabilities",
+        "getTripSinceRefillDrivingTime",
+        "registerTripSinceRefillDrivingTime",
+        "unregisterTripSinceRefillDrivingTime"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "주유 이후 트립 시간"
+    },
+    {
+      "key": "TripDrivingDistance",
+      "methods": [
+        "checkTripDrivingDistanceCapabilities"
+      ],
+      "read": false,
+      "write": false,
+      "subscribe": false,
+      "capability": true,
+      "label": "트립 거리 항목 지원 확인"
+    },
+    {
+      "key": "TripCurrentDrivingDistance",
+      "methods": [
+        "checkTripCurrentDrivingDistanceCapabilities",
+        "getTripCurrentDrivingDistance",
+        "registerTripCurrentDrivingDistance",
+        "unregisterTripCurrentDrivingDistance"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "현재 트립 거리"
+    },
+    {
+      "key": "TripInstantaneousDrivingDistance",
+      "methods": [
+        "checkTripInstantaneousDrivingDistanceCapabilities",
+        "getTripInstantaneousDrivingDistance",
+        "registerTripInstantaneousDrivingDistance",
+        "unregisterTripInstantaneousDrivingDistance"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "순간 트립 거리"
+    },
+    {
+      "key": "TripCumulativeDrivingDistance",
+      "methods": [
+        "checkTripCumulativeDrivingDistanceCapabilities",
+        "getTripCumulativeDrivingDistance",
+        "registerTripCumulativeDrivingDistance",
+        "unregisterTripCumulativeDrivingDistance"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "누적 트립 거리"
+    },
+    {
+      "key": "TripSinceRefillDrivingDistance",
+      "methods": [
+        "checkTripSinceRefillDrivingDistanceCapabilities",
+        "getTripSinceRefillDrivingDistance",
+        "registerTripSinceRefillDrivingDistance",
+        "unregisterTripSinceRefillDrivingDistance"
+      ],
+      "read": true,
+      "write": false,
+      "subscribe": true,
+      "capability": true,
+      "label": "주유 이후 트립 거리"
+    },
+    {
+      "key": "RangeRemainingDistance",
+      "methods": [
+        "setRangeRemainingDistance"
+      ],
+      "read": false,
+      "write": true,
+      "subscribe": false,
+      "capability": false,
+      "label": "예상 잔여 주행거리 설정"
+    }
+  ]
+}
