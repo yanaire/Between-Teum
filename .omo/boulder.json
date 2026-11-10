@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "active_work_id": "teum-app",
+  "works": {
+    "teum-app": {
+      "work_id": "teum-app",
+      "active_plan": ".omo/plans/teum-pleos-app.md",
+      "plan_name": "teum-pleos-app",
+      "session_ids": [
+        "senpi:01a19c55-7b9a-7000-9e55-c15d35558015"
+      ],
+      "status": "paused",
+      "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-app",
+      "session_origins": {},
+      "stale_since": "2026-11-10T07:51:25.822Z",
+      "task_sessions": {}
+    }
+  },
+  "session_ids": [
+    "senpi:01a19c55-7b9a-7000-9e55-c15d35558015"
+  ],
+  "session_origins": {},
+  "task_sessions": {},
+  "active_plan": ".omo/plans/teum-pleos-app.md",
+  "plan_name": "teum-pleos-app",
+  "status": "paused",
+  "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-app"
+}
