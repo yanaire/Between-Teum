@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Teum design tokens. Every UI color resolves here or through TeumTheme. -->
+    <color name="teum_canvas">#F2EDE4</color>
+    <color name="teum_surface">#FFFCF7</color>
+    <color name="teum_surface_alt">#EAE2D5</color>
+    <color name="teum_ink">#201C17</color>
+    <color name="teum_ink_muted">#665C51</color>
+    <color name="teum_line">#DDD2C2</color>
+    <color name="teum_pine">#2F5546</color>
+    <color name="teum_pine_deep">#234136</color>
+    <color name="teum_pine_soft">#DFE9E2</color>
+    <color name="teum_clay">#8A4B2B</color>
+    <color name="teum_clay_soft">#F4E3D8</color>
+    <color name="teum_sky">#3C5868</color>
+    <color name="teum_sky_soft">#E1E9ED</color>
+    <color name="teum_white">#FFFFFF</color>
+    <color name="teum_disabled">#CDC4B7</color>
+</resources>
