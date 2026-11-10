@@ -36,6 +36,23 @@ ownership and a meaningful regression; session/planner/records/vehicle/content
 must stay unchanged. Independent final `verify` combines the existing actual
 timing evidence with the final cue repair and its native sequential proof.
 
+Latest root midpoint read: owner `st_01a1c476` is still active. The first
+current-source combined Gradle command actually ran 28 connected cases,
+27 passed and one existing lunch UI case failed because ActivityScenario's
+Activity was already destroyed; Gradle exit1. Do not claim green.
+`task6-cue-runtime-crash.log` contains concurrent `ai.umos.homescreen`
+duplicate task-listener crashes. Root read both raw logs and instructed the
+same owner to retain failures, correlate exact times, finish bounded native
+audio proof, and execute one full connected suite on a fresh cold-boot
+disposable overlay, without code/test/platform workaround. Only re-run
+separately unfinished lint if necessary; preserve settled build/unit results.
+Do not create a competing emulator owner. Cue gate and final verify remain
+pending behind this owner.
+
+Delivery preparation is recorded in `delivery-preflight.md` next to this
+checkpoint, including protected DOCX/README hashes and main path inventory.
+Main app folder contains build outputs only; do not purge or overwrite them.
+
 ## New source-backed cue defect
 
 Root read actual source and `task6-fresh-audio-differential.md`.
