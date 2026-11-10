@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pleos Starter</string>
-    <string name="setup_description">Android development environment\nVehicle SDK 2.3.2 included\nReady for app development</string>
+    <string name="app_name">틈</string>
+    <string name="teum_tagline">주차된 차, 잠깐의 여백</string>
 </resources>
