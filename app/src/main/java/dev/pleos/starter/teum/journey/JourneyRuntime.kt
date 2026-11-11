@@ -60,6 +60,8 @@ class JourneyRuntime(private val clock: JourneyClock, private val snapshots: Jou
         val terminal = observed.copy(
             status = if (reason == JourneyInterruption.SAFETY) JourneyStatus.SAFETY_INTERRUPTED else JourneyStatus.INTERRUPTED,
             interruption = reason, eyesClosed = false,
+            playback = if (observed.playback in setOf(PlaybackState.REQUESTED, PlaybackState.PLAYING))
+                PlaybackState.UNAVAILABLE else observed.playback,
             facts = observed.facts.copy(finishedAtEpochMs = now.wallMillis.takeIf {
                 it > 0 && it >= requireNotNull(observed.facts.startedAtEpochMs)
             })
@@ -168,8 +170,11 @@ class JourneyRuntime(private val clock: JourneyClock, private val snapshots: Jou
     }
 
     private fun clockInterrupted(): JourneyUpdate {
-        val s = requireNotNull(state).copy(status = JourneyStatus.INTERRUPTED,
-            interruption = JourneyInterruption.CLOCK, eyesClosed = false)
+        val before = requireNotNull(state)
+        val s = before.copy(status = JourneyStatus.INTERRUPTED,
+            interruption = JourneyInterruption.CLOCK, eyesClosed = false,
+            playback = if (before.playback in setOf(PlaybackState.REQUESTED, PlaybackState.PLAYING))
+                PlaybackState.UNAVAILABLE else before.playback)
         state = s
         snapshots.save(JourneySnapshotCodec.encode(s))
         return JourneyUpdate(s, listOf(JourneyEffect.StopOwnedEffects))
@@ -197,7 +202,9 @@ class JourneyRuntime(private val clock: JourneyClock, private val snapshots: Jou
             }
             next = next.copy(historicalSteps = credits, completedMask = next.plan.maskFor(credits))
         }
-        if (!next.active) next = next.copy(facts = next.facts.copy(finishedAtEpochMs = now.wallMillis))
+        if (!next.active) next = next.copy(facts = next.facts.copy(finishedAtEpochMs = now.wallMillis),
+            playback = if (next.playback in setOf(PlaybackState.REQUESTED, PlaybackState.PLAYING))
+                PlaybackState.UNAVAILABLE else next.playback)
         next.validate()
         snapshots.save(JourneySnapshotCodec.encode(next))
         state = next

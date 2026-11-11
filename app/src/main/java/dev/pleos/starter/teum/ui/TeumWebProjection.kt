@@ -39,8 +39,10 @@ class TeumWebProjection {
             JourneyKind.EVENING -> "pm"
             null -> when (local.hour) { in 0..10 -> "am"; in 11..14 -> "noon"; in 15..16 -> "meet"; else -> "pm" }
         }
-        val day = data.getAsJsonObject("week").getAsJsonArray("days")
-            .map { it.asJsonObject }.firstOrNull { it["date"].asString == today.toString() }
+        val weekDays = data.getAsJsonObject("week").getAsJsonArray("days").map { it.asJsonObject }
+        val displayedDate = if (weekDays.any { it["date"].asString == selectedDate.toString() })
+            selectedDate else today
+        val day = weekDays.firstOrNull { it["date"].asString == today.toString() }
         val completed = day?.getAsJsonArray("completedJourneys")?.map { it.asString }.orEmpty()
         val records = data.getAsJsonArray("records").map { it.asJsonObject }
         val todayIds = day?.getAsJsonArray("recordIds")?.map { it.asString }.orEmpty()
@@ -53,6 +55,7 @@ class TeumWebProjection {
         fun clock(minute: Int?): String? = minute?.let { "%02d:%02d".format(Locale.ROOT, it / 60, it % 60) }
         val meeting = meetingAt?.let { Instant.ofEpochMilli(it).atZone(zone) }
         val elapsedToMeeting = meetingAt?.let { (it - now) / 60_000 }
+        val selectedNapMinutes = journey?.plan?.napMinutes ?: sleepMinutes
         return data.deepCopy().apply {
             addProperty("screen", route.id)
             addProperty("renderRevision", revision)
@@ -75,12 +78,13 @@ class TeumWebProjection {
                 else -> 1
             })
             addProperty("short", journey?.plan?.route in setOf(JourneyRoute.SHORT_MORNING, JourneyRoute.SHORT_EVENING))
-            addProperty("sleep", journey?.plan?.napMinutes ?: sleepMinutes)
+            addProperty("sleep", selectedNapMinutes)
             addProperty("meetAt", meeting?.format(time))
             addProperty("intention", if (journey != null) journey.facts.intention else morning?.get("intention")?.asString)
             addProperty("story", journey?.facts?.reflection?.story)
             addProperty("transcript", journey?.facts?.intention ?: journey?.facts?.reflection?.story)
-            addProperty("selectedDate", selectedDate.toString())
+            addProperty("selectedDate", displayedDate.toString())
+            addProperty("localNow", local.format(time))
             addProperty("appVersion", appVersion)
             addProperty("notice", notice)
             addProperty("journeyPhase", journey?.phase?.name)
@@ -97,7 +101,7 @@ class TeumWebProjection {
                 addProperty("napMinutes", journey?.plan?.takeIf { it.route == JourneyRoute.NAP }?.napMinutes)
                 addProperty("elapsedSeconds", journey?.elapsedMs?.div(1000))
             })
-            add("day", JsonObject().apply { addProperty("date", selectedDate.toString()) })
+            add("day", JsonObject().apply { addProperty("date", displayedDate.toString()) })
             add("done", JsonObject().apply {
                 addProperty("am", "MORNING" in completed)
                 addProperty("noon", "NAP" in completed)
@@ -125,8 +129,8 @@ class TeumWebProjection {
                 addProperty("availableMinutes", arrival?.availableMinutes ?:
                     journey?.takeUnless { it.phase == JourneyPhase.ENTRY_REVIEW }?.plan?.nominalMinutes?.toLong())
                 addProperty("napSummary", remainingMs?.let { "남은 휴식 시간 ${it / 1000}초" }
-                    ?: arrival?.let { "쉴 수 있는 시간 ${it.availableMinutes}분 · 선택한 낮잠 ${sleepMinutes}분" }
-                    ?: "선택한 낮잠 시간 ${sleepMinutes}분")
+                    ?: arrival?.let { "쉴 수 있는 시간 ${it.availableMinutes}분 · 선택한 낮잠 ${selectedNapMinutes}분" }
+                    ?: "선택한 낮잠 시간 ${selectedNapMinutes}분")
                 addProperty("napRemainingSeconds", remainingMs?.div(1000))
                 addProperty("napElapsedSeconds", journey?.napSleptMs?.div(1000))
                 addProperty("countdownSeconds", if (journey?.phase == JourneyPhase.QUICK_COUNTDOWN)

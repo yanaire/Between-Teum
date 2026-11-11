@@ -337,16 +337,23 @@ class TeumWebProtocolTest {
             """{"requestId":"previous","epoch":7,"action":"journeyCommand","command":"PREVIOUS","journeyId":"native-session","journeyRevision":3,$forged}"""))
     }
 
-    private fun project(f: JourneyFixture): JsonObject {
+    private fun project(f: JourneyFixture, arrival: ArrivalSuggestion? = null, remainingMs: Long? = f.runtime.remainingMs): JsonObject {
         val zone = ZoneId.of("UTC")
         val day = Instant.ofEpochMilli(f.clock.wall).atZone(zone).toLocalDate()
         val data = JsonParser.parseString(
             """{"records":[{"id":"saved-morning","journeyFacts":{"kind":"MORNING","intention":"Earlier saved intention"}}],"week":{"days":[{"date":"$day","completedJourneys":["MORNING"],"recordIds":["saved-morning"]}]}}""").asJsonObject
         return TeumWebProjection().project(data,
             if (f.state.active) requireNotNull(TeumWebRoute.fromId(f.state.screenId)) else TeumWebRoute.C_03,
-            7, f.clock.wall, zone, TeumPreferences(), f.state, f.runtime.remainingMs,
+            7, f.clock.wall, zone, TeumPreferences(), f.state, remainingMs,
             day, emptySet(), null, 20, "light", JsonObject(), JsonObject(), "unit-fixture",
-            JsonObject(), null, null)
+            JsonObject(), null, null, arrival)
+    }
+
+    @Test fun projectionPublishesNativeLocalClockForTheCurrentEndpoint() {
+        val f = JourneyFixture()
+        assertEquals("08:00", project(f)["localNow"].asString)
+        f.clock.advance(42 * 60_000)
+        assertEquals("08:42", project(f)["localNow"].asString)
     }
 
     @Test fun projectionPublishesTheOwnedEntryPlanWithoutInventingAnOffer() {
@@ -515,6 +522,9 @@ class TeumWebProtocolTest {
 
     @Test fun projectionPublishesSelectedValuesWithoutCallingThePlanDurationAvailableTime() {
         val f = JourneyFixture(JourneyRoute.NAP).apply { send(Previous) }
+        fun summaryNumbers(state: JsonObject) = Regex("\\d+")
+            .findAll(state.getAsJsonObject("context")["napSummary"].asString)
+            .map { it.value.toInt() }.toList()
         for ((choice, minutes) in listOf(EntryChoice.NAP_10 to 10, EntryChoice.NAP_15 to 15, EntryChoice.NAP_20 to 20)) {
             f.send(ReconfigureEntry(choice))
             val projected = project(f)
@@ -526,6 +536,14 @@ class TeumWebProtocolTest {
             assertEquals(minutes, entry["minutes"].asInt)
             assertEquals(minutes, projected["sleep"].asInt)
             assertTrue(projected.getAsJsonObject("context")["availableMinutes"].isJsonNull)
+            assertEquals(listOf(minutes), summaryNumbers(projected))
+            val arrival = ArrivalSuggestion("test", JourneyNotification.NAP, "2030-01-07", 1, 0.0, 35, 1f)
+            val offered = project(f, arrival)
+            assertEquals(35L, offered.getAsJsonObject("context")["availableMinutes"].asLong)
+            assertEquals(listOf(35, minutes), summaryNumbers(offered))
+            val timing = project(f, arrival, 12_345)
+            assertEquals(listOf(12), summaryNumbers(timing))
+            assertEquals(12L, timing.getAsJsonObject("context")["napRemainingSeconds"].asLong)
         }
     }
 

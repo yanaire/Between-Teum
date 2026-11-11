@@ -48,6 +48,22 @@ class SafeVehicleAdapterTest {
         assertEquals("unknown", feature.positionFact()["status"].asString)
     }
 
+    @Test fun cabinPositionLabelCarriesNoInternalIdentifiersOrRawRanges() {
+        val feature = CabinObservation(CabinReadStatus.READABLE, "READ", mapOf(
+            "ROW_1_CENTER+ROW_2_CENTER" to CabinAreaObservation(
+                listOf("ROW_1_CENTER", "ROW_2_CENTER"), 5, 98, 27, CabinPositionStatus.OBSERVED)
+        ))
+        val position = feature.positionFact()
+        assertEquals("observed", position["status"].asString)
+        val label = position["label"].asString
+        assertTrue(label.isNotBlank())
+        assertFalse(label.contains("ROW_"))
+        assertFalse(label.contains("SDK"))
+        assertFalse(label.any { it.isDigit() })
+        assertEquals(27, feature.capabilityFact().getAsJsonArray("areas")[0]
+            .asJsonObject["rawPosition"].asInt)
+    }
+
     @Test fun cabinPositionFailureCannotProjectAsAnObservedPosition() {
         val feature = CabinObservation(CabinReadStatus.READABLE, "READ", mapOf(
             "ROW_1_LEFT" to CabinAreaObservation(listOf("ROW_1_LEFT"), 0, 31,

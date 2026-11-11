@@ -13,7 +13,21 @@ function factMark(s,group,key) { return s.hardware?.[group]?.[key]?.status === '
 
 function placeControls(s) { return `<div class="places" style="margin-top:0">${[['company','work','회사'],['home','home','집']].map(([key,k,label])=>`<div class="place"><div class="place-art">${PLACEART(k)}${s.preferences?.[key]?.coordinates ? `<span class="pin">${I('check')}</span>` : ''}</div><label class="cap" for="place-${key}">${label}</label><input id="place-${key}" class="body" style="width:100%;background:transparent;border:0;color:inherit;font:inherit" data-bind="place:${key}" maxlength="200" value="${s.preferences?.[key]?.label ? esc(s.preferences[key].label) : ''}" placeholder="장소 이름 미설정"><div class="row-c">${lnk('이름 저장',null,`savePlace:${key}`)}${lnk('현재 위치 등록',null,`captureLocation:${key}`)}</div></div>`).join('')}</div><p class="cap" data-live="location.description" style="margin-top:16px">${esc(s.location?.description || '위치 수신 상태를 확인해요')}</p>`; }
 
-function timeControls(s) { return `<div class="timepair">${[['workStartMinute','출근'],['lunchReturnMinute','점심 복귀']].map(([key,label])=>`<label class="tcard glass"><span class="cap">${label}</span><input class="dotnum sm" style="width:100%;min-width:0;background:transparent;border:0;color:inherit" type="time" data-bind="schedule:${key}" value="${clock(s.preferences?.schedule?.[key])}" aria-label="${label}"></label>`).join('')}</div>`; }
+function timeControls(s) { return `<div class="timepair">${[['workStartMinute','출근'],['lunchReturnMinute','점심 복귀']].map(([key,label])=>{const value=clock(s.preferences?.schedule?.[key]);return `<label class="tcard glass"><span class="cap">${label}</span><span class="timefield"><input class="timeinput" type="time" data-bind="schedule:${key}" value="${value}" aria-label="${label}"><span class="dotnum sm time24" aria-hidden="true">${value}</span></span></label>`;}).join('')}</div>`; }
+const syncTimeMirrors = () => document.querySelectorAll('.timefield').forEach(field => {
+  const input = field.querySelector('input'), mirror = field.querySelector('.time24');
+  if (input && mirror && mirror.textContent !== input.value) mirror.textContent = input.value;
+});
+const syncMeetHint = () => document.querySelectorAll('.meet-time').forEach(field => {
+  const input = field.querySelector('input'), value = input?.value || '', shown = field.querySelector('.meet-value');
+  field.classList.toggle('unset', !value);
+  if (shown && shown.textContent !== value) shown.textContent = value;
+  if (input && value) input.removeAttribute('aria-describedby');
+  else if (input) input.setAttribute('aria-describedby', 'meetAtHint');
+});
+document.addEventListener('input', event => { if (event.target.matches?.('.timeinput')) syncTimeMirrors(); if (event.target.id === 'meetAt') syncMeetHint(); });
+document.addEventListener('change', event => { if (event.target.id === 'meetAt') syncMeetHint(); });
+new MutationObserver(() => { syncTimeMirrors(); syncMeetHint(); }).observe(document.getElementById('scr'), { childList: true, subtree: true });
 
 function scheduleControls(s) { return `${timeControls(s)}<div class="list glass" style="margin-top:16px"><div class="li">${liIc('footprints')}<span class="t"><b>주차장에서 자리까지</b><span>걷는 시간을 빼고 계산해요</span></span><span class="v"><button class="iconbtn" data-do="walk:-1" aria-label="1분 줄이기">${I('minus')}</button><span class="mid" style="font-size:44px">${esc(s.preferences?.schedule?.walkingReserveMinutes)}분</span><button class="iconbtn" data-do="walk:1" aria-label="1분 늘리기">${I('plus')}</button></span></div></div>${lnk('시간 저장',null,'saveSchedule')}`; }
 
@@ -21,7 +35,11 @@ function soundChoices(s) { return `<div class="sounds">${SOUNDS.map(([t,p,k],i)=
 
 function preferenceSwitch(s,label,flag,on,sub='',prefix='') { return `<div class="li">${prefix}<span class="t"><b>${label}</b>${sub ? `<span>${sub}</span>` : ''}</span><button class="switch ${on ? 'on' : ''}" data-do="flag:${flag}" role="switch" aria-checked="${!!on}" aria-label="${label}"></button></div>`; }
 
-function actualTrack(s) { const rows=dayRecords(s); return rows.length ? DAYTRACK(rows.slice(0,4).map(r=>[JOURNEY_SLOT[r.journeyFacts?.kind] || 'q1',esc(r.activityTitle),esc(s.recordLabels?.[r.id]?.time || (r.timeBasis === 'SAVED_TIME' ? '저장 시각 기준' : '시각 미표시'))]),-1) : `<div class="daytrack"><p class="cap">이날 저장된 활동 기록이 없어요</p></div>`; }
+function actualTrack(s) { const rows=dayRecords(s).sort((a,b)=>(a.knownTimeEpochMs ?? Infinity)-(b.knownTimeEpochMs ?? Infinity)).slice(-4); if(!rows.length) return `<div class="daytrack"><p class="cap">이날 저장된 활동 기록이 없어요</p></div>`;
+  const cells=rows.map(r=>[JOURNEY_SLOT[r.journeyFacts?.kind] || 'q1',esc(r.activityTitle),esc(s.recordLabels?.[r.id]?.time || (r.timeBasis === 'SAVED_TIME' ? '저장 시각 기준' : '시각 미표시'))]);
+  const now=typeof s.localNow === 'string' && s.localNow && s.screen === 'F4-03';
+  if(now) cells.push(['pm','지금',esc(s.localNow),'localNow']);
+  return DAYTRACK(cells, now ? cells.length - 1 : -1); }
 
 function recordRows(s) { return dayRecords(s).map(r=>`<div class="li"><span class="t"><b>${esc(r.activityTitle)}</b><span>${esc(minutes(r.elapsedSeconds))}분 · ${esc(({completed:'완료',interrupted:'중단',safety_interrupted:'안전 중단'})[r.outcome])}${r.timeBasis === 'SAVED_TIME' ? ' · 저장 시각 기준' : r.timeBasis === 'UNDATED' ? ' · 활동 시각 알 수 없음' : ''}</span></span></div>`).join('') || `<div class="li"><span class="t"><b>기록 없음</b><span>선택한 날의 활동 기록이 없어요</span></span></div>`; }
 
@@ -34,8 +52,10 @@ function speechValue(s,round,key) { const m=s.speech?.[round]; if(!m) return nul
 function musicTitle(s,i) { return esc(s.music?.choices?.[i]?.title || '연결된 음악 없음'); }
 
 function selectedDay(s) { return s.week?.days?.find(d=>d.date === (s.selectedDate || s.day?.date || s.context?.localDate)) || null; }
+// F4-03는 지금 진행 중인 하루 마무리 화면: 앞서 둘러본 날짜가 아니라 네이티브 로컬 날짜의 기록을 보여준다.
+function timelineDay(s) { return s.screen === 'F4-03' ? s.week?.days?.find(d=>d.date === s.context?.localDate) || null : selectedDay(s); }
 
-function dayRecords(s) { const ids=selectedDay(s)?.recordIds || []; return (s.records || []).filter(r=>ids.includes(r.id)); }
+function dayRecords(s) { const ids=timelineDay(s)?.recordIds || []; return (s.records || []).filter(r=>ids.includes(r.id)); }
 
 function selectedIntention(s) { return dayRecords(s).find(r=>r.journeyFacts?.kind === 'MORNING' && r.journeyFacts.intention)?.journeyFacts.intention; }
 
@@ -135,7 +155,7 @@ const MBARS = (vs, p = 'coral') => `<div class="mbars">${vs.map(v => `<i style="
 const SINE = x => `<svg class="sine" viewBox="0 0 240 60" preserveAspectRatio="none"><path d="M0 30C20 6 40 6 60 30S100 54 120 30 160 6 180 30 220 54 240 30" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M${x} 6l7 10h-14z" fill="var(--lime)"/></svg>`;
 const BARS = (s, n = 7, lab = true) => { const days = s.week?.days || [], max = Math.max(1, ...days.map(d => d.elapsedSeconds || 0)); return `<div class="bars">${Array.from({length:n}, (_, i) => {const d=days[i], v=(d?.elapsedSeconds || 0)/max, p=PAL.home; return `<div class="bc" style="--n:${i}"><span class="bt">${v ? `<i style="height:${v*100}%;background:linear-gradient(${p[2]} 0%, ${p[0]} 55%, ${p[1]})"></i>` : ''}</span>${lab ? `<span class="cap">${['월','화','수','목','금','토','일'][i]}</span>` : ''}</div>`;}).join('')}</div>`; };
 const DAYS = s => `<div class="days">${Array.from({length:7}, (_,i) => {const d=s.week?.days?.[i]; return `<button class="dy ${d?.date === s.day?.date ? 'on' : ''} ${d ? '' : 'off'}" ${d ? `data-do="day:${esc(d.date)}"` : 'disabled'}>${['월','화','수','목','금','토','일'][i]}</button>`;}).join('')}</div>`;
-const DAYTRACK = (rows, now = rows.length - 1) => `<div class="daytrack"><span class="dt-line"></span>${rows.map(([k, n, t], i) => `<div class="dt">${MINI(k, 110)}<b>${n}</b><span class="cap">${t}</span>${i === now ? '<i class="now"></i>' : ''}</div>`).join('')}</div>`;
+const DAYTRACK = (rows, now = rows.length - 1) => `<div class="daytrack"><span class="dt-line"></span>${rows.map(([k, n, t, live], i) => `<div class="dt">${MINI(k, 110)}<b>${n}</b><span class="cap"${live ? ` data-live="${esc(live)}"` : ''}>${t}</span>${i === now ? '<i class="now"></i>' : ''}</div>`).join('')}</div>`;
 
 const MOODS = { calm: ['차분하게', '긴장되는 회의가 있는 날'], firm: ['단호하게', '거절하거나 협상해야 하는 날'], warm: ['다정하게', '사람을 많이 만나는 날'], focus: ['집중해서', '혼자 끝낼 일이 많은 날'], flex: ['유연하게', '일정이 자주 바뀌는 날'] };
 const GREET = { '08:40': '좋은 아침이에요', '12:35': '점심 맛있게 먹었어요?', '15:40': '오후도 힘내요', '19:05': '오늘도 고생 많았어요', '19:10': '오늘도 고생 많았어요' };
@@ -308,7 +328,7 @@ S['F2-06'] = { session: true, aura: 'sunrise', auraCls: 'rise', view: s => scr({
   side: copy('일어날 시간이에요', '차량 변경은 실제 확인 상태를 확인해 주세요') + `<div class="cabin">${[['sun', '조명'], ['wind', '공조'], ['armchair', '등받이'], ['app-window', '창문']].map(([i, t], n) => `<span style="--i:${n}">${I(i)}${t} · ${fact(s,'cabin',i)}</span>`).join('')}</div>` }) };
 S['F2-07'] = { session: true, aura: 'sunrise', view: s => scr({ cls: 'mid-side', top: bar(null, 5, 5),
   vis: `<div class="wake-card glass"><p class="lab">방금 잔 시간</p><div class="row-c" style="align-items:baseline;gap:12px"><span class="dotnum">${esc(minutes(s.context?.napElapsedSeconds))}</span><span class="lead">분</span></div>${RULER(Math.min(1,(s.context?.napElapsedSeconds || 0)/1800))}<div class="row-c cap" style="justify-content:space-between;margin-top:12px"><span>0</span><span>15</span><span>30분</span></div></div>`,
-  side: copy('실제로 쉰 시간이에요', esc(s.context?.meetingSummary)),
+  side: copy('실제로 쉰 시간이에요', `${esc(s.context?.meetingSummary)}<br>필요하면 차량 설정을 직접 확인하고 조정해 주세요`),
   acts: pri('마치기', null, 'finish:noon') + `<button class="btn sec m wide" data-do="closeWin" ${s.hardware?.capabilities?.windows?.status === 'confirmed' ? '' : 'disabled'}>${I('app-window')}${s.hardware?.capabilities?.windows?.status === 'confirmed' ? '창문 닫기' : '창문 제어 미지원·미확인'}</button>` }) };
 S['F2-07a'] = { session: true, aura: 'sunrise', auraCls: 'rise', view: s => scr({ cls: 'mid-side', top: bar(null, 5, 5),
   vis: G('orb', 'wake', 420, { wrap: 'beat', liquid: true }), side: copy('일어났어요?', '차량 복구 전에 깨어 있는지 확인해 주세요'), acts: pri('일어났어요', null, 'awake') }) };
@@ -316,9 +336,9 @@ S['F2-07a'] = { session: true, aura: 'sunrise', auraCls: 'rise', view: s => scr(
 /* ───────────── 마음 준비 (F3): 중요한 일정 직전, 할 말을 소리 내 보고 자신감이 생기는 음악으로 집중한다 ───────────── */
 const backTop = to => `<header class="top"><button class="iconbtn glass" data-go="${to}" aria-label="뒤로">${I('chevron-left')}</button><span></span></header>`;
 // 일정은 시각만 받는다 (무슨 일인지는 묻지 않는다)
-S['F3-00'] = { aura: 'coral', auraCls: 'low', view: s => scr({ cls: 'mid-side', top: backTop('H-01'),
-  vis: `<div class="row-c"><button class="iconbtn glass" data-do="meetAt:-30" aria-label="30분 앞당기기">${I('minus')}</button><input class="dotnum tm" id="meetAt" type="time" data-bind="meetingMinute" value="${clock(s.context?.meetingMinute)}" aria-label="중요한 일정 시각" style="width:380px;background:transparent;border:0;color:inherit"><button class="iconbtn glass" data-do="meetAt:30" aria-label="30분 미루기">${I('plus')}</button></div>`,
-  side: copy('중요한 일정이<br>몇 시에 있어요?', '20분 전에 마음 준비를 알려 드려요'), acts: pri('저장', null, 'saveMeet') }) };
+S['F3-00'] = { aura: 'coral', auraCls: 'low', view: s => { const value = clock(s.context?.meetingMinute); return scr({ cls: 'mid-side', top: backTop('H-01'),
+  vis: `<div class="row-c"><button class="iconbtn glass" data-do="meetAt:-30" aria-label="30분 앞당기기">${I('minus')}</button><span class="meet-time${value ? '' : ' unset'}"><input class="meet-input" id="meetAt" type="time" data-bind="meetingMinute" value="${value}" aria-label="중요한 일정 시각"${value ? '' : ' aria-describedby="meetAtHint"'}><span class="dotnum meet-value" aria-hidden="true">${value}</span><span class="meet-mirror" id="meetAtHint">시각 선택</span></span><button class="iconbtn glass" data-do="meetAt:30" aria-label="30분 미루기">${I('plus')}</button></div>`,
+  side: copy('중요한 일정이<br>몇 시에 있어요?', '20분 전에 마음 준비를 알려 드려요'), acts: pri('저장', null, 'saveMeet') }) } };
 const F3 = x => ({ session: true, aura: 'coral', ...x });
 S['F3-03'] = F3({ view: s => scr({ cls: 'mid-side', top: bar(previous(s, s.round === 1 ? 'F3-01' : 'F3-04'), 1, 4),
   vis: VOICE('tri', 'coral', s.speech?.recording),
@@ -328,18 +348,18 @@ S['F3-04'] = F3({ view:s => scr({cls:'mid-side',top:bar(previous(s, 'F3-03'),2,4
 vis:`<div class="tiles"><div class="tile glass"><p class="lab">녹음 시간</p><p class="mid">${MIN(speechValue(s,'first','seconds'),'초')}</p>${RULER(Math.min(1,(speechValue(s,'first','seconds') || 0)/90))}</div><div class="tile mesh" ${MS('coral')}><p class="lab">상대 음량 RMS</p><p class="h2" style="margin-top:12px">${esc(speechValue(s,'first','relativeLoudness')?.toFixed(3))}</p>${SEGS(Math.round((speechValue(s,'first','relativeLoudness') || 0)*4),4,'coral')}</div><div class="tile glass hot"><p class="lab">인식된 추임새</p><p class="mid">${MIN(speechValue(s,'first','recognizedFillerCount'),'번')}</p>${MBARS(speechValue(s,'first','recognizedFillerCount') == null ? [] : [Math.min(1,speechValue(s,'first','recognizedFillerCount')/10)],'coral')}</div><div class="tile glass"><p class="lab">인식 토큰 / 녹음 분</p><p class="h2" style="margin-top:12px">${esc(speechValue(s,'first','pace'))}</p>${speechValue(s,'first','pace') == null ? '<p class="cap">인식 자료 없음</p>' : SINE(Math.min(230,speechValue(s,'first','pace')))}</div></div>`,side:copy('실제로 측정한 값이에요','상대 음량은 0~1 RMS이며 보정된 dB가 아니에요'),acts:pri('한 번 더 말하기',null,'again')+sec('자신감 생기는 음악 고르기','F3-06',null,'wide')})});
 S['F3-05'] = F3({view:s => scr({cls:'mid-side',top:bar(previous(s, 'F3-03'),2,4),vis:`<div class="cmp glass">${[['녹음 시간','seconds','초'],['인식된 추임새','recognizedFillerCount','번']].map(([l,key,u])=>{const a=speechValue(s,'first',key), b=speechValue(s,'second',key),max=Math.max(1,a || 0,b || 0);return `<div class="cr"><span class="lab">${l}</span><div class="pair"><i class="was" style="width:${a == null ? 0 : a/max*100}%"></i><i class="now" style="width:${b == null ? 0 : b/max*100}%"></i></div><span class="mid" style="font-size:48px">${esc(b)}<sup>${u}</sup></span></div>`;}).join('')}</div>`,side:copy('두 번의 측정 기록이에요',`녹음 시간 ${esc(speechValue(s,'first','seconds'))} → ${esc(speechValue(s,'second','seconds'))}초<br>인식된 추임새 ${esc(speechValue(s,'first','recognizedFillerCount'))} → ${esc(speechValue(s,'second','recognizedFillerCount'))}번`),acts:pri('자신감 생기는 음악 고르기','F3-06')})});
 // 음악 고르기: 앨범 대신 추상 형태 커버, 고르면 큰 커버만 흐려졌다 바뀐다
-const TUNES = [['내 응원곡', '연결한 음악 없음', 'halo', 'coral'], ['최근에 들은 곡', '연결한 음악 없음', 'venn', 'ember'], ['힘이 나는 음악', '연결한 음악 없음', 'cluster', 'firm']];
+const TUNES = [['피아노', '앱 내 자작 연주곡', 'halo', 'coral'], ['벨', '앱 내 자작 연주곡', 'venn', 'ember'], ['플럭', '앱 내 자작 연주곡', 'cluster', 'firm']];
 const COVER = (i, size, cls = '') => { const [, , k, p] = TUNES[i]; return `<span class="cover mesh ${cls}" ${MS(p)}>${SHAPE(k, p, size, { blur: 5 })}</span>`; };
 const TUNEBIG = (i,s) => `${COVER(i, 300, 'xl')}<p class="h2">${musicTitle(s,i)}</p>`;
 S['F3-06'] = F3({ aura: s => TUNES[s.tune][3], view: s => scr({ cls: 'mid-side', top: bar(previous(s, s.round === 2 ? 'F3-05' : 'F3-04'), 3, 4),
   vis: `<div class="tune-big stack-c">${TUNEBIG(s.tune,s)}</div>`,
-  side: copy('자신감이 생기는 음악을<br>골라 주세요', '들으면 힘이 나는 곡이면 좋아요') + `<div class="list glass tunes">${TUNES.map(([t, sub], i) =>
-    `<button class="li tune ${i === s.tune ? 'on' : ''}" data-do="tune:${i}" ${s.music?.choices?.[i]?.available ? '' : 'disabled'} aria-pressed="${i === s.tune}">${COVER(i, 64)}<span class="t"><b>${musicTitle(s,i)}</b><span>${esc(s.music?.choices?.[i]?.subtitle || '음악 서비스 연결 필요')}</span></span><i class="radio"></i></button>`).join('')}</div>`,
-  acts: (s.music?.choices?.[s.tune]?.available ? pri('이 음악 듣기', null, 'playMusic') : pri('음악 연결 필요', null, 'playMusic').replace('<button ', '<button disabled ')) }) });
+  side: copy('자신감이 생기는 음악을<br>골라 주세요', '마음 준비에 맞춘 앱 내 자작 연주곡이에요') + `<div class="list glass tunes">${TUNES.map(([t, sub], i) =>
+    `<button class="li tune ${i === s.tune ? 'on' : ''}" data-do="tune:${i}" ${s.music?.choices?.[i]?.available ? '' : 'disabled'} aria-pressed="${i === s.tune}">${COVER(i, 64)}<span class="t"><b>${musicTitle(s,i)}</b><span>${esc(s.music?.choices?.[i]?.subtitle || '음악을 준비하지 못했어요')}</span></span><i class="radio"></i></button>`).join('')}</div>`,
+  acts: (s.music?.choices?.[s.tune]?.available ? pri('이 음악 듣기', null, 'playMusic') : pri('음악 사용 불가', null, 'playMusic').replace('<button ', '<button disabled ')) }) });
 S['F3-07'] = { session: true, dark: true, aura: s => TUNES[s.tune][3], view: s => { const [t, , k, p] = TUNES[s.tune];
   return scr({ cls: 'mid-side', top: bar('F3-06', 4, 4),
-    vis: `<div class="stack-c">${G(k, p, 400, { wrap: s.music?.status === 'PLAYING' ? 'pulse' : '', rings: .3 })}<style>.scr .np::before{animation:none;transform:scaleX(0)}</style><div class="np" role="img" aria-label="${esc(s.music?.status || '재생 상태 미확인')}" style="background:linear-gradient(to right,var(--ink-2) ${s.music?.durationMs > 0 ? Math.min(100,100*(s.music.positionMs || 0)/s.music.durationMs) : 0}%,var(--line) 0)"><b style="animation:none;transform:translateX(${s.music?.durationMs > 0 ? Math.min(440,440*(s.music.positionMs || 0)/s.music.durationMs) : 0}px)"></b></div></div>`,
-    side: copy('음악에 집중해 보세요', esc(s.music?.status || '재생 상태를 아직 확인하지 못했어요'), `<p class="lab">${esc(s.music?.title)}</p>`)
+    vis: `<div class="stack-c">${G(k, p, 400, { wrap: s.music?.status === 'PLAYING' ? 'pulse' : '', rings: .3 })}<style>.scr .np::before{animation:none;transform:scaleX(0)}</style><div class="np" data-music-progress role="img" aria-label="${esc(s.music?.statusLabel || '재생 상태 미확인')}" style="background:linear-gradient(to right,var(--ink-2) ${s.music?.durationMs > 0 ? Math.min(100,100*(s.music.positionMs || 0)/s.music.durationMs) : 0}%,var(--line) 0)"><b style="animation:none;transform:translateX(${s.music?.durationMs > 0 ? Math.min(440,440*(s.music.positionMs || 0)/s.music.durationMs) : 0}px)"></b></div></div>`,
+    side: copy('음악에 집중해 보세요', esc(s.music?.statusLabel || '재생 상태를 아직 확인하지 못했어요'), `<p class="lab">${esc(s.music?.title)}</p>`)
       + `<div class="cabin">${[['volume-2', '소리'], ['lamp', '조명'], ['armchair', '등받이']].map(([i, x], n) => `<span style="--i:${n}">${I(i)}${x} · ${fact(s,'cabin',i)}</span>`).join('')}</div>`,
     acts: pri('준비됐어요', null, 'finish:meet') + lnk('다른 곡 고르기', 'F3-06') }); } };
 S['F3-08'] = {aura:'coral',view:s => scr({cls:'mid-side',top:backTop('H-01'),vis:G('tri','coral',400,{wrap:'float'}),side:copy(s.context?.meetingOccurred ? '등록한 일정은 어땠어요?' : '일정이 끝났다면<br>어땠는지 알려 주세요','직접 고른 의견만 기록해요. 일정이 있었는지는 미리 가정하지 않아요') + `<div class="seg3 big">${['잘 됐어요','그럭저럭','힘들었어요'].map((t,i)=>`<button data-do="meetDone:${i}">${t}</button>`).join('')}</div>`})};

@@ -13,6 +13,9 @@ let activeOverlay = null;
 let overlayMarkup = null;
 let arrivalReservation = null;
 let arrivalEntryWait = null;
+let pendingPrevious = new Map();
+let inFlightPresentation = null;
+let pendingPresentationRefresh = false;
 const arrivalAdmissions = new Set();
 let arrivalDeferred = [];
 let graphicGesture = null;
@@ -105,11 +108,25 @@ function send(action, payload = {}) {
   const correlation = token ? { journeyId: token.sessionId, journeyRevision: token.revision } : {};
   const arrival = state.arrival?.token;
   const origin = typeof arrival === 'string' ? {arrivalToken:arrival} : {};
+  const requestId = `${epoch}-${++requestSequence}`;
+  const expectsPreviousReceipt = action === 'journeyCommand' && payload.command === 'PREVIOUS';
+  if (expectsPreviousReceipt) {
+    const pending = {requestId, epoch, journeyId: token?.sessionId ?? null,
+      revision: token?.revision ?? null, fromScreen: state.screen};
+    for (const [id, entry] of pendingPrevious) {
+      if (entry.epoch !== pending.epoch || entry.journeyId !== pending.journeyId ||
+          entry.revision !== pending.revision || entry.fromScreen !== pending.fromScreen)
+        pendingPrevious.delete(id);
+    }
+    pendingPrevious.set(requestId, pending);
+    if (pendingPrevious.size > 8) pendingPrevious.delete(pendingPrevious.keys().next().value);
+  }
   try {
     window.teum.postMessage(JSON.stringify({
-      requestId: `${epoch}-${++requestSequence}`, epoch, action, ...payload, ...correlation, ...origin
+      requestId, epoch, action, ...payload, ...correlation, ...origin
     }));
   } catch (error) {
+    if (expectsPreviousReceipt) pendingPrevious.delete(requestId);
     releaseArrivalReservation(true);
     if (error instanceof Error) { connectionError(); return; }
     throw error;
@@ -154,22 +171,44 @@ function paint(id, quiet = false) {
   scheduleArrivalAdmission();
 }
 
-function present(id, quiet) {
+function present(id, quiet, direction = 1) {
   clearGraphicGesture();
   clearTimers();
   if (!quiet) closeOverlay();
   const generation = ++renderGeneration;
+  inFlightPresentation = null;
+  pendingPresentationRefresh = false;
   const old = $('#scr .scr');
   const keep = old?.querySelector('[data-keep]');
   const from = keep && { key: keep.dataset.keep, rect: keep.getBoundingClientRect() };
   if (!old || quiet || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    clearPresentationDirection();
     paint(id, true);
     return;
   }
+  $('#app').style.setProperty('--dir', String(direction));
+  inFlightPresentation = {screen: id, generation};
   old.classList.add('out');
   later(200, () => {
     if (generation !== renderGeneration) return;
     paint(id);
+    // Direction belongs to this incoming generation only; clear it after its rise animations settle.
+    requestAnimationFrame(() => {
+      if (generation !== renderGeneration) return;
+      const directional = [...document.querySelectorAll(
+        '#scr .scr > .side > *, #scr .scr > .hgrid > *, #scr .scr > .pbody')]
+        .flatMap(node => node.getAnimations())
+        .filter(animation => animation.animationName === 'rise');
+      Promise.allSettled(directional.map(animation => animation.finished)).then(() => {
+        if (generation !== renderGeneration) return;
+        clearPresentationDirection();
+        if (inFlightPresentation?.generation === generation) inFlightPresentation = null;
+        if (pendingPresentationRefresh) {
+          pendingPresentationRefresh = false;
+          present(state.screen, true);
+        }
+      });
+    });
     const to = from && document.querySelector(`#scr [data-keep="${from.key}"]`);
     if (!to) return;
     to.closest('.vis')?.style.setProperty('animation', 'none');
@@ -179,6 +218,10 @@ function present(id, quiet) {
       { transform: 'none' }
     ], { duration: 640, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' });
   });
+}
+
+function clearPresentationDirection() {
+  $('#app').style.removeProperty('--dir');
 }
 
 const refresh = () => paint(state.screen, true);
@@ -209,6 +252,13 @@ function toast(text, ms = 3000) {
 
 function patchLive() {
   patchEntryControls();
+  document.querySelectorAll('[data-music-progress]').forEach(node => {
+    const ratio = state.music?.durationMs > 0
+      ? Math.max(0, Math.min(1, (state.music.positionMs || 0) / state.music.durationMs)) : 0;
+    node.style.background = `linear-gradient(to right,var(--ink-2) ${ratio * 100}%,var(--line) 0)`;
+    node.setAttribute('aria-label', state.music?.statusLabel || '재생 상태 미확인');
+    node.querySelector('b').style.transform = `translateX(${ratio * 440}px)`;
+  });
   // Native updates can change timers without replacing a focused input or restarting entry motion.
   document.querySelectorAll('[data-live]').forEach(node => {
     const path = node.dataset.live.split('.');
@@ -229,16 +279,57 @@ function patchLive() {
   }
 }
 
+function previousReceiptMatches(receipt, message) {
+  if (receipt === null || typeof receipt !== 'object' || Array.isArray(receipt) ||
+      typeof receipt.requestId !== 'string') return null;
+  const pending = pendingPrevious.get(receipt.requestId);
+  const before = state.journeyToken;
+  const after = message.state.journeyToken;
+  const matches = pending !== undefined &&
+    Number.isSafeInteger(receipt.requestEpoch) && receipt.requestEpoch === pending.epoch &&
+      receipt.requestEpoch === message.epoch &&
+    typeof receipt.journeyId === 'string' && receipt.journeyId === pending.journeyId &&
+      before?.sessionId === pending.journeyId && after?.sessionId === pending.journeyId &&
+    Number.isSafeInteger(pending.revision) && Number.isSafeInteger(receipt.fromRevision) &&
+      receipt.fromRevision === pending.revision && before?.revision === pending.revision &&
+    Number.isSafeInteger(receipt.toRevision) && after?.revision === receipt.toRevision &&
+      receipt.toRevision === pending.revision + 1 &&
+    typeof receipt.fromScreen === 'string' && receipt.fromScreen === pending.fromScreen &&
+      receipt.fromScreen === state.screen &&
+    typeof receipt.toScreen === 'string' && receipt.toScreen === message.state.screen;
+  return matches ? pending : null;
+}
+
+function previousExpectationStillBefore(pending, next) {
+  const token = next?.journeyToken;
+  return next?.journeyActive === true &&
+    token?.sessionId === pending.journeyId && token?.revision === pending.revision &&
+    next.screen === pending.fromScreen;
+}
+
+function retirePreviousExpectations(next) {
+  for (const [id, pending] of pendingPrevious) {
+    if (!previousExpectationStillBefore(pending, next)) pendingPrevious.delete(id);
+  }
+}
+
 window.teumReceive = message => {
   if (message?.type !== 'state' || !Number.isSafeInteger(message.epoch) ||
       typeof message.state?.screen !== 'string' || !S[message.state.screen]) return;
   if (Number.isSafeInteger(epoch) && message.epoch < epoch) return;
   const epochChanged = message.epoch !== epoch;
   if (epochChanged) {
+    pendingPrevious.clear();
     releaseArrivalReservation(true);
     arrivalAdmissions.clear();
   }
   const previous = state.screen;
+  const receipt = message.previousTransition;
+  const reverse = previousReceiptMatches(receipt, message) !== null;
+  if (receipt !== undefined && typeof receipt?.requestId === 'string')
+    pendingPrevious.delete(receipt.requestId);
+  // Same-owner/same-revision/same-screen ticks keep every correlation for that before state.
+  retirePreviousExpectations(message.state);
   const selection = { pick: state.pick, tune: state.tune, slide: state.slide };
   epoch = message.epoch;
   Object.assign(state, message.state);
@@ -261,14 +352,31 @@ window.teumReceive = message => {
       metadata = [state.week, state.records, state.recordLabels, state.mood,
         state.selectedDate, state.day?.date, state.context?.localDate];
       break;
+    case 'F4-03':
+      // Live day facts only; localNow is patched through data-live so a clock tick never rebuilds the screen.
+      metadata = [state.week, state.records, state.recordLabels, state.context?.localDate, state.dayColor];
+      break;
   }
   const presentation = JSON.stringify(metadata);
-  const changed = previous !== state.screen || lastRenderRevision !== state.renderRevision ||
-    lastPresentation !== presentation;
+  const routeChanged = previous !== state.screen;
+  const presentationChanged = lastPresentation !== presentation;
+  const changed = routeChanged || lastRenderRevision !== state.renderRevision ||
+    presentationChanged;
   lastRenderRevision = state.renderRevision;
   lastPresentation = presentation;
-  if (changed) present(state.screen, previous === state.screen);
-  else patchLive();
+  // A same-target publication during its real route presentation updates live facts without
+  // cancelling the incoming screen. Full metadata refreshes wait until that presentation settles.
+  const sameTargetInFlight = !routeChanged && !epochChanged &&
+    inFlightPresentation?.generation === renderGeneration &&
+    inFlightPresentation.screen === state.screen;
+  if (changed && sameTargetInFlight) {
+    // Revision-only updates still carry rendered state outside data-live; refresh after this
+    // presentation settles. Unchanged ticks fall through to patchLive only.
+    pendingPresentationRefresh = true;
+    patchLive();
+  } else if (changed) {
+    present(state.screen, previous === state.screen, reverse ? -1 : 1);
+  } else patchLive();
   if (activeOverlay && previous === state.screen) overlay(OVERLAYS[activeOverlay](state));
   if (state.notice) toast(state.notice);
   if (arrivalReservation && state.arrival?.admissionNonce !== arrivalReservation)
@@ -436,6 +544,7 @@ Object.assign(ACT, {
     const minute = Math.max(0,Math.min(1439,current + Number(delta)));
     drafts.set('meetingMinute',clock(minute));
     $('[data-bind="meetingMinute"]').value = clock(minute);
+    $('[data-bind="meetingMinute"]').dispatchEvent(new Event('input',{bubbles:true}));
   },
   saveMeet: () => {
     const minute = clockMinute(binding('meetingMinute'));
@@ -597,7 +706,7 @@ document.addEventListener('click', event => {
 });
 
 window.addEventListener('resize', fitWindow);
-window.addEventListener('pagehide', () => { clearGraphicGesture(); releaseArrivalReservation(true); });
+window.addEventListener('pagehide', () => { clearGraphicGesture(); releaseArrivalReservation(true); pendingPrevious.clear(); });
 window.addEventListener('focus', scheduleArrivalAdmission);
 window.addEventListener('blur', () => { clearGraphicGesture(); releaseArrivalReservation(true); });
 document.addEventListener('focusout', scheduleArrivalAdmission);

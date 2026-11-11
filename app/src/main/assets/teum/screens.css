@@ -141,7 +141,14 @@
 .place.empty .place-art { display: grid; place-items: center; box-shadow: inset 0 0 0 2px var(--line); background: var(--glass); }
 .place.empty .place-art::after { content: none; }
 .place.empty .place-art .lucide { width: 48px; height: 48px; color: var(--ink-2); }
-.timepair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+.timepair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+/* 시간 입력: 값은 24시간 점 숫자로 보이고, 그 위의 실제 time 입력이 눌림·선택·키보드 편집을 맡는다.
+   웹뷰의 오전/오후와 시계 아이콘은 투명하게 두어 12시간 표기가 드러나지 않는다. */
+.timefield { position: relative; display: block; }
+.time24 { display: block; }
+.timefield .timeinput { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; margin: 0; background: transparent; border: 0; color: transparent; caret-color: transparent; }
+.timefield .timeinput::-webkit-datetime-edit-ampm-field { opacity: 0; }
+.timefield .timeinput::-webkit-calendar-picker-indicator { opacity: 0; }
 .tcard { display: flex; flex-direction: column; gap: 12px; padding: 32px; border-radius: 48px; }
 .dotnum.sm { font-size: 88px; }
 .sounds { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
@@ -380,7 +387,15 @@ button.li:active { background: var(--glass); }
 }
 
 /* 마음 준비: 일정 시각 · 음악 고르기 · 재생 */
-.dotnum.tm { font-size: 128px; font-variant-numeric: tabular-nums; }
+/* 일정 시각: 값은 24시간 점 숫자 미러가 보이고, 그 위의 실제 time 입력이 눌림·선택을 맡는다.
+   네이티브 time 입력의 지역화된 12시간 글자(오후)는 투명하게 두고, 값이 없으면 '시각 선택'을 보여 준다. */
+.meet-time { position: relative; display: grid; place-items: center; flex: 0 0 380px; width: 380px; min-height: 136px; }
+.meet-time .meet-input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; background: transparent; border: 0; color: transparent; caret-color: transparent; }
+.meet-time .meet-input::-webkit-datetime-edit-ampm-field { opacity: 0; }
+.meet-time .meet-input::-webkit-calendar-picker-indicator { opacity: 0; }
+.meet-value { font-size: 112px; font-variant-numeric: tabular-nums; pointer-events: none; }
+.meet-mirror { position: absolute; inset: 0; display: none; place-items: center; white-space: nowrap; pointer-events: none; font: 700 44px/1.2 var(--font); letter-spacing: 0; color: var(--ink-3); }
+.meet-time.unset .meet-mirror { display: grid; }
 .tunes { margin-top: 32px; }
 .cover { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 20px; flex: none; }
 .cover .shape { width: 88%; height: 88%; }

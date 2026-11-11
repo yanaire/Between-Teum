@@ -14,6 +14,9 @@ import com.google.gson.JsonArray
 import dev.pleos.starter.teum.audio.NativeSpeechCapture
 import dev.pleos.starter.teum.audio.RecognitionOutcome
 import dev.pleos.starter.teum.audio.RestSoundPlayer
+import dev.pleos.starter.teum.audio.AndroidMusicOutput
+import dev.pleos.starter.teum.audio.MusicPlayback
+import dev.pleos.starter.teum.audio.OriginalMusic
 import dev.pleos.starter.teum.audio.SpeechCaptureResult
 import dev.pleos.starter.teum.journey.*
 import dev.pleos.starter.teum.location.LocationState
@@ -71,19 +74,19 @@ internal fun CabinObservation.capabilityFact(): JsonObject = JsonObject().apply 
 
 internal fun CabinObservation.positionFact(): JsonObject {
     if (status != CabinReadStatus.READABLE) return capabilityFact()
+    val position = when {
+        areas.values.any { it.status == CabinPositionStatus.FAILED } -> "failed"
+        areas.values.all { it.status == CabinPositionStatus.OBSERVED } -> "observed"
+        else -> "unknown"
+    }
     return JsonObject().apply {
-        addProperty("status", when {
-            areas.values.any { it.status == CabinPositionStatus.FAILED } -> "failed"
-            areas.values.all { it.status == CabinPositionStatus.OBSERVED } -> "observed"
-            else -> "unknown"
-        })
-        addProperty("label", areas.values.joinToString("; ") { area ->
-            "${area.identity.joinToString("+")}: " + when (area.status) {
-                CabinPositionStatus.PENDING -> "위치 조회 중"
-                CabinPositionStatus.MISSING -> "위치 값 없음"
-                CabinPositionStatus.FAILED -> "위치 조회 실패"
-                CabinPositionStatus.OBSERVED -> "SDK 원시 위치 ${area.rawPosition} [${area.rawMin}..${area.rawMax}]"
-            }
+        addProperty("status", position)
+        // User-facing copy only: area identities and SDK integer values stay in capabilityFact().
+        addProperty("label", when {
+            position == "failed" -> "현재 값을 읽지 못했어요"
+            position == "observed" -> "현재 값 확인됨"
+            areas.values.any { it.status == CabinPositionStatus.PENDING } -> "현재 값 확인 중"
+            else -> "현재 값 확인 안 됨"
         })
     }
 }
@@ -121,6 +124,26 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     @Volatile private var effectToken: JourneyToken? = null
     @Volatile private var audioPhase: NativeSpeechCapture.Phase? = null
     private var speechToken: JourneyToken? = null
+    @Volatile private var musicSafety = VehicleSafety()
+    private var musicObservation: MusicPlayback.Observation? = null
+    private val musicRenderer = Executors.newSingleThreadExecutor()
+    private val music = MusicPlayback(
+        { token -> AndroidMusicOutput(activity, musicRenderer) {
+            foreground && !destroyed && arrivalDocumentAlive && effectToken == token &&
+                musicSafety.blockedReason(SystemClock.elapsedRealtime()) == null
+        } }
+    ) { observed ->
+        submit {
+            val current = runtime.state
+            if (!foreground || current?.active != true || runtime.token != observed.token ||
+                current.phase != JourneyPhase.MUSIC_FOCUS) return@submit
+            val changed = current.playback != observed.state
+            musicObservation = observed
+            if (changed && observed.state != PlaybackState.REQUESTED)
+                update(runtime.playbackObserved(observed.token, observed.state))
+            publish(changed)
+        }
+    }
     private var soundState: RestSoundPlayer.State = RestSoundPlayer.State.Stopped
     private val sounds = RestSoundPlayer(activity) { observed ->
         submit {
@@ -264,6 +287,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         }
         safetySource = AaosSafetySource(activity) { observed ->
             if (owner != foregroundEpoch) return@AaosSafetySource
+            musicSafety = observed
             brakeSource?.observeSafety(observed)
             if (observed.blockedReason(SystemClock.elapsedRealtime()) != null) stopOutputs()
             submit {
@@ -340,6 +364,8 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         main.removeCallbacks(ticker)
         speech.close()
         sounds.close()
+        music.close()
+        musicRenderer.shutdownNow()
         permissions.close()
         cue?.close()
         safetySource?.close()
@@ -729,7 +755,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 preferences.load().privacy.deleteEveningStoryAfterNextMorning)
             cachedData = null
         }
-        effectToken = runtime.token
+        effectToken = runtime.token.takeIf { update.snapshot.active }
         route = if (update.snapshot.active) requireNotNull(TeumWebRoute.fromId(update.snapshot.screenId)) else TeumWebRoute.C_03
         if (route != TeumWebRoute.F1_01) presentedReflectionId = null
         if (route != previous) revision++
@@ -746,8 +772,15 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 is JourneyEffect.FinishSpeech, is JourneyEffect.FinishText ->
                     main.post { if (!destroyed) speech.finish() }
                 is JourneyEffect.PlayMusic -> {
-                    update(runtime.playbackObserved(effect.token, PlaybackState.UNAVAILABLE))
-                    notice = "음악 서비스의 계정·재생 계약이 아직 준비되지 않았어요."
+                    val piece = OriginalMusic.select(update.snapshot.plan.kind, effect.choice)
+                    val owner = foregroundEpoch
+                    main.post {
+                        if (foreground && !destroyed && owner == foregroundEpoch && effectToken == effect.token) {
+                            sounds.stop()
+                            cue?.stop()
+                            music.play(effect.token, piece)
+                        }
+                    }
                 }
                 JourneyEffect.WakeReminder -> main.post {
                     if (foreground && !destroyed) { cue?.beep(true); if (preferences.load().voiceGuide) cue?.speak("일어났어요?") }
@@ -772,6 +805,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     private fun capture(token: JourneyToken) = main.post {
         if (foreground && !destroyed && effectToken == token) {
             sounds.stop()
+            music.stop()
             cue?.stop()
             if (activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 submit {
@@ -793,6 +827,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         audioPhase = null
         speech.cancel()
         sounds.stop()
+        music.stop()
         cue?.stop()
     }
 
@@ -1062,6 +1097,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 RestSoundPlayer.State.Stopped, is RestSoundPlayer.State.Unavailable -> null
             })
         })
+        projected.add("music", musicProjection(runtime.state, musicObservation))
         notice = null
         main.post { if (!destroyed) host.publishState(projected, previous) }
     }
