@@ -1,0 +1,34 @@
+{
+  "work_id": "teum-context-music",
+  "session_id": "senpi:01a1c46f-9951-7000-9543-8c9e58832d2a",
+  "feature_complete": false,
+  "feature_approved": false,
+  "fully_done_tasks": ["1"],
+  "unmet_tasks": ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "F1", "F2", "F3", "F4"],
+  "evidence_root": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a/.omo/evidence/teum-context-music/music-exec-01a1c46f",
+  "completion_audit": {
+    "requested_behavior": "Explicit consented Jev intent to Apple catalog to real foreground music playback/pause/skip/stop, preserving timers, records, safety and cues",
+    "setup": "confirmed: 01-independent-verdict-final.json",
+    "jev_live_and_eligibility": "unmet: phase-a/jev/result.json and independent-verdict.json",
+    "apple_sdk_account_contract_category_and_playback": "unmet: phase-a/apple/result.json and independent-verdict.json",
+    "regression_contracts": "baseline confirmed; historical generated record IDs missing: phase-a/regression/result.json",
+    "consent_relay_provider_audio_state_ui": "not implemented: tasks5-10 and IS1-4 unproved",
+    "music_gradle_bun_native_scenarios": "not run: task11; baseline80unit/28connected is not a music test",
+    "documentation": "closure only confirmed; new-feature README/screens absent",
+    "final_audits": "F1/F2/F4 blocked-work audits completed; feature NOT_APPROVED; F3 live music NOT_RUN",
+    "cleanup": "independently confirmed: final-disposition/12-independent-verdict.json; worktree/evidence intentionally retained",
+    "decision": "original feature objective not achieved; do not mark goal complete"
+  },
+  "external_blockers": [
+    "Owner answered integration credentials currently not prepared",
+    "OpenCode Jev key and applicable official external-app eligibility clarification unavailable",
+    "Apple configured developer identity/signing key/MusicKit Android SDK/subscribed authorized account unavailable",
+    "Apple output-measurement and PLEOS category suitability remain unverified"
+  ],
+  "carried_evidence_gap": "Historical sandbox record UUIDs not preserved; cannot reconstruct deleted state or substitute fixtures",
+  "authorization": "Existing session covers implementation/disposable verification after gates clear. Commits/push/merge/payment/deployment not authorized.",
+  "pending": null,
+  "report_delta_verdict": "confirmed: final-disposition/report-delta-verdict.json; confirms corrected reports only, not feature",
+  "resumption_channels": "Both DAG runs settled; all owned children idle; owned rpc_1 completion watch stopped",
+  "stop_disposition": "Retain original objective, branch and evidence; external prerequisites unavailable as confirmed by owner; feature NOT_APPROVED"
+}

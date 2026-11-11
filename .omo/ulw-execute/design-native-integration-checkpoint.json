@@ -1,0 +1,34 @@
+{
+  "plan": ".omo/plans/teum-design-port.md",
+  "date": "2026-11-10",
+  "accepted_partial_units": {
+    "natural_nap": {
+      "monitor": "mon_21SCXJ31AN4TAFHT",
+      "exit_code": 0,
+      "elapsed_seconds_before_wake": 1200,
+      "saved_total_seconds": 1240,
+      "existing_records": 5,
+      "records_and_preferences_preserved": true,
+      "parent_reviewed": ["final receipt", "raw log", "three native screenshots"],
+      "physical_restoration_verified": false
+    },
+    "cabin_observation": {
+      "worker": "st_01a1c733",
+      "parent_reviewed": ["all five edited paths", "raw build log", "24 unit XML reports", "source preservation", "cleanup receipt"],
+      "tests": 192,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "compile_unit_lint_exit_code": 0,
+      "physical_controls_available": false,
+      "native_integration_verified": false
+    }
+  },
+  "next_native_executor": "st_01a1c735",
+  "exclusive_device": "emulator-5570",
+  "android_user": 10,
+  "allowed_scope": "Assemble settled source, preserve-data install, real native observation and live presentation QA; evidence and owned temporary scripts only.",
+  "pending_microphone_worker": "st_01a1c73b",
+  "microphone_runtime_authorized": false,
+  "whole_plan_completed": false
+}

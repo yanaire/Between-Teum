@@ -1,0 +1,96 @@
+{
+  "op": "view",
+  "phases": [
+    {
+      "name": "기반",
+      "tasks": [
+        {
+          "content": "기존 스타터와 SDK 계약을 검증해 실행 기반 확정",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "name": "핵심",
+      "tasks": [
+        {
+          "content": "상황별 시간표와 세션 상태 전이 구현",
+          "status": "completed"
+        },
+        {
+          "content": "주차 안전과 차량 제어 복원 어댑터 구현",
+          "status": "completed"
+        },
+        {
+          "content": "활동 콘텐츠와 로컬 실천 기록 구현",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "name": "화면",
+      "tasks": [
+        {
+          "content": "차량 화면에서 공통 흐름과 네 상황 통합",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "name": "검증",
+      "tasks": [
+        {
+          "content": "실제 에뮬레이터에서 전체 시나리오와 회귀 검증",
+          "status": "completed"
+        },
+        {
+          "content": "F1 계획 준수 여부와 증거 독립 감사",
+          "status": "in_progress"
+        },
+        {
+          "content": "F2 코드 품질과 안전 계약 독립 검토",
+          "status": "pending"
+        },
+        {
+          "content": "F3 실제 사용 화면과 예외 흐름 검증",
+          "status": "completed"
+        },
+        {
+          "content": "F4 이상 상태와 구현 결과 일치 검토",
+          "status": "pending"
+        },
+        {
+          "content": "공조와 조명 제어 권한 선언 누락 보완",
+          "status": "pending"
+        },
+        {
+          "content": "복원 확인 시각과 기록 저장 시각 안내 구분",
+          "status": "pending"
+        },
+        {
+          "content": "설정 화면의 기능 지원 안내를 실제 상태와 일치",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "name": "전달",
+      "tasks": [
+        {
+          "content": "검증된 앱을 작업 공간에 전달하고 자원 정리",
+          "status": "pending"
+        },
+        {
+          "content": "기반 에뮬레이터와 임시 캐시를 종료하고 정리",
+          "status": "pending"
+        }
+      ]
+    }
+  ],
+  "storage": "session",
+  "ask": {
+    "entryId": "0e82a4c4",
+    "text": "계속 진행해봐",
+    "capturedAt": 1794312373343
+  }
+}
