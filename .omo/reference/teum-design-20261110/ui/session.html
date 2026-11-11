@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · 세션 공통</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<!-- ───────────── M-01 변형 ───────────── -->
+<section class="flow">
+  <header><h2>M-01 모먼트 카드 · 변형</h2><p>F1 변형은 우선 시안 8 보드에 있다. 구조는 같다: 어두워진 창, 가운데 틈 라이트, 그 빛 속에서 떠오르는 카드 (808, r48, 패딩 48, level3, 등장 900ms). 주 버튼 L 하나, 보조 M 둘. F2·F3처럼 보조가 셋이면 셋째는 Text button으로 무게를 더 낮춘다. 오전에 가면을 고른 날이라 빛은 '단호한 나'.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-01</b>리차지 · Portrait <span class="tag">P0</span> · 큰 숫자만 num.hero (계산을 대신 해 준다)</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-01" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sh:70%;--sy:30%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="top:62%">
+          <div class="kicker"><i data-lucide="map-pin"></i>회사 주차장 · 12:35</div>
+          <div class="head"><h2 class="name">리차지</h2><span class="len n-hero">20<small>분</small></span></div>
+          <p class="sub">1시 복귀까지 25분 · 걷는 시간까지 계산했어요</p>
+          <div class="acts">
+            <button class="btn btn-l btn-primary btn-wide">바로 자기</button>
+            <div class="subs"><button class="btn btn-m">시간 바꾸기</button><button class="btn btn-m">눈 감고 쉬기</button></div>
+            <button class="text-btn is-quiet link">오늘은 패스</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘바로 자기’라고 말해도 돼요</p>
+          </div>
+        </section>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>F2-01</b>Landscape <span class="tag">P0</span> · 카드는 운전석 쪽, 틈은 오른쪽 여백에서 온전히</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-01" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sh:100%;--sx:1240px"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="left:452px">
+          <div class="kicker"><i data-lucide="map-pin"></i>회사 주차장 · 12:35</div>
+          <div class="head"><h2 class="name">리차지</h2><span class="len n-hero">20<small>분</small></span></div>
+          <p class="sub">1시 복귀까지 25분 · 걷는 시간까지 계산했어요</p>
+          <div class="acts">
+            <button class="btn btn-l btn-primary btn-wide">바로 자기</button>
+            <div class="subs"><button class="btn btn-m">시간 바꾸기</button><button class="btn btn-m">눈 감고 쉬기</button></div>
+            <button class="text-btn is-quiet link">오늘은 패스</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘바로 자기’라고 말해도 돼요</p>
+          </div>
+        </section>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>F3-01</b>리허설 · Portrait <span class="tag">P1</span> · 등록한 중요한 순간이 있어야 뜬다</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-01" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sh:70%;--sy:30%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="top:62%">
+          <div class="kicker"><i data-lucide="map-pin"></i>거래처 도착 · 15:40</div>
+          <div class="head"><h2 class="name">리허설</h2><span class="len n-l">10<small>분</small></span></div>
+          <p class="sub">A사 미팅까지 20분 남았어요</p>
+          <div class="acts">
+            <button class="btn btn-l btn-primary btn-wide">시작</button>
+            <div class="subs"><button class="btn btn-m">브리프만 보기</button><button class="btn btn-m">호흡만 3분</button></div>
+            <button class="text-btn is-quiet link">오늘은 패스</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘시작’이라고 말해도 돼요</p>
+          </div>
+        </section>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>F4-01</b>가면 벗기 · Portrait <span class="tag">P0</span> · V-01에서 '응'이라고 답한 뒤 도착. 가족 알림은 확장 기능 (P2)</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-01" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sh:64%;--sy:26%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="top:61%">
+          <div class="kicker"><i data-lucide="house"></i>집 도착 · 19:10</div>
+          <div class="head"><h2 class="name">가면 벗기</h2><span class="len n-l">10<small>분</small></span></div>
+          <p class="sub">오늘도 수고했어요. 10분만 ‘나’로 있다 올라갈까요?</p>
+          <div class="opt-row"><span class="grow">‘10분 뒤 올라가요’ 보내기<span class="p2">P2</span></span><span class="switch"></span></div>
+          <div class="acts" style="margin-top:32px">
+            <button class="btn btn-l btn-primary btn-wide">10분</button>
+            <div class="subs"><button class="btn btn-m">5분</button><button class="btn btn-m">바로 들어가기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘10분’이라고 말해도 돼요</p>
+          </div>
+        </section>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── C-01 ───────────── -->
+<section class="flow">
+  <header><h2>C-01 진행 프레임</h2><p>세션 중에는 Page navigation을 숨긴다. 위에는 단계 점 (현재 = 빛, 폭 28)과 우상단 [끝내기] 하나. 아래 가장자리는 엣지 라이트 (남은 시간만큼 3px 선 + 12px 글로우). 가운데 영역만 단계별로 바뀌고, 바뀔 때는 크로스페이드 + 8px 상승 320ms. 엣지 라이트를 누르면 남은 시간을 토스트로 알려 준다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>C-01</b>Portrait <span class="tag">P0</span> · 구조. 점선은 단계 화면이 들어가는 자리 (실제 화면에는 없음)</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-01" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="slot"><span>단계 화면<small>F1-02 체크인 · F1-03 호흡 · F1-04 다짐 …</small></span></div>
+          <div class="session-foot">
+            <div class="slot short"><span>주 버튼 L · 보조 M · 음성 힌트</span></div>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.58"><div class="track"></div></div>
+        <div class="toast" style="bottom:48px"><i data-lucide="clock-3"></i>4분 남았어요</div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>C-01</b>Landscape <span class="tag">P0</span> · 주 버튼 자리는 왼쪽 아래 (운전석 쪽). 오른쪽은 틈 라이트가 번지는 여백</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-01" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:6;--sx:1180px;--glow-o:.4"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="slot" style="width:760px"><span>단계 화면</span></div>
+          <div class="session-foot"><div class="slot short" style="width:100%"><span>주 버튼 L · 보조 M · 음성 힌트</span></div></div>
+        </div>
+        <div class="edge" style="--remain:.58"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── C-02 ───────────── -->
+<section class="flow">
+  <header><h2>C-02 끝내기 확인</h2><p>System popup M (808, r48, 패딩 48, level3). 뒤의 세션은 일시정지 (호흡도 멈춘다). 버튼은 Horizontal 두 개. 주 버튼 대신 Pleos filled로 [끝내기]를 구분하고, [계속하기]는 basic. 바깥을 누르면 계속하기.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>C-02</b>Portrait <span class="tag">P0</span> · F1-03 호흡 중에 [끝내기]</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-02" data-o="p" data-theme="dark">
+        <div class="seam" style="--ap:14;--sy:42%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body"></div>
+          <div class="stack" style="align-items:center;text-align:center;gap:12px"><p class="t-display m0">길게 내쉬세요</p><p class="t-lead ink-3 m0">진정 호흡 · 다섯 번째 숨</p></div>
+          <div class="row" style="justify-content:flex-end;margin-top:48px"><button class="btn btn-m"><i data-lucide="eye-off"></i>눈 감고 하기</button></div>
+        </div>
+        <div class="edge" style="--remain:.7"><div class="track"></div></div>
+        <div class="scrim" style="z-index:3"></div>
+        <div class="popup enter" style="z-index:4"><h3 class="ttl">지금 끝낼까요?</h3><p class="desc">차를 원래대로 돌려놓을게요</p><div class="acts"><button class="btn btn-m">계속하기</button><button class="btn btn-m btn-filled">끝내기</button></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>C-02</b>Landscape <span class="tag">P0</span> · 팝업은 창 가운데</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-02" data-o="l" data-theme="dark">
+        <div class="seam" style="--ap:14"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body"></div>
+          <div style="width:620px"><p class="t-display m0">길게 내쉬세요</p><p class="t-lead ink-3 m0" style="margin-top:12px">진정 호흡 · 다섯 번째 숨</p><button class="btn btn-m" style="margin-top:48px"><i data-lucide="eye-off"></i>눈 감고 하기</button></div>
+        </div>
+        <div class="edge" style="--remain:.7"><div class="track"></div></div>
+        <div class="scrim" style="z-index:3"></div>
+        <div class="popup enter" style="z-index:4"><h3 class="ttl">지금 끝낼까요?</h3><p class="desc">차를 원래대로 돌려놓을게요</p><div class="acts"><button class="btn btn-m">계속하기</button><button class="btn btn-m btn-filled">끝내기</button></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── C-03 ───────────── -->
+<section class="flow">
+  <header><h2>C-03 복귀 시퀀스</h2><p>세션 시작 때 저장해 둔 시트·조명·공조 값으로 되돌린다. 항목이 0.4초 간격으로 차례로 켜지고, 끝난 항목은 informative/active 체크. 등받이가 움직이는 동안에만 [멈춤]. 창문을 열었던 세션이면 창문 항목이 하나 더 붙는다. 5~10초 뒤 자동으로 C-04. 화면 버튼은 없다 (자동 단계).</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>C-03</b>Portrait <span class="tag">P0</span> · 등받이·조명 완료, 공조 되돌리는 중</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-03" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span></div>
+          <h2 class="t-display session-q">차를 원래대로<br>돌려놓는 중</h2>
+          <div class="list reveal" style="margin-top:56px">
+            <div class="li"><span class="ico ok"><i data-lucide="armchair"></i></span><span class="txt"><b>등받이</b><span>108° → 100°</span></span><span class="end ok"><i data-lucide="check"></i></span></div>
+            <div class="li"><span class="ico ok"><i data-lucide="lamp"></i></span><span class="txt"><b>조명</b><span>앰비언트 원래 밝기</span></span><span class="end ok"><i data-lucide="check"></i></span></div>
+            <div class="li doing"><span class="ico"><i data-lucide="fan"></i></span><span class="txt"><b>공조</b><span>22℃ 자동으로</span></span><span class="end" style="width:120px"><span class="loader" style="flex:1"></span></span></div>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.02"><div class="track"></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>C-03</b>Landscape <span class="tag">P0</span> · 등받이가 움직이는 중. [멈춤]은 이때만 보인다. F2 뒤라 창문 항목이 붙었다</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-03" data-o="l" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span></div>
+          <div style="display:grid;grid-template-columns:620px 1fr;gap:96px;flex:1;align-items:center;padding-bottom:40px">
+            <div>
+              <h2 class="t-display m0">차를 원래대로<br>돌려놓는 중</h2>
+              <div class="seat-fig" style="margin-top:40px;--deg:30deg"><div class="arc"></div><div class="base"></div><div class="back"></div><div class="head"></div></div>
+            </div>
+            <div class="list reveal">
+              <div class="li doing"><span class="ico"><i data-lucide="armchair"></i></span><span class="txt"><b>등받이 세우는 중</b><span>128° → 100°</span></span><button class="btn btn-m"><i data-lucide="pause"></i>멈춤</button></div>
+              <div class="li wait"><span class="ico"><i data-lucide="lamp"></i></span><span class="txt"><b>조명</b></span></div>
+              <div class="li wait"><span class="ico"><i data-lucide="fan"></i></span><span class="txt"><b>공조</b></span></div>
+              <div class="li wait"><span class="ico"><i data-lucide="app-window"></i></span><span class="txt"><b>창문 닫기</b></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.02"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── C-04 · T-01 ───────────── -->
+<section class="flow">
+  <header><h2>C-04 스탬프 토스트 · T-01 안내 토스트</h2><p>둘 다 Toast popup (최대 792, 패딩 24 × 40, r16, 아이콘 48, 하단·좌우 24), 3초. C-04는 스탬프 아이콘이 찍히는 마이크로 모션 하나 (scale 1.2 → 1, 240ms, ease-out. reduced-motion이면 opacity만). [끝내기]로 끝난 세션에는 C-04가 없다. T-01은 같은 자리에서 '왜 건너뛰는지'를 한 줄로 말하고 다음 단계로 넘어간다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>C-04</b>Portrait <span class="tag">P0</span> · F1을 마치고 홈으로 돌아온 순간. 타임라인 아침 칸이 가면 색으로 채워졌다</figcaption>
+      <div class="fz"><article class="frame" data-screen="C-04" data-o="p" data-theme="dark" data-mask="firm">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">좋은 아침이에요</h2>
+          <button class="today-chip" style="margin-top:24px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+          <section class="card rec" style="margin-top:16px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <div class="row"><h3 class="t-sub m0">점심 리차지</h3><span class="t-label ink-3" style="margin-left:auto">다음 틈 · 12:35</span></div>
+            <p class="t-body ink-2 m0" style="margin-top:8px">점심 먹고 오면 20분 잘 수 있어요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">3분 리셋</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41</span><span class="what">가면 쓰기<small>단호한 나 · 7분</small></span></li>
+            <li class="tl-i now"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35</span><span class="what">리차지 예정<small>20분 잘 수 있어요</small></span><span class="end">다음</span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="mic"></i></span><span class="when">16:00</span><span class="what">중요한 순간<small>A사 신제품 제안 미팅</small></span></li>
+          </ol>
+        </div>
+        <div class="toast stamp" style="z-index:3"><i data-lucide="stamp"></i>준비 완료<small>연속 4일</small></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>T-01</b>Portrait <span class="tag">P0</span> · 블라인드가 없는 차종. 진행 표시의 해당 항목은 지운 선으로</figcaption>
+      <div class="fz"><article class="frame" data-screen="T-01" data-o="p" data-theme="dark" data-light="sleep">
+        <div class="seam" style="--ap:5;--sh:56%;--sy:40%;--glow-o:.7"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"><button class="text-btn is-quiet">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:flex-end;align-items:center;text-align:center;padding-bottom:120px">
+            <p class="t-title ink-2 m0">20분 뒤에 깨워 드릴게요</p>
+            <p class="t-body ink-3 m0" style="margin-top:12px">1시 복귀까지 · 걷는 시간까지 계산했어요</p>
+          </div>
+          <div class="cabin-steps" style="justify-content:center;margin-bottom:112px">
+            <span class="st done"><i data-lucide="check"></i>등받이</span>
+            <span class="st"><i data-lucide="minus"></i><s>블라인드</s></span>
+            <span class="st now"><i data-lucide="lamp"></i>조명 낮추는 중</span>
+            <span class="st"><i data-lucide="fan"></i>24℃ 약풍</span>
+          </div>
+        </div>
+        <div class="fill" style="background:var(--pleos-static-dark-400);pointer-events:none"></div>
+        <div class="toast" style="z-index:3"><i data-lucide="info"></i>이 차는 블라인드가 없어서 건너뛸게요</div>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>T-01</b>동승자 변형 <span class="tag">P0</span> · F1-04에서 말하기 대신 추천 칩만. 음성은 꺼진다</figcaption>
+      <div class="fz"><article class="frame" data-screen="T-01" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">오늘 꼭 끝낼<br>한 가지는?</h2>
+          <p class="t-label ink-3 m0" style="margin-top:48px">어제에서 넘어온 일</p>
+          <div class="row gap-12" style="margin-top:16px;flex-wrap:wrap"><button class="chip">기획안 초안</button><button class="chip">A사 견적 회신</button><button class="chip">주간 보고</button></div>
+          <div class="session-body"></div>
+          <div class="row" style="justify-content:center"><button class="text-btn is-quiet">건너뛰기</button></div>
+        </div>
+        <div class="edge" style="--remain:.4"><div class="track"></div></div>
+        <div class="toast" style="z-index:3;bottom:48px"><i data-lucide="users"></i>혼자일 때 말하기를 보여 드릴게요</div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

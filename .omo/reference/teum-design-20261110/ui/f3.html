@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · F3 리허설</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<section class="flow">
+  <header><h2>F3 리허설 · 중요한 순간 직전 10분 (P1)</h2><p>15:40 거래처 건물 주차장. 16시 미팅까지 20분. F3는 등록 (F3-00)이 있어야 제안이 뜨는 유일한 기능이다. 흐름: F3-01 제안 → F3-02 브리프 → F3-03 녹음 → F3-04 결과 → (F3-03 2회차 → F3-05 비교) → F3-06 예상 질문 → F3-07 파워 업 → C-03 → C-04. F3-01은 세션 공통 보드. 브리프부터 비교까지는 집중 모드라 빛이 쿨 화이트 ('집중하는 나'), 파워 업에서 아침에 고른 '단호한 나'로 돌아간다.</p></header>
+</section>
+
+<!-- ───────────── F3-00 ───────────── -->
+<section class="flow">
+  <header><h2>F3-00 중요한 순간 등록</h2><p>홈의 [중요한 순간 등록]에서. 음성 한 문장이 먼저이고, 알아들은 내용을 칸에 채워 보여 준다 (제목, 시각, 상대, 키워드 3칩, 예상 질문). Page navigation Depth. [저장] → H-01 타임라인의 '중요한 순간' 칸.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F3-00</b>Portrait <span class="tag">P1</span> · "4시 A사 신제품 제안 미팅"이라고 말한 뒤</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-00" data-o="p" data-theme="dark" data-mask="firm">
+        <nav class="pagenav"><button class="icon-btn back" aria-label="뒤로"><i data-lucide="chevron-left"></i></button><span class="title">중요한 순간</span></nav>
+        <div class="content stack" style="margin-top:32px;height:1000px;padding-bottom:48px">
+          <div class="row gap-24">
+            <button class="icon-btn basic circle" aria-label="다시 말하기"><i data-lucide="mic"></i></button>
+            <p class="transcript m0">“4시 A사 신제품 <span class="kw">제안 미팅</span>”</p>
+          </div>
+          <div class="list" style="margin-top:40px">
+            <div class="li"><span class="ico"><i data-lucide="presentation"></i></span><span class="txt"><span>제목</span><b>A사 신제품 제안 미팅</b></span></div>
+            <div class="li"><span class="ico"><i data-lucide="clock-4"></i></span><span class="txt"><span>시각</span><b>오늘 16:00</b></span><span class="end">바꾸기<i data-lucide="chevron-right"></i></span></div>
+            <div class="li"><span class="ico"><i data-lucide="user-round"></i></span><span class="txt"><span>상대 · 선택</span><b>김 팀장</b></span></div>
+          </div>
+          <p class="t-label ink-3 m0" style="margin-top:32px">핵심 키워드</p>
+          <div class="row gap-12" style="margin-top:12px;flex-wrap:wrap"><button class="chip">납기 2주 단축</button><button class="chip">단가 유지</button><button class="chip">AS 3년</button><button class="chip"><i data-lucide="plus"></i>추가</button></div>
+          <p class="t-label ink-3 m0" style="margin-top:32px">예상 질문 · 선택</p>
+          <p class="t-body m0" style="margin-top:8px">가장 큰 차별점이 뭐예요?</p>
+          <div class="grow"></div>
+          <button class="btn btn-l btn-primary btn-wide">저장</button>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-00</b>Landscape <span class="tag">P1</span> · 말하기는 왼쪽, 채워진 칸은 오른쪽</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-00" data-o="l" data-theme="dark" data-mask="firm">
+        <nav class="pagenav"><button class="icon-btn back" aria-label="뒤로"><i data-lucide="chevron-left"></i></button><span class="title">중요한 순간</span></nav>
+        <div class="content" style="margin-top:32px;display:grid;grid-template-columns:600px 1fr;gap:72px;height:1000px;padding-bottom:48px">
+          <div class="stack">
+            <p class="t-display m0">한 문장으로<br>말해 주세요</p>
+            <p class="transcript m0" style="margin-top:32px">“4시 A사 신제품 <span class="kw">제안 미팅</span>”</p>
+            <div class="grow"></div>
+            <button class="mic is-quiet" aria-label="다시 말하기"><i data-lucide="mic"></i></button><span class="mic-cap" style="text-align:left">다시 말하기</span>
+          </div>
+          <div class="stack">
+            <div class="list">
+              <div class="li"><span class="ico"><i data-lucide="presentation"></i></span><span class="txt"><span>제목</span><b>A사 신제품 제안 미팅</b></span></div>
+              <div class="li"><span class="ico"><i data-lucide="clock-4"></i></span><span class="txt"><span>시각</span><b>오늘 16:00</b></span><span class="end">바꾸기<i data-lucide="chevron-right"></i></span></div>
+              <div class="li"><span class="ico"><i data-lucide="user-round"></i></span><span class="txt"><span>상대 · 선택</span><b>김 팀장</b></span></div>
+            </div>
+            <p class="t-label ink-3 m0" style="margin-top:32px">핵심 키워드</p>
+            <div class="row gap-12" style="margin-top:12px"><button class="chip">납기 2주 단축</button><button class="chip">단가 유지</button><button class="chip">AS 3년</button><button class="chip"><i data-lucide="plus"></i>추가</button></div>
+            <p class="t-label ink-3 m0" style="margin-top:32px">예상 질문 · 선택</p>
+            <p class="t-body m0" style="margin-top:8px">가장 큰 차별점이 뭐예요?</p>
+            <div class="grow"></div>
+            <button class="btn btn-l btn-primary" style="align-self:flex-start;min-width:360px">저장</button>
+          </div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F3-02 ───────────── -->
+<section class="flow">
+  <header><h2>F3-02 브리프</h2><p>흩어진 생각을 한 장에. 미팅명, 시간, 상대, '내 목표' 한 줄 (MaruBuri), 키워드 칩 셋. 차는 집중 모드: 쿨 화이트 조명 70%, 등받이 바로 세움, 22℃.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F3-02</b>Portrait <span class="tag">P1</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-02" data-o="p" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <p class="t-label ink-3 m0" style="margin-top:32px">16:00 · 김 팀장 · 20분 남았어요</p>
+          <h2 class="t-display m0" style="margin-top:8px">A사 신제품<br>제안 미팅</h2>
+          <div class="letter" style="margin-top:40px"><div class="date"><i data-lucide="target"></i>내 목표</div><p class="v-l m0">납기 2주 단축으로 1차 합의까지 가기</p></div>
+          <div class="row gap-12" style="margin-top:24px;flex-wrap:wrap"><span class="chip">납기 2주 단축</span><span class="chip">단가 유지</span><span class="chip">AS 3년</span></div>
+          <div class="session-body"></div>
+          <div class="cabin-steps" style="justify-content:center;margin-bottom:24px"><span class="st done"><i data-lucide="check"></i>쿨 화이트 70%</span><span class="st done"><i data-lucide="check"></i>등받이 바로</span><span class="st now"><i data-lucide="fan"></i>22℃</span></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">리허설 시작</button>
+            <div class="subs"><button class="btn btn-m"><i data-lucide="pencil"></i>키워드 고치기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘리허설 시작’이라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.94"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-02</b>Landscape <span class="tag">P1</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-02" data-o="l" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div style="display:grid;grid-template-columns:1fr 760px;gap:96px;flex:1;align-items:center">
+            <div>
+              <p class="t-label ink-3 m0">16:00 · 김 팀장 · 20분 남았어요</p>
+              <h2 class="t-display m0" style="margin-top:8px">A사 신제품 제안 미팅</h2>
+              <div class="row gap-12" style="margin-top:32px"><span class="chip">납기 2주 단축</span><span class="chip">단가 유지</span><span class="chip">AS 3년</span></div>
+              <div class="cabin-steps" style="margin-top:40px"><span class="st done"><i data-lucide="check"></i>쿨 화이트 70%</span><span class="st done"><i data-lucide="check"></i>등받이 바로</span><span class="st now"><i data-lucide="fan"></i>22℃</span></div>
+            </div>
+            <div class="letter"><div class="date"><i data-lucide="target"></i>내 목표</div><p class="v-xl m0">납기 2주 단축으로 1차 합의까지 가기</p></div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">리허설 시작</button>
+            <div class="subs"><button class="btn btn-m"><i data-lucide="pencil"></i>키워드 고치기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘리허설 시작’이라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.94"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F3-03 ───────────── -->
+<section class="flow">
+  <header><h2>F3-03 리허설 녹음</h2><p>첫 세 문장을 소리 내어. 목표 60초 바, 경과 시간, 실시간 자막 (키워드는 말하는 순간 빛 밑줄). 녹음 중에는 앰비언트를 고정한다. 마이크를 다시 누르거나 3초 동안 말이 없으면 끝 → 1회차는 F3-04, 2회차는 F3-05.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F3-03</b>1회차 · Portrait <span class="tag">P1</span> · 42초 지점</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-03" data-o="p" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">첫 3문장을<br>소리 내 말해 보세요</h2>
+          <div class="goal" style="margin-top:40px"><div class="bar"><i style="--p:.7"></i><b style="--p:1"></b></div><div class="row"><span class="n-l" style="font-size:var(--type-title-size)">0:42</span><span class="t-label ink-3" style="margin-left:auto">목표 60초</span></div></div>
+          <p class="transcript m0" style="margin-top:32px">안녕하세요, 오늘은 <span class="kw">납기를 2주</span> 줄일 방법을 들고 왔습니다. 음, 저희가 <span class="interim">새로 바꾼 공정은</span></p>
+          <div class="session-body" style="align-items:center;justify-content:flex-end">
+            <button class="mic is-listening" aria-label="녹음 끝내기"><i data-lucide="square"></i></button>
+            <span class="mic-cap">다 말했어요</span>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.8"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-03</b>Landscape <span class="tag">P1</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-03" data-o="l" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div style="display:grid;grid-template-columns:1fr 440px;gap:96px;flex:1;align-items:center">
+            <div>
+              <h2 class="t-display m0">첫 3문장을 소리 내 말해 보세요</h2>
+              <div class="goal" style="margin-top:40px"><div class="bar"><i style="--p:.7"></i><b style="--p:1"></b></div><div class="row"><span class="n-l" style="font-size:var(--type-title-size)">0:42</span><span class="t-label ink-3" style="margin-left:auto">목표 60초</span></div></div>
+              <p class="transcript m0" style="margin-top:32px">안녕하세요, 오늘은 <span class="kw">납기를 2주</span> 줄일 방법을 들고 왔습니다. 음, 저희가 <span class="interim">새로 바꾼 공정은</span></p>
+            </div>
+            <div class="stack" style="align-items:center"><button class="mic is-listening" aria-label="녹음 끝내기"><i data-lucide="square"></i></button><span class="mic-cap">다 말했어요</span></div>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.8"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F3-04 · F3-05 ───────────── -->
+<section class="flow">
+  <header><h2>F3-04 결과 · F3-05 비교</h2><p>F3-04: 지표 넷 (Manrope). 가장 아쉬운 지표 하나만 빛으로 표시하고 그 지표에 대한 팁 한 줄. F3-05: 2회차를 마치면 바뀐 값이 숫자 롤링으로 내려앉는다 (Manrope tabular, 자릿수마다 30ms stagger, transform만). 칭찬은 근거 있는 한 줄. 짧은 성취음.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F3-04</b>Portrait <span class="tag">P1</span> · 군말이 가장 아쉬운 지표</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-04" data-o="p" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">첫 번째 리허설</h2>
+          <div class="metrics" style="margin-top:48px">
+            <div class="metric"><span class="lab">말한 시간</span><span class="val">72<small>초</small></span></div>
+            <div class="metric"><span class="lab">키워드</span><span class="val">2/3</span></div>
+            <div class="metric weak"><span class="lab">군말</span><span class="val">4<small>회</small></span></div>
+            <div class="metric"><span class="lab">속도</span><span class="val" style="font:700 var(--type-title-sub-size)/1.6 var(--font-ui);letter-spacing:0">조금 빨라요</span></div>
+          </div>
+          <div class="card tip" style="margin-top:40px"><i data-lucide="lightbulb"></i><p class="t-body m0">‘음’을 줄이면 더 단단하게 들려요</p></div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">한 번 더</button>
+            <div class="subs"><button class="btn btn-m">괜찮아요</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘한 번 더’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.66"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-04</b>Landscape <span class="tag">P1</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-04" data-o="l" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q" style="margin-top:32px">첫 번째 리허설</h2>
+          <div class="row" style="gap:96px;margin-top:56px">
+            <div class="metric"><span class="lab">말한 시간</span><span class="val">72<small>초</small></span></div>
+            <div class="metric"><span class="lab">키워드</span><span class="val">2/3</span></div>
+            <div class="metric weak"><span class="lab">군말</span><span class="val">4<small>회</small></span></div>
+            <div class="metric"><span class="lab">속도</span><span class="val" style="font:700 var(--type-title-sub-size)/1.6 var(--font-ui);letter-spacing:0">조금 빨라요</span></div>
+          </div>
+          <div class="card tip" style="margin-top:48px;width:900px"><i data-lucide="lightbulb"></i><p class="t-body m0">‘음’을 줄이면 더 단단하게 들려요</p></div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">한 번 더</button>
+            <div class="subs"><button class="btn btn-m">괜찮아요</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘한 번 더’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.66"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F3-05</b>Portrait <span class="tag">P1</span> · 숫자가 내려앉은 뒤</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-05" data-o="p" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">두 번 만에<br>14초 줄였어요</h2>
+          <div class="cmp" style="margin-top:56px">
+            <div class="row"><span class="lab">말한 시간</span><span class="was">72</span><i data-lucide="arrow-right"></i><span class="now n-l roll">58<small>초</small></span></div>
+            <div class="row"><span class="lab">군말</span><span class="was">4</span><i data-lucide="arrow-right"></i><span class="now n-l roll" style="animation-delay:60ms">1<small>회</small></span></div>
+            <div class="row"><span class="lab">키워드</span><span class="was">2/3</span><i data-lucide="arrow-right"></i><span class="now n-l roll" style="animation-delay:120ms">3/3</span></div>
+          </div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">다음</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘다음’이라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.46"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-05</b>Landscape <span class="tag">P1</span> · 칭찬은 왼쪽, 변화량은 오른쪽에 크게</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-05" data-o="l" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div style="display:grid;grid-template-columns:640px 1fr;gap:96px;flex:1;align-items:center">
+            <h2 class="t-display m0">두 번 만에<br>14초 줄였어요</h2>
+            <div class="cmp">
+              <div class="row"><span class="lab">말한 시간</span><span class="was">72</span><i data-lucide="arrow-right"></i><span class="now n-l roll">58<small>초</small></span></div>
+              <div class="row"><span class="lab">군말</span><span class="was">4</span><i data-lucide="arrow-right"></i><span class="now n-l roll" style="animation-delay:60ms">1<small>회</small></span></div>
+              <div class="row"><span class="lab">키워드</span><span class="was">2/3</span><i data-lucide="arrow-right"></i><span class="now n-l roll" style="animation-delay:120ms">3/3</span></div>
+            </div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">다음</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘다음’이라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.46"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F3-06 · F3-07 ───────────── -->
+<section class="flow">
+  <header><h2>F3-06 예상 질문 · F3-07 파워 업 (1분)</h2><p>F3-06: 질문 카드 한 장을 음성으로 읽어 준다. 답해 보면 시간만 알려 준다. F3-07: 화면에는 첫 문장 하나만 크게. 위에 작게 "긴장이 아니라 설렘이에요". 저음이 강한 파워 송, 앰비언트가 쿨 화이트에서 '단호한 나'로 바뀌고 비트에 맞춰 아주 약하게 맥동한다 (틈 라이트도 같은 박자, opacity만). 음성 "첫 문장만 기억하세요."</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F3-06</b>Portrait <span class="tag">P1</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-06" data-o="p" data-theme="dark" data-mask="focus">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <p class="t-label ink-3 m0" style="margin-top:40px">김 팀장이 물을 수도 있어요</p>
+          <div class="session-body" style="justify-content:center">
+            <div class="letter"><div class="date"><i data-lucide="message-circle-question"></i>예상 질문</div><p class="t-display m0">가장 큰 차별점이<br>뭐예요?</p></div>
+            <p class="say"><i data-lucide="volume-2"></i>질문을 읽어 드렸어요</p>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">답해보기</button>
+            <button class="text-btn is-quiet" style="align-self:center">건너뛰기</button>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.36"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-06</b>Landscape <span class="tag">P1</span> · 질문 카드는 운전석 쪽, 오른쪽은 집중 모드의 쿨 화이트 빛</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-06" data-o="l" data-theme="dark" data-mask="focus">
+        <div class="seam" style="--ap:4;--sh:70%;--sx:1280px;--glow-o:.3"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center;width:820px">
+            <p class="t-label ink-3 m0" style="margin-bottom:24px">김 팀장이 물을 수도 있어요</p>
+            <div class="letter"><div class="date"><i data-lucide="message-circle-question"></i>예상 질문</div><p class="t-display m0">가장 큰 차별점이 뭐예요?</p></div>
+            <p class="say"><i data-lucide="volume-2"></i>질문을 읽어 드렸어요</p>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">답해보기</button>
+            <div class="subs"><button class="text-btn is-quiet">건너뛰기</button></div>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.36"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F3-07</b>Portrait <span class="tag">P1</span> · 빛이 '단호한 나'로 돌아왔다</figcaption>
+      <div class="fz"><article class="frame is-live" data-screen="F3-07" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam pulse" style="--ap:12;--sh:40%;--sy:26%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center">
+            <p class="t-label ink-2 m0">긴장이 아니라 설렘이에요</p>
+            <p class="v-xl m0 first-line">오늘은 납기를 2주 줄일 방법을 들고 왔습니다.</p>
+            <p class="say" style="margin-top:40px"><i data-lucide="mic"></i>소리 내 한 번 따라 말해 보세요</p>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">다녀오기</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘다녀오기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.1"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-07</b>Landscape <span class="tag">P1</span> · 문장은 왼쪽 넓게, 틈은 오른쪽에서 맥동</figcaption>
+      <div class="fz"><article class="frame is-live" data-screen="F3-07" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="seam pulse" style="--ap:12;--sx:1340px"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center;width:1060px">
+            <p class="t-label ink-2 m0">긴장이 아니라 설렘이에요</p>
+            <p class="v-xl m0 first-line">오늘은 납기를 2주 줄일 방법을 들고 왔습니다.</p>
+            <p class="say" style="margin-top:40px"><i data-lucide="mic"></i>소리 내 한 번 따라 말해 보세요</p>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">다녀오기</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘다녀오기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.1"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F3-08 ───────────── -->
+<section class="flow">
+  <header><h2>F3-08 다녀온 뒤</h2><p>미팅이 끝날 것으로 예상되는 시각 이후 첫 정차 때 한 번만. 답이 없으면 사라진다. 버튼 셋은 무게가 같다 (Toggle L). 한 줄 음성 메모는 선택. 고르면 저장 → H-01, 저녁 F4-03 타임라인에 "잘 됐어요"로 다시 나온다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F3-08</b>Portrait <span class="tag">P1</span> · 17:05 재탑승</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-08" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:4;--sh:50%;--sy:30%;--glow-o:.4"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="top:60%">
+          <div class="kicker"><i data-lucide="presentation"></i>A사 신제품 제안 미팅 · 16:00</div>
+          <h2 class="name" style="margin-top:24px">미팅 어땠어요?</h2>
+          <div class="stack gap-16" style="margin-top:40px">
+            <button class="btn btn-l is-on sel">잘 됐어요</button><button class="btn btn-l">그럭저럭</button><button class="btn btn-l">힘들었어요</button>
+          </div>
+          <button class="btn btn-m btn-wide" style="margin-top:24px"><i data-lucide="mic"></i>한 줄 남기기</button>
+          <p class="voice-hint m0" style="margin-top:16px"><i data-lucide="mic"></i>‘잘 됐어요’라고 말해도 돼요</p>
+        </section>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F3-08</b>Landscape <span class="tag">P1</span> · 버튼 셋은 한 줄에 같은 무게로</figcaption>
+      <div class="fz"><article class="frame" data-screen="F3-08" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:4;--sh:80%;--sx:1240px;--glow-o:.4"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="left:452px">
+          <div class="kicker"><i data-lucide="presentation"></i>A사 신제품 제안 미팅 · 16:00</div>
+          <h2 class="name" style="margin-top:24px">미팅 어땠어요?</h2>
+          <div class="toggle3" style="margin-top:40px"><button class="btn btn-l is-on">잘 됐어요</button><button class="btn btn-l">그럭저럭</button><button class="btn btn-l">힘들었어요</button></div>
+          <button class="btn btn-m btn-wide" style="margin-top:24px"><i data-lucide="mic"></i>한 줄 남기기</button>
+          <p class="voice-hint m0" style="margin-top:16px"><i data-lucide="mic"></i>‘잘 됐어요’라고 말해도 돼요</p>
+        </section>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

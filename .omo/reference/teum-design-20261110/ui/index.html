@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · 개요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<section class="intro">
+  <p class="kicker">현대 Pleos Connect 차량 앱 공모전 · 하이파이 UI</p>
+  <h2>틈틈 — 바쁜 하루 사이, 나를 위한 틈</h2>
+  <p class="lede">사회적 가면을 쓰고 벗는 직장인을 위해, 차 안의 5~30분 짜투리 시간을 준비·회복·위로의 작은 성취로 바꾸는 앱. 하루 네 번, 정차한 차가 먼저 틈을 찾아 연다. 화면에서는 세로로 빛이 새어 나오는 <b>틈 라이트</b> 하나만 대담하게 쓰고, 감동은 캐빈(시트·조명·바람)이 만든다.</p>
+  <dl class="spec">
+    <div><dt>디스플레이</dt><dd>Connect-S 17″ · 2560×1440 · 160dpi · 1px = 1dp</dd></div>
+    <div><dt>앱 창</dt><dd>Portrait 840×1184 (기본, 핵심 완결)<br>Landscape 1700×1184 (확장)</dd></div>
+    <div><dt>컴포넌트</dt><dd>Pleos 규격 그대로 — 주 버튼 L 100 / r32, 보조 M 80 / r24, 최소 터치 S 64</dd></div>
+    <div><dt>서체</dt><dd>Asta Sans (UI) · Manrope (큰 숫자) · MaruBuri (다짐·편지)</dd></div>
+    <div><dt>하루</dt><dd>F1 가면 쓰기 08:40 · F2 리차지 12:35 · F3 리허설 15:40 · F4 가면 벗기 19:10</dd></div>
+  </dl>
+</section>
+
+<section class="flow">
+  <header><h2>보드</h2><p>보드 위 배율 버튼으로 화면 크기를 바꾼다. 주소에 <code>?f=H-01</code>을 붙이면 그 화면만, <code>?z=1</code>은 원래 크기(1px = 1dp).</p></header>
+  <ol class="board-index">
+    <li><a href="components.html"><b>컴포넌트</b><span>Pleos 컴포넌트 시트와 틈틈 브랜드 층. 다크·라이트</span></a></li>
+    <li><a href="key-8.html"><b>우선 시안 8</b><span>H-01 · M-01 · F1-03 · F1-05 · F2-04 · F2-06 · F4-03 · F4-05</span></a></li>
+    <li><a href="home.html"><b>홈</b><span>H-01 상태 변형, H-02 주행 중, H-03 컴팩트, 라이트 테마</span></a></li>
+    <li><a href="session.html"><b>세션 공통</b><span>M-01 변형 넷, C-01 ~ C-04, T-01</span></a></li>
+    <li><a href="f1.html"><b>F1 가면 쓰기</b><span>출근 직후 7분 · F1-01 ~ F1-06</span></a></li>
+    <li><a href="f2.html"><b>F2 리차지</b><span>점심 직후 20분 · F2-01 ~ F2-07a</span></a></li>
+    <li><a href="f3.html"><b>F3 리허설</b><span>중요한 순간 직전 10분 · F3-00 ~ F3-08</span></a></li>
+    <li><a href="f4.html"><b>F4 가면 벗기</b><span>귀가 직전 10분 · V-01, F4-01 ~ F4-06</span></a></li>
+    <li><a href="q1-system.html"><b>Q1 · 예외</b><span>3분 리셋, I-01 ~ I-03</span></a></li>
+    <li><a href="onboarding.html"><b>온보딩</b><span>ON-01 ~ ON-08</span></a></li>
+    <li><a href="records-settings.html"><b>기록 · 설정</b><span>R-01 ~ R-03, ST-01 ~ ST-08</span></a></li>
+    <li><a href="display.html"><b>17″ 화면 맥락</b><span>2560×1440 전체 화면에서 1:1 분할과 2:0</span></a></li>
+  </ol>
+</section>
+
+<section class="flow">
+  <header><h2>대표 화면</h2><p>아침의 홈, 차가 먼저 여는 모먼트 카드, 빛의 색으로 고르는 오늘의 가면. 모두 Portrait 840×1184.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>H-01</b>Portrait 840×1184 <span class="tag">P0</span> · 점심 전, 다음 틈 = 리차지</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="p" data-theme="dark" data-mask="firm">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">점심 잘 먹었어요?</h2>
+          <button class="today-chip" style="margin-top:24px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+          <section class="card rec" style="margin-top:16px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <div class="row"><h3 class="t-sub m0">점심 리차지</h3><span class="t-label ink-3" style="margin-left:auto">다음 틈 · 12:35</span></div>
+            <p class="t-body ink-2 m0" style="margin-top:8px">점심 먹고 오면 20분 잘 수 있어요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">3분 리셋</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41</span><span class="what">가면 쓰기<small>단호한 나 · 7분</small></span></li>
+            <li class="tl-i now"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35</span><span class="what">리차지 예정<small>20분 잘 수 있어요</small></span><span class="end">다음</span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="mic"></i></span><span class="when">16:00</span><span class="what">중요한 순간<small>A사 신제품 제안 미팅</small></span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="house"></i></span><span class="when">저녁</span><span class="what">가면 벗기<small>집에 도착하면</small></span></li>
+          </ol>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>M-01</b>F1 변형 · Portrait <span class="tag">P0</span> · 08:40 회사 도착</figcaption>
+      <div class="fz"><article class="frame" data-screen="M-01" data-o="p" data-theme="dark">
+        <div class="seam" style="--ap:28;--sh:80%;--sy:40%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment enter" style="top:61%">
+          <div class="kicker"><i data-lucide="map-pin"></i>회사 도착 · 08:40</div>
+          <div class="head"><h2 class="name">가면 쓰기</h2><span class="len n-l">7<small>분</small></span></div>
+          <p class="sub">출근까지 20분 남았어요</p>
+          <div class="acts">
+            <button class="btn btn-l btn-primary btn-wide">시작</button>
+            <div class="subs"><button class="btn btn-m">3분만</button><button class="btn btn-m">오늘은 패스</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘시작’이라고 말해도 돼요</p>
+          </div>
+        </section>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F1-05</b>Portrait <span class="tag">P0</span> · '단호한 나'가 가운데. Indicator 5점.</figcaption>
+      <div class="fz"><article class="frame" data-screen="F1-05" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sy:55%;--glow-o:.55"><div class="seam__spill"></div><div class="seam__glow"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q" style="margin-top:40px">오늘 회사에서<br>어떤 나로 있을까요?</h2>
+          <div class="carousel" style="margin-top:56px">
+            <div class="mask-card m-calm" style="--x:-372px;--s:.86;--o:.4"><div class="mini"></div><div class="nm"><span class="swatch"></span>차분한 나</div><p class="ds m0">긴장되는 회의가 있는 날</p></div>
+            <div class="mask-card m-warm" style="--x:372px;--s:.86;--o:.4"><div class="mini"></div><div class="nm"><span class="swatch"></span>다정한 나</div><p class="ds m0">사람을 많이 만나는 날</p></div>
+            <div class="mask-card m-firm"><div class="mini"></div><div class="nm"><span class="swatch"></span>단호한 나</div><p class="ds m0">거절하거나 협상해야 하는 날</p></div>
+          </div>
+          <div class="row" style="justify-content:center;margin-top:32px"><span class="dots"><i></i><i class="now"></i><i></i><i></i><i></i></span></div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">이 가면으로</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘단호한 나’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.36"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

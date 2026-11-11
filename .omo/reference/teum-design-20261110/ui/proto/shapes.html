@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>틈틈 그래픽 모음</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@400..700&display=swap">
+<style>
+  body { margin: 0; font: 14px 'Asta Sans', sans-serif; --lime: #D9F25E; }
+  .sheet { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 24px; }
+  .sheet.light { background: #ECE7DF; color: #1B1714; } .sheet.dark { background: #131110; color: #F6F1E9; }
+  figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  figcaption { opacity: .6; }
+  .shape { overflow: visible; }
+</style></head>
+<body>
+<div class="sheet light" id="a"></div><div class="sheet dark" id="b"></div>
+<script src="shapes.js"></script>
+<script>
+  const list = [['arch', 'sunrise', '아침 준비'], ['pill', 'dusk', '점심 낮잠'], ['tri', 'coral', '마음 준비'], ['venn', 'ember', '하루 마무리'], ['amoeba', 'rose', '숨 고르기'],
+    ['orb', 'calm', '차분하게'], ['tile', 'firm', '단호하게'], ['amoeba', 'warm', '다정하게'], ['target', 'focus', '집중해서'], ['cluster', 'flex', '유연하게'],
+    ['halo', 'coral', '내 응원곡'], ['bands', 'calm', '파도'], ['drop', 'firm', '모닥불'], ['ring', 'warm', '싱잉볼'], ['gust', 'mist', '바람'], ['orb', 'night', '잠'], ['amoeba', 'rose', '물 질감', { liquid: true }]];
+  const art = ['work', 'home'].map(k => `<figure><div style="width:220px;height:165px;border-radius:24px;overflow:hidden">${PLACEART(k)}</div><figcaption>${k}</figcaption></figure>`).join('');
+  a.innerHTML = list.map(([k, p, n, o]) => `<figure>${SHAPE(k, p, 220, o)}<figcaption>${n} · ${k}</figcaption></figure>`).join('') + art;
+  b.innerHTML = list.map(([k, p, n, o]) => `<figure>${SHAPE(k, p, 220, o)}<figcaption>${n}</figcaption></figure>`).join('');
+</script>
+</body></html>

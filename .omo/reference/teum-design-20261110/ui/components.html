@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · 컴포넌트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<section class="flow">
+  <header><h2>컴포넌트 시트</h2><p>손으로 만지는 것은 모두 Pleos Connect-S 규격 (07-PLEOS-FOUNDATION §8)을 그대로 쓴다. 틈틈 브랜드 층은 빛(--light-current)과 틈 라이트, MaruBuri 목소리 서체만 얹는다. 같은 시트를 다크(세션·기본)와 라이트(홈·기록·설정의 낮 모드) 두 테마로 보여 준다. 그날의 가면은 '단호한 나'.</p></header>
+  <div class="shots" id="sheets">
+    <figure class="shot l"><figcaption><b>다크</b>Pleos dark 시맨틱 토큰 · 세션 화면은 항상 다크</figcaption>
+      <div class="fz"><article class="frame sheet" data-screen="components-dark" data-o="l" data-theme="dark" data-mask="firm">
+
+        <section class="grp first">
+          <h3>Basic button</h3>
+          <div class="cells">
+            <div class="cell"><button class="btn btn-l btn-primary">시작</button><span class="lab">L 주 버튼 · 100 / r32 · 패딩 40 · 빛 배경</span></div>
+            <div class="cell"><button class="btn btn-l btn-primary is-pressed">시작</button><span class="lab">L 눌림 · scale .97 · 명도 −8%</span></div>
+            <div class="cell"><button class="btn btn-l">해냈어요</button><span class="lab">L Basic</span></div>
+            <div class="cell"><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button><span class="lab">M 보조 · 80 / r24 · 아이콘 40</span></div>
+            <div class="cell"><button class="btn btn-m is-pressed">3분만</button><span class="lab">M 눌림 · 흰색 10%</span></div>
+            <div class="cell"><button class="btn btn-s">빗소리</button><span class="lab">S · 64 / r16</span></div>
+            <div class="cell"><button class="btn btn-l" disabled>저장</button><span class="lab">비활성</span></div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>Text · Icon button</h3>
+          <div class="cells">
+            <div class="cell"><button class="text-btn">끝내기<i data-lucide="x"></i></button><span class="lab">Text M · 아이콘 32 · 간격 8 · 터치 64</span></div>
+            <div class="cell"><button class="text-btn is-quiet">건너뛰기</button><span class="lab">Text 낮은 무게 (셋째 보조)</span></div>
+            <div class="cell"><button class="icon-btn" aria-label="뒤로"><i data-lucide="chevron-left"></i></button><span class="lab">Icon M Plain · 80</span></div>
+            <div class="cell"><button class="icon-btn basic" aria-label="재생"><i data-lucide="play"></i></button><span class="lab">Icon M Basic · r20</span></div>
+            <div class="cell"><button class="icon-btn s basic circle" aria-label="닫기"><i data-lucide="x"></i></button><span class="lab">Icon S Circle · 64</span></div>
+            <div class="cell"><span class="row gap-8"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span><span class="lab">아이콘 + 라벨 (Page nav Suffix)</span></div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>Toggle · Chip · ChoiceCard</h3>
+          <div class="cells">
+            <div class="cell"><span class="row gap-12"><button class="chip m-calm"><span class="dot"></span>차분</button><button class="chip m-firm is-on"><span class="dot"></span>단호</button><button class="chip"><i data-lucide="cloud-rain"></i>빗소리</button></span><span class="lab">Chip (Toggle S) · 64 / r16 · 켜짐 = 테두리 3 빛</span></div>
+            <div class="cell" style="width:520px"><button class="choice is-on">긴장돼요</button><span class="lab">ChoiceCard (Toggle L 확장) · 최소 160 / r32 · 켜짐 테두리 4</span></div>
+            <div class="cell" style="width:520px"><button class="choice">괜찮아요</button><span class="lab">ChoiceCard 꺼짐</span></div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>Tabs · Switch · Check · Radio · Indicator</h3>
+          <div class="cells">
+            <div class="cell"><div class="tabs"><button>10분</button><button>15분</button><button class="is-on">20분</button></div><span class="lab">Tabs Solid M · 80 / r24 · 탭 64</span></div>
+            <div class="cell"><span class="row gap-16"><span class="switch is-on"></span><span class="switch"></span></span><span class="lab">Switch M · 폭 80 · 손잡이 32</span></div>
+            <div class="cell"><span class="row gap-16"><span class="check is-on"><i data-lucide="check"></i></span><span class="check"></span></span><span class="lab">Checkbox</span></div>
+            <div class="cell"><span class="row gap-16"><span class="radio is-on"></span><span class="radio"></span></span><span class="lab">Radio</span></div>
+            <div class="cell"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><span class="lab">Indicator Narrow · 점 10 · 현재 28</span></div>
+            <div class="cell" style="width:320px"><div class="loader"></div><span class="lab">Linear 로더 (0.25초 넘는 대기)</span></div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>Stepper · Spinner</h3>
+          <div class="cells">
+            <div class="cell"><div class="stepper"><button aria-label="덜 젖히기"><i data-lucide="minus"></i></button><span class="val">3분</span><button aria-label="더 젖히기"><i data-lucide="plus"></i></button></div><span class="lab">Stepper · 420 × 100 / r24</span></div>
+            <div class="cell"><div class="spinner"><div class="col"><span>08</span><span class="is-on">09</span><span>10</span></div><span class="sep">:</span><div class="col"><span>55</span><span class="is-on">00</span><span>05</span></div></div><span class="lab">Spinner Time · 항목 88 · 패널 288 / r32</span></div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>Page navigation · List</h3>
+          <div class="cells">
+            <div class="cell" style="width:740px">
+              <div class="pad-box"><nav class="pagenav" style="margin:0"><span class="app-icon"><i></i></span><span class="title">틈틈</span><span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav></div>
+              <div class="pad-box"><nav class="pagenav" style="margin:0"><button class="icon-btn back" aria-label="뒤로"><i data-lucide="chevron-left"></i></button><span class="title">이번 주</span></nav></div>
+              <span class="lab">Main (앱 아이콘 80 / r20) · Depth (뒤로 56) · 높이 80</span>
+            </div>
+            <div class="cell" style="width:740px">
+              <div class="list">
+                <div class="li"><span class="ico"><i data-lucide="armchair"></i></span><span class="txt"><b>휴식 등받이 각도</b><span>128° · 정차 중에만 맞출 수 있어요</span></span><span class="end">바꾸기<i data-lucide="chevron-right"></i></span></div>
+                <div class="li"><span class="ico"><i data-lucide="volume-2"></i></span><span class="txt"><b>음성 안내</b></span><span class="switch is-on"></span></div>
+              </div>
+              <span class="lab">Vehicle settings list · 항목 112 · 아이콘 컨테이너 80 / r24 · 리스트 r32</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>System popup · Toast</h3>
+          <div class="cells">
+            <div class="cell"><div class="demo-box" style="width:900px;height:560px">
+              <div class="scrim"></div>
+              <div class="popup"><h3 class="ttl">지금 끝낼까요?</h3><p class="desc">차를 원래대로 돌려놓을게요</p><div class="acts"><button class="btn btn-m">계속하기</button><button class="btn btn-m btn-filled">끝내기</button></div></div>
+            </div><span class="lab">System popup M · 808 / r48 · 패딩 48 · level3 · 버튼 Horizontal</span></div>
+            <div class="cell"><div class="demo-box" style="width:900px;height:200px">
+              <div class="toast"><i data-lucide="stamp"></i>가면 쓰기 완료<small>연속 4일</small></div>
+            </div><span class="lab">Toast · 최대 792 · 패딩 24 × 40 / r16 · 아이콘 48 · 하단 24 · 3초</span></div>
+          </div>
+        </section>
+
+        <section class="grp brand">
+          <h3>틈틈 브랜드 층</h3>
+          <div class="cells">
+            <div class="cell"><div class="demo-box seam-demo"><div class="seam" style="--ap:2;--k:1;--sh:80%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div></div><span class="lab">틈 라이트 · 닫힘 2px</span></div>
+            <div class="cell"><div class="demo-box seam-demo"><div class="seam" style="--ap:12;--k:1;--sh:80%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div></div><span class="lab">열림 12px</span></div>
+            <div class="cell"><div class="demo-box seam-demo is-live"><div class="seam is-breathing" style="--k:1;--sh:80%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div></div><span class="lab">호흡 2 → 28px · 9초</span></div>
+            <div class="cell"><div class="demo-box seam-demo" data-light="sleep"><div class="seam" style="--ap:1;--k:1;--sh:6%;--glow-o:.4"><div class="seam__spill" style="opacity:.3"></div><div class="seam__glow"></div><div class="seam__core"></div></div></div><span class="lab">수면 점 · 딥 나이트</span></div>
+            <div class="cell"><div class="demo-box" style="width:420px;height:300px"><div class="edge" style="--remain:.62"><div class="track"></div></div></div><span class="lab">엣지 라이트 · 3px + 위로 12 글로우 · 남은 시간</span></div>
+          </div>
+          <div class="cells" style="margin-top:48px">
+            <div class="cell" style="align-items:center"><button class="mic" aria-label="말하기"><i data-lucide="mic"></i></button><span class="lab">마이크 · 지름 160 · 아이콘 56</span></div>
+            <div class="cell" style="align-items:center"><button class="mic is-listening" aria-label="듣는 중"><i data-lucide="mic"></i></button><span class="lab">듣는 중 · 링이 소리 크기에 반응</span></div>
+            <div class="cell"><div class="wave" style="--n:0"><i style="--h:18"></i><i style="--h:34"></i><i style="--h:52"></i><i style="--h:28"></i><i style="--h:60"></i><i style="--h:40"></i><i style="--h:22"></i><i style="--h:46"></i><i style="--h:30"></i><i class="off" style="--h:16"></i><i class="off" style="--h:26"></i><i class="off" style="--h:12"></i></div><span class="lab">파형 · 재생 위치까지 빛</span></div>
+            <div class="cell" style="width:560px"><p class="transcript m0">오늘은 <span class="kw">기획안 초안</span>을 끝내고 <span class="interim">점심 전에 보내기</span></p><span class="lab">받아쓰기 · body.lead · 중간 결과 tertiary · 키워드 빛 밑줄</span></div>
+          </div>
+          <div class="cells" style="margin-top:48px">
+            <div class="cell" style="width:620px"><div class="letter"><div class="date"><i data-lucide="moon"></i>11월 12일 수요일 밤</div><p class="v-l m0">내일은 회의가 길 거야. 그래도 넌 어제보다 덜 떨 거야.</p></div><span class="lab">편지 카드 · r32 · 패딩 48 · MaruBuri</span></div>
+            <div class="cell" style="width:640px"><ol class="tl">
+              <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41</span><span class="what">완료<small>가면 색으로 채움</small></span></li>
+              <li class="tl-i now"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35</span><span class="what">지금 · 다음<small>빛 링</small></span></li>
+              <li class="tl-i skip"><span class="mk"><i data-lucide="minus"></i></span><span class="when">16:00</span><span class="what">건너뜀</span></li>
+              <li class="tl-i na"><span class="mk"></span><span class="when">저녁</span><span class="what">해당 없음</span></li>
+            </ol><span class="lab">오늘의 틈 타임라인 · 칸 112 · 4상태</span></div>
+            <div class="cell"><div class="week">
+              <div class="d m-calm"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><span>월</span></div>
+              <div class="d m-warm"><div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div><span>화</span></div>
+              <div class="d m-flex"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div><span>수</span></div>
+              <div class="d today m-firm"><div class="bars"><i class="on"></i><i></i><i></i><i></i></div><span>목</span></div>
+              <div class="d"><div class="bars"><i></i><i></i><i></i><i></i></div><span>금</span></div>
+            </div><span class="lab">주간 스탬프 · 칸 80 · 하루 0~4</span></div>
+          </div>
+          <div class="cells" style="margin-top:48px">
+            <div class="cell"><div class="row gap-24" style="align-items:flex-end">
+              <div class="mask-card m-firm" style="transform:scale(.62);transform-origin:left bottom;margin-right:-136px;margin-top:-198px"><div class="mini"></div><div class="nm"><span class="swatch"></span>단호한 나</div><p class="ds m0">거절하거나 협상해야 하는 날</p></div>
+              <div class="palette">
+                <span class="pc m-calm"><span class="swatch"></span>차분한 나<small>mask.calm</small></span>
+                <span class="pc m-firm"><span class="swatch"></span>단호한 나<small>mask.firm</small></span>
+                <span class="pc m-warm"><span class="swatch"></span>다정한 나<small>mask.warm</small></span>
+                <span class="pc m-focus"><span class="swatch"></span>집중하는 나<small>mask.focus</small></span>
+                <span class="pc m-flex"><span class="swatch"></span>유연한 나<small>mask.flex</small></span>
+                <span class="pc l-moon"><span class="swatch"></span>문라이트<small>light.moon · 가면 전</small></span>
+                <span class="pc l-amber"><span class="swatch"></span>앰버<small>light.amber · 저녁·기상</small></span>
+                <span class="pc l-sleep"><span class="swatch"></span>딥 나이트<small>light.sleep · 수면</small></span>
+              </div>
+            </div><span class="lab">가면은 얼굴이 아니라 빛의 색 · 카드 360 × 520 / r32 · 이름과 한 줄 설명을 항상 함께</span></div>
+            <div class="cell"><button class="today-chip" style="width:620px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button><span class="lab">오늘의 카드 칩 · 80 / r24</span></div>
+          </div>
+        </section>
+
+        <section class="grp">
+          <h3>타입 스케일</h3>
+          <div class="types">
+            <div><span class="lab">num.hero · Manrope 300</span><span class="n-hero">20<small class="t-sub ink-2" style="letter-spacing:0;margin-left:6px">분</small></span></div>
+            <div><span class="lab">num.l · Manrope 300</span><span class="n-l">72초</span></div>
+            <div><span class="lab">display 48 · Bold</span><span class="t-display">지금 마음은 어때요?</span></div>
+            <div><span class="lab">title</span><span class="t-title">점심 잘 먹었어요?</span></div>
+            <div><span class="lab">title.sub</span><span class="t-sub">오늘의 틈</span></div>
+            <div><span class="lab">body.lead</span><span class="t-lead">점심 먹고 오면 20분 잘 수 있어요</span></div>
+            <div><span class="lab">body</span><span class="t-body">출근까지 20분 남았어요</span></div>
+            <div><span class="lab">label</span><span class="t-label ink-3">다음 틈 · 12:35</span></div>
+            <div><span class="lab">label.min</span><span class="t-cap ink-3">11월 13일 목요일</span></div>
+            <div><span class="lab">voice.xl · MaruBuri</span><span class="v-xl">기획안 초안 끝내기</span></div>
+          </div>
+        </section>
+
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+<script>
+  // 같은 시트를 라이트 테마로 한 벌 더 (lucide가 바꾸기 전에 복제)
+  (() => {
+    const dark = document.querySelector('#sheets .shot');
+    const light = dark.cloneNode(true);
+    light.querySelector('figcaption').innerHTML = '<b>라이트</b>Pleos light 시맨틱 토큰 · 홈·기록·설정 낮 모드. 강조 선·글자는 빛과 잉크를 섞어 대비 4.5:1을 지킨다';
+    const f = light.querySelector('.frame');
+    f.dataset.theme = 'light'; f.dataset.screen = 'components-light';
+    dark.after(light);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · 온보딩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<section class="flow">
+  <header><h2>온보딩 · 처음 한 번</h2><p>ON-01 인트로 → ON-02 컨셉 3장 → ON-03 권한 → ON-04 장소 → ON-05 기준 시각 → ON-06 휴식 자세 → ON-07 소리·음성 → ON-08 완료. 설정 단계 (ON-03 ~ ON-07)는 위에 단계 점 다섯. 도중에 차가 출발하면 진행 상태를 저장하고 H-02로 갔다가, 다음 정차 때 멈춘 단계부터 이어서 보여 준다. 빛은 문라이트.</p></header>
+</section>
+
+<!-- ───────────── ON-01 ───────────── -->
+<section class="flow">
+  <header><h2>ON-01 인트로</h2><p>화면 가운데 틈 라이트가 천천히 열리며 (900ms) 로고가 나타난다. 앰비언트가 쿨 화이트 30%로 페이드 인. 이 앱의 첫인상은 틈 하나.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>ON-01</b>Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-01" data-o="p" data-theme="dark">
+        <div class="seam" style="--ap:16;--sh:44%;--sy:26%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session" style="padding-top:72px">
+          <div class="session-body"></div>
+          <div class="stack enter" style="align-items:center;text-align:center">
+            <span class="app-icon xl"><i></i></span>
+            <p class="t-title m0" style="margin-top:32px">틈틈</p>
+            <p class="v-xl m0" style="margin-top:24px">바쁜 하루 사이,<br>나를 위한 틈</p>
+          </div>
+          <div class="session-foot" style="margin-top:80px"><button class="btn btn-l btn-primary btn-wide">시작하기</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-01</b>Landscape <span class="tag">P0</span> · 틈은 오른쪽, 로고와 버튼은 왼쪽</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-01" data-o="l" data-theme="dark">
+        <div class="seam" style="--ap:16;--sh:84%;--sx:1200px"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session" style="padding-left:96px">
+          <div class="session-body" style="justify-content:center">
+            <span class="app-icon xl"><i></i></span>
+            <p class="t-title m0" style="margin-top:32px">틈틈</p>
+            <p class="v-xl m0" style="margin-top:24px">바쁜 하루 사이, 나를 위한 틈</p>
+            <button class="btn btn-l btn-primary" style="margin-top:72px;align-self:flex-start;min-width:360px">시작하기</button>
+          </div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── ON-02 ───────────── -->
+<section class="flow">
+  <header><h2>ON-02 컨셉 소개 3장</h2><p>좌우로 넘기는 세 장. 장마다 그림 하나와 문장 하나. 그림은 모두 틈 라이트의 변주이고 아이콘·카드 반복은 쓰지 않는다. ②에서는 앰비언트가 세 번 색을 바꾸며 미리 보여 준다. [다음] × 3, 언제든 [건너뛰기].</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>ON-02</b>① · Portrait <span class="tag">P0</span> · 하루 네 번의 틈이 시간 위에 놓인다</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-02" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"><button class="text-btn is-quiet">건너뛰기</button></div>
+          <div class="session-body" style="justify-content:center">
+            <div class="day-line"><span style="--x:12%">08:40</span><span style="--x:40%">12:35</span><span style="--x:64%">15:40</span><span style="--x:88%">19:10</span></div>
+          </div>
+          <h2 class="t-display m0">하루 네 번,<br>차가 먼저 틈을 찾아요</h2>
+          <div class="row" style="justify-content:center;margin:48px 0"><span class="dots"><i class="now"></i><i></i><i></i></span></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>ON-02</b>② · Portrait <span class="tag">P0</span> · 미리보기 중 두 번째 색 (앰버). 문라이트 → 앰버 → 딥 나이트</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-02" data-o="p" data-theme="dark" data-light="amber">
+        <div class="seam" style="--ap:20;--sh:56%;--sy:34%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"><button class="text-btn is-quiet">건너뛰기</button></div>
+          <div class="session-body"></div>
+          <div class="cabin-steps" style="margin-bottom:32px"><span class="st done"><i data-lucide="armchair"></i>시트</span><span class="st now"><i data-lucide="lamp"></i>조명</span><span class="st"><i data-lucide="wind"></i>바람</span></div>
+          <h2 class="t-display m0">차가 공간을 바꿔요.<br>시트, 조명, 바람까지</h2>
+          <div class="row" style="justify-content:center;margin:48px 0"><span class="dots"><i class="done"></i><i class="now"></i><i></i></span></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>ON-02</b>③ · Portrait <span class="tag">P0</span> · 짧은 틈이 쌓여 한 주가 된다</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-02" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"><button class="text-btn is-quiet">건너뛰기</button></div>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <div class="week" style="zoom:1.4">
+              <div class="d m-calm"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><span>월</span></div>
+              <div class="d m-warm"><div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div><span>화</span></div>
+              <div class="d m-flex"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div><span>수</span></div>
+              <div class="d m-firm"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><span>목</span></div>
+              <div class="d m-focus"><div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div><span>금</span></div>
+            </div>
+          </div>
+          <h2 class="t-display m0">짧은 틈이 쌓여<br>하루가 내 것이 돼요</h2>
+          <div class="row" style="justify-content:center;margin:48px 0"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i></span></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-02</b>② · Landscape <span class="tag">P0</span> · 문장은 운전석 쪽, 틈은 오른쪽에서 색을 바꾼다</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-02" data-o="l" data-theme="dark" data-light="amber">
+        <div class="seam" style="--ap:20;--sh:80%;--sx:1240px"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"><button class="text-btn is-quiet">건너뛰기</button></div>
+          <div class="session-body" style="justify-content:center">
+            <div class="cabin-steps" style="margin-bottom:32px"><span class="st done"><i data-lucide="armchair"></i>시트</span><span class="st now"><i data-lucide="lamp"></i>조명</span><span class="st"><i data-lucide="wind"></i>바람</span></div>
+            <h2 class="t-display m0">차가 공간을 바꿔요.<br>시트, 조명, 바람까지</h2>
+            <div class="row" style="margin-top:48px"><span class="dots"><i class="done"></i><i class="now"></i><i></i></span></div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── ON-03 ───────────── -->
+<section class="flow">
+  <header><h2>ON-03 권한 안내</h2><p>무엇을 왜 쓰는지 항목마다 한 줄. 시스템 권한 창은 [허용하고 계속] 뒤에 차례로 뜬다. 거부한 항목이 있으면 T-01 "이 기능 없이 진행해요"를 보여 주고 넘어간다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>ON-03</b>Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-03" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span></div>
+          <h2 class="t-display session-q">이렇게 쓸게요</h2>
+          <div class="list" style="margin-top:48px">
+            <div class="li"><span class="ico"><i data-lucide="car-front"></i></span><span class="txt"><b>차량 제어</b><span>쉬는 동안 시트·조명·공조·창문을 맞춰요</span></span></div>
+            <div class="li"><span class="ico"><i data-lucide="mic"></i></span><span class="txt"><b>마이크</b><span>다짐과 회고를 말로 남겨요</span></span></div>
+            <div class="li"><span class="ico"><i data-lucide="map-pin"></i></span><span class="txt"><b>위치</b><span>회사와 집에 도착한 걸 알아요</span></span></div>
+          </div>
+          <p class="t-label ink-3 m0" style="margin-top:24px">말한 내용은 이 차 안에만 저장해요. 설정에서 언제든 지울 수 있어요</p>
+          <div class="session-body"></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">허용하고 계속</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-03</b>Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-03" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span></div>
+          <div style="display:grid;grid-template-columns:560px 1fr;gap:96px;flex:1;align-items:center">
+            <div><h2 class="t-display m0">이렇게 쓸게요</h2><p class="t-label ink-3 m0" style="margin-top:24px">말한 내용은 이 차 안에만 저장해요. 설정에서 언제든 지울 수 있어요</p></div>
+            <div class="list">
+              <div class="li"><span class="ico"><i data-lucide="car-front"></i></span><span class="txt"><b>차량 제어</b><span>쉬는 동안 시트·조명·공조·창문을 맞춰요</span></span></div>
+              <div class="li"><span class="ico"><i data-lucide="mic"></i></span><span class="txt"><b>마이크</b><span>다짐과 회고를 말로 남겨요</span></span></div>
+              <div class="li"><span class="ico"><i data-lucide="map-pin"></i></span><span class="txt"><b>위치</b><span>회사와 집에 도착한 걸 알아요</span></span></div>
+            </div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">허용하고 계속</button></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── ON-04 · ON-05 ───────────── -->
+<section class="flow">
+  <header><h2>ON-04 장소 · ON-05 하루 기준 시각</h2><p>ON-04: 회사 카드와 집 카드, 카드마다 [지금 위치로] · [주소 검색]. 등록하면 주소 한 줄. [나중에]면 장소 기반 제안이 꺼진다. ON-05: 출근 시각 Spinner (Time, 기본 09:00), 점심 복귀 13:00, 걷는 시간 Stepper (3분). Portrait에서는 Spinner를 한 번에 하나만 펼친다 (폭 480 기준). 아래 미리보기 문장이 값에 따라 바로 바뀐다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>ON-04</b>Portrait <span class="tag">P0</span> · 회사는 등록, 집은 아직</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-04" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span></div>
+          <h2 class="t-display session-q">회사와 집을<br>알려 주세요</h2>
+          <div class="stack gap-16" style="margin-top:48px">
+            <section class="card place is-set"><div class="row"><span class="ico"><i data-lucide="building-2"></i></span><div class="grow"><b>회사</b><span>강남구 테헤란로 · 지하 3층 주차장</span></div><span class="ok"><i data-lucide="check"></i></span></div></section>
+            <section class="card place"><div class="row"><span class="ico"><i data-lucide="house"></i></span><div class="grow"><b>집</b><span>도착하면 가면 벗기를 열어요</span></div></div>
+              <div class="row gap-16" style="margin-top:24px"><button class="btn btn-m grow"><i data-lucide="locate-fixed"></i>지금 위치로</button><button class="btn btn-m grow"><i data-lucide="search"></i>주소 검색</button></div></section>
+          </div>
+          <div class="session-body"></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">다음</button><button class="text-btn is-quiet" style="align-self:center">나중에</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-04</b>Landscape <span class="tag">P0</span> · 두 장소 카드를 나란히</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-04" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span></div>
+          <h2 class="t-display session-q" style="margin-top:24px">회사와 집을 알려 주세요</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px;align-items:start">
+            <section class="card place is-set"><div class="row"><span class="ico"><i data-lucide="building-2"></i></span><div class="grow"><b>회사</b><span>강남구 테헤란로 · 지하 3층 주차장</span></div><span class="ok"><i data-lucide="check"></i></span></div></section>
+            <section class="card place"><div class="row"><span class="ico"><i data-lucide="house"></i></span><div class="grow"><b>집</b><span>도착하면 가면 벗기를 열어요</span></div></div>
+              <div class="row gap-16" style="margin-top:24px"><button class="btn btn-m grow"><i data-lucide="locate-fixed"></i>지금 위치로</button><button class="btn btn-m grow"><i data-lucide="search"></i>주소 검색</button></div></section>
+          </div>
+          <div class="session-body"></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">다음</button><div class="subs"><button class="text-btn is-quiet">나중에</button></div></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>ON-05</b>Portrait <span class="tag">P0</span> · 출근 시각을 펼친 상태</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-05" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span></div>
+          <h2 class="t-display session-q">하루의 기준을<br>정해요</h2>
+          <p class="t-label ink-3 m0" style="margin-top:40px">출근 시각</p>
+          <div class="spinner" style="margin-top:12px"><div class="col"><span>08</span><span class="is-on">09</span><span>10</span></div><span class="sep">:</span><div class="col"><span>55</span><span class="is-on">00</span><span>05</span></div></div>
+          <div class="list" style="margin-top:16px">
+            <div class="li"><span class="ico"><i data-lucide="utensils"></i></span><span class="txt"><b>점심 복귀 시각</b></span><span class="end" style="color:var(--teum-ink-primary);font-family:var(--font-num)">13:00<i data-lucide="chevron-down"></i></span></div>
+            </div>
+          <div class="row" style="justify-content:space-between;margin-top:24px"><span class="t-body b">주차장에서 자리까지</span><div class="stepper"><button aria-label="줄이기"><i data-lucide="minus"></i></button><span class="val">3분</span><button aria-label="늘리기"><i data-lucide="plus"></i></button></div></div>
+          <p class="preview"><i data-lucide="clock-3"></i>08:40에 도착하면 가면 쓰기 7분을 열어 드려요</p>
+          <div class="session-body"></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-05</b>Landscape <span class="tag">P0</span> · Spinner 둘을 나란히</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-05" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span></div>
+          <h2 class="t-display session-q" style="margin-top:24px">하루의 기준을 정해요</h2>
+          <div class="row gap-48" style="margin-top:48px;align-items:flex-end">
+            <div><p class="t-label ink-3 m0">출근 시각</p><div class="spinner" style="margin-top:12px"><div class="col"><span>08</span><span class="is-on">09</span><span>10</span></div><span class="sep">:</span><div class="col"><span>55</span><span class="is-on">00</span><span>05</span></div></div></div>
+            <div><p class="t-label ink-3 m0">점심 복귀 시각</p><div class="spinner" style="margin-top:12px"><div class="col"><span>12</span><span class="is-on">13</span><span>14</span></div><span class="sep">:</span><div class="col"><span>55</span><span class="is-on">00</span><span>05</span></div></div></div>
+            <div><p class="t-label ink-3 m0">주차장에서 자리까지</p><div class="stepper" style="margin-top:12px"><button aria-label="줄이기"><i data-lucide="minus"></i></button><span class="val">3분</span><button aria-label="늘리기"><i data-lucide="plus"></i></button></div></div>
+          </div>
+          <p class="preview"><i data-lucide="clock-3"></i>08:40에 도착하면 가면 쓰기 7분을 열어 드려요</p>
+          <div class="session-body"></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── ON-06 · ON-07 ───────────── -->
+<section class="flow">
+  <header><h2>ON-06 휴식 자세 · ON-07 소리·음성</h2><p>ON-06: 시트 옆모습과 지금 등받이 각도. 정차 중에만 움직일 수 있다. [더 젖혀 보기]를 누르면 등받이가 실제로 움직이고 [멈춤]이 보인다. 주행 중이면 "다음 정차 때 맞출게요" 후 자동 통과. ON-07: 사운드 칩 넷과 미리 듣기, 기상송, 음성 안내 토글.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>ON-06</b>Portrait <span class="tag">P0</span> · 정차 중</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-06" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span></div>
+          <h2 class="t-display session-q">쉴 때 자세를<br>저장해 둘게요</h2>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <div class="seat-fig" style="--deg:18deg;zoom:1.1"><div class="arc"></div><div class="base"></div><div class="back"></div><div class="head"></div></div>
+            <p class="n-l m0" style="margin-top:24px">108<small class="t-sub ink-2" style="letter-spacing:0">°</small></p>
+            <div class="row gap-16" style="margin-top:24px"><div class="stepper"><button aria-label="덜 젖히기"><i data-lucide="chevron-up"></i></button><span class="val">더 젖혀 보기</span><button aria-label="더 젖히기"><i data-lucide="chevron-down"></i></button></div></div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">지금 자세로 저장</button><div class="subs"><button class="btn btn-m">기본값 쓰기</button></div></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-06</b>정차 중 · Landscape <span class="tag">P0</span> · 조작은 왼쪽, 시트 그림과 각도는 오른쪽에 크게</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-06" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span></div>
+          <div style="display:grid;grid-template-columns:760px 1fr;gap:48px;flex:1;align-items:center">
+            <div>
+              <h2 class="t-display m0">쉴 때 자세를<br>저장해 둘게요</h2>
+              <p class="t-body ink-3 m0" style="margin-top:16px">정차 중에만 움직여요. 움직이는 동안 [멈춤]이 보여요.</p>
+              <div class="stepper" style="margin-top:40px"><button aria-label="덜 젖히기"><i data-lucide="chevron-up"></i></button><span class="val">더 젖혀 보기</span><button aria-label="더 젖히기"><i data-lucide="chevron-down"></i></button></div>
+            </div>
+            <div class="stack" style="align-items:center">
+              <div class="seat-fig" style="--deg:18deg;zoom:1.4"><div class="arc"></div><div class="base"></div><div class="back"></div><div class="head"></div></div>
+              <p class="n-l m0" style="margin-top:24px">108<small class="t-sub ink-2" style="letter-spacing:0">°</small></p>
+            </div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">지금 자세로 저장</button><div class="subs"><button class="btn btn-m">기본값 쓰기</button></div></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>ON-06</b>주행 중 <span class="tag">P0</span> · 조작은 비활성, 2초 뒤 자동으로 ON-07</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-06" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span></div>
+          <h2 class="t-display session-q">쉴 때 자세를<br>저장해 둘게요</h2>
+          <div class="session-body" style="align-items:center;justify-content:center;opacity:.4">
+            <div class="seat-fig" style="--deg:0deg;zoom:1.1"><div class="arc"></div><div class="base"></div><div class="back"></div><div class="head"></div></div>
+          </div>
+          <p class="t-drive m0" style="text-align:center;margin-bottom:96px">다음 정차 때<br>맞출게요</p>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>ON-07</b>Portrait <span class="tag">P0</span> · 빗소리 미리 듣는 중</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-07" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span></div>
+          <h2 class="t-display session-q">어떤 소리로<br>쉴까요?</h2>
+          <div class="row gap-12" style="margin-top:48px;flex-wrap:wrap"><button class="chip is-on"><i data-lucide="pause"></i>빗소리</button><button class="chip"><i data-lucide="play"></i>백색소음</button><button class="chip"><i data-lucide="play"></i>숲</button><button class="chip"><i data-lucide="volume-x"></i>무음</button></div>
+          <div class="list" style="margin-top:40px">
+            <div class="li"><span class="ico"><i data-lucide="alarm-clock"></i></span><span class="txt"><b>기상송</b><span>리차지가 끝날 때 틀어요</span></span><span class="end" style="color:var(--teum-ink-primary)">아침 산책<i data-lucide="chevron-right"></i></span></div>
+            <div class="li"><span class="ico"><i data-lucide="volume-2"></i></span><span class="txt"><b>음성 안내</b><span>제안과 호흡을 목소리로도 알려 줘요</span></span><span class="switch is-on"></span></div>
+          </div>
+          <div class="session-body"></div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-07</b>Landscape <span class="tag">P0</span> · 소리 칩은 왼쪽, 기상송과 음성 안내는 오른쪽</figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-07" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span></div>
+          <div style="display:grid;grid-template-columns:760px 1fr;gap:48px;flex:1;align-items:center">
+            <div>
+              <h2 class="t-display m0">어떤 소리로 쉴까요?</h2>
+              <div class="row gap-12" style="margin-top:48px;flex-wrap:wrap"><button class="chip is-on"><i data-lucide="pause"></i>빗소리</button><button class="chip"><i data-lucide="play"></i>백색소음</button><button class="chip"><i data-lucide="play"></i>숲</button><button class="chip"><i data-lucide="volume-x"></i>무음</button></div>
+              <div class="wave" style="margin-top:32px"><i style="--h:18"></i><i style="--h:34"></i><i style="--h:52"></i><i style="--h:28"></i><i style="--h:44"></i><i style="--h:22"></i><i style="--h:38"></i><i style="--h:16"></i><i style="--h:30"></i><i style="--h:12"></i></div>
+            </div>
+            <div class="list">
+              <div class="li"><span class="ico"><i data-lucide="alarm-clock"></i></span><span class="txt"><b>기상송</b><span>리차지가 끝날 때 틀어요</span></span><span class="end" style="color:var(--teum-ink-primary)">아침 산책<i data-lucide="chevron-right"></i></span></div>
+              <div class="li"><span class="ico"><i data-lucide="volume-2"></i></span><span class="txt"><b>음성 안내</b><span>제안과 호흡을 목소리로도 알려 줘요</span></span><span class="switch is-on"></span></div>
+            </div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">다음</button></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── ON-08 ───────────── -->
+<section class="flow">
+  <header><h2>ON-08 완료</h2><p>틈 라이트가 닫히며 (900ms) 앰비언트가 원래대로. 등록 요약 한 장. [3분 리셋 체험하기]는 처음 쓴 날에도 차가 움직이는 경험을 바로 보여 주기 위한 장치라 주 버튼.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>ON-08</b>Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-08" data-o="p" data-theme="dark">
+        <div class="seam" style="--ap:2;--sh:30%;--sy:20%;--glow-o:.4"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"></div>
+          <div class="session-body" style="justify-content:center">
+            <h2 class="t-display m0">내일 아침 회사에 도착하면<br>첫 틈을 열어 드릴게요</h2>
+            <div class="list" style="margin-top:48px">
+              <div class="li"><span class="ico"><i data-lucide="building-2"></i></span><span class="txt"><b>회사</b><span>강남구 테헤란로</span></span></div>
+              <div class="li"><span class="ico"><i data-lucide="house"></i></span><span class="txt"><b>집</b><span>성남시 분당구</span></span></div>
+              <div class="li"><span class="ico"><i data-lucide="clock-3"></i></span><span class="txt"><b>출근 09:00</b><span>점심 복귀 13:00 · 걷는 시간 3분</span></span></div>
+            </div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary btn-wide">3분 리셋 체험하기</button><div class="subs"><button class="btn btn-m">홈으로</button></div></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>ON-08</b>Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="ON-08" data-o="l" data-theme="dark">
+        <div class="seam" style="--ap:2;--sh:30%;--sx:1240px;--glow-o:.4"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"></div>
+          <div style="display:grid;grid-template-columns:1fr 720px;gap:96px;flex:1;align-items:center">
+            <h2 class="t-display m0">내일 아침 회사에 도착하면<br>첫 틈을 열어 드릴게요</h2>
+            <div class="list">
+              <div class="li"><span class="ico"><i data-lucide="building-2"></i></span><span class="txt"><b>회사</b><span>강남구 테헤란로</span></span></div>
+              <div class="li"><span class="ico"><i data-lucide="house"></i></span><span class="txt"><b>집</b><span>성남시 분당구</span></span></div>
+              <div class="li"><span class="ico"><i data-lucide="clock-3"></i></span><span class="txt"><b>출근 09:00</b><span>점심 복귀 13:00 · 걷는 시간 3분</span></span></div>
+            </div>
+          </div>
+          <div class="session-foot"><button class="btn btn-l btn-primary">3분 리셋 체험하기</button><div class="subs"><button class="btn btn-m">홈으로</button></div></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

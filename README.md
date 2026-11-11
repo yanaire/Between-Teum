@@ -8,9 +8,28 @@
 
 ## 앱 실행 화면
 
-PLEOS Connect 에뮬레이터에서 실행 중인 틈의 홈 화면입니다.
+PLEOS Connect 에뮬레이터에서 실제 앱을 실행하며 캡처한 화면입니다.
+차량 설정의 지원 여부와 표시 상태는 실행 환경에 따라 달라질 수 있습니다.
+
+### 홈
 
 ![PLEOS 에뮬레이터에서 실행 중인 틈 홈 화면](assets/teum-screen.png)
+
+### 점심 휴식 시간 설정
+
+![점심 휴식 시간과 이동 시간을 설정하고 일정을 미리 보는 화면](assets/teum-lunch-setup.png)
+
+### 점심 휴식 진행
+
+![점심 휴식의 현재 단계와 남은 시간을 보여주는 화면](assets/teum-lunch-session.png)
+
+### 미팅 준비 시간 설정
+
+![미팅 준비 시간과 활동 일정을 확인하는 화면](assets/teum-meeting-setup.png)
+
+### 활동 기록
+
+![완료한 점심 휴식의 단계와 메모를 기록하는 화면](assets/teum-activity-record.png)
 
 ## 현재 구현된 부분
 

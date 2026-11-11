@@ -40,6 +40,10 @@ internal object RecordJson {
         writer.name("historyConsentAtSave").value(record.historyConsentAtSave)
         writer.name("createdAtEpochMs").value(record.createdAtEpochMs)
         writer.name("updatedAtEpochMs").value(record.updatedAtEpochMs)
+        record.journeyFacts?.let {
+            writer.name("journeyFacts")
+            JourneyFactsJson.write(writer, it)
+        }
         writer.endObject()
     }
 
@@ -65,6 +69,8 @@ internal object RecordJson {
             null
         } catch (_: IllegalStateException) {
             null
+        } catch (_: ArithmeticException) {
+            null
         }
     }
 
@@ -81,6 +87,7 @@ internal object RecordJson {
         val numbers = mutableMapOf<String, Long>()
         val booleans = mutableMapOf<String, Boolean>()
         var steps = emptyList<Int>()
+        var facts: JourneyFacts? = null
         val seen = mutableSetOf<String>()
         reader.beginObject()
         while (reader.hasNext()) {
@@ -104,6 +111,10 @@ internal object RecordJson {
                     reader.endArray()
                     steps = indexes
                 }
+                "journeyFacts" -> {
+                    if (reader.peek() == JsonToken.NULL) reader.nextNull()
+                    else facts = JourneyFactsJson.read(reader)
+                }
                 else -> reader.skipValue()
             }
         }
@@ -121,7 +132,8 @@ internal object RecordJson {
             recallAccepted = booleans["recallAccepted"] ?: false,
             historyConsentAtSave = booleans["historyConsentAtSave"] ?: false,
             createdAtEpochMs = numbers["createdAtEpochMs"] ?: 0,
-            updatedAtEpochMs = numbers["updatedAtEpochMs"] ?: 0
+            updatedAtEpochMs = numbers["updatedAtEpochMs"] ?: 0,
+            journeyFacts = facts
         )
         record.validate()
         return record

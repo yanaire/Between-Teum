@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · F4 가면 벗기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<section class="flow">
+  <header><h2>F4 가면 벗기 · 귀가 직전 10분</h2><p>19:10 아파트 지하주차장. 방전된 채로 바로 올라갈 기운이 없다. 흐름: V-01 음성 예고 (주행 중) → F4-01 제안 → F4-02 가면 벗기 연출 → F4-03 오늘 돌아보기 → F4-04 털어내기 → F4-05 이번 주의 나 → F4-05a 내일의 나에게 → F4-06 마무리 → C-03 → 하차. F4-01은 세션 공통 보드, F4-03·F4-05는 우선 시안 8 보드. 가면을 벗는 순간 빛이 '단호한 나'에서 앰버로 바뀌고, 그 뒤로는 앰버.</p></header>
+</section>
+
+<!-- ───────────── V-01 ───────────── -->
+<section class="flow">
+  <header><h2>V-01 음성 예고 (주행 중)</h2><p>화면이 아니라 목소리다. 집 도착 5분 전에 한 번 묻는다. 주행 중이므로 화면은 H-02 그대로이고 터치할 것이 없다. 프로토타입에서는 아래 음성 자막 바로 보여 준다 (데모 셸 요소, Pleos static 색). '응'이나 무응답이면 도착 때 F4-01, '아니'면 오늘은 묻지 않는다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>V-01</b>H-02 위 · Portrait <span class="tag">P0</span> · 주행 중 문장은 title.l 40 이상</figcaption>
+      <div class="fz"><article class="frame" data-screen="V-01" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="drive">
+          <p class="t-drive m0">정차하면 틈을<br>열 수 있어요</p>
+          <div class="day4"><i class="done m-firm"></i><i class="done l-moon"></i><i class="done m-focus"></i><i></i></div>
+        </div>
+        <div class="caption-bar"><i data-lucide="audio-lines"></i><span>도착하면 10분 쉬었다 들어갈까요?</span></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>V-01</b>H-02 위 · Landscape <span class="tag">P0</span> · 대답을 알아들으면 자막이 한 줄 바뀐다</figcaption>
+      <div class="fz"><article class="frame" data-screen="V-01" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="drive">
+          <p class="t-drive m0">정차하면 틈을 열 수 있어요</p>
+          <div class="day4"><i class="done m-firm"></i><i class="done l-moon"></i><i class="done m-focus"></i><i></i></div>
+        </div>
+        <div class="caption-bar"><i data-lucide="check"></i><span>좋아요. 도착하면 알려 드릴게요</span><span class="you">“응”</span></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F4-02 ───────────── -->
+<section class="flow">
+  <header><h2>F4-02 가면 벗기 연출 (약 1분)</h2><p>장면당 오케스트레이션 하나. 아침에 고른 가면 카드가 가운데 나타났다가, 틈 라이트 쪽으로 빨려 들 듯 천천히 흐려지며 사라진다 (opacity·transform만, 굽이 없는 ease). 동시에 앰비언트가 가면 색에서 앰버로 30초 동안 바뀌고 화면 빛도 같은 2000ms 단위로 따라간다. 등받이 10° 뒤로, 열선 1단, 조도 낮춤. 버튼 없음, 끝나면 자동으로 F4-03.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F4-02</b>시작 · Portrait <span class="tag">P0</span> · 가면 카드가 떠오른 순간</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-02" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:8;--sh:84%;--sy:44%;--glow-o:.5"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <div class="mask-card m-firm enter" style="background:var(--teum-cabin-shell)"><div class="mini"></div><div class="nm"><span class="swatch"></span>단호한 나</div><p class="ds m0">오늘 08:41부터 함께였어요</p></div>
+          </div>
+          <p class="t-title m0" style="text-align:center">오늘 하루, 이 가면으로 버텼어요</p>
+          <div class="cabin-steps" style="justify-content:center;margin-top:40px"><span class="st now"><i data-lucide="armchair"></i>등받이 10° 뒤로</span><span class="st"><i data-lucide="flame"></i>열선 1단</span><span class="st"><i data-lucide="lamp"></i>조도 낮춤</span></div>
+        </div>
+        <div class="edge" style="--remain:.96"><div class="track"></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>F4-02</b>30초 · Portrait <span class="tag">P0</span> · 카드가 틈 쪽으로 작아지며 흐려지고, 빛은 앰버로</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-02" data-o="p" data-theme="dark" data-light="amber">
+        <div class="seam" style="--ap:14;--sh:84%;--sy:44%;--glow-o:.6"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <div class="mask-card m-firm" style="background:var(--teum-cabin-shell);transform:scale(.62);opacity:.22"><div class="mini"></div><div class="nm"><span class="swatch"></span>단호한 나</div><p class="ds m0">오늘 08:41부터 함께였어요</p></div>
+          </div>
+          <p class="t-title m0" style="text-align:center">이제 가면 벗어도 돼요</p>
+          <div class="cabin-steps" style="justify-content:center;margin-top:40px"><span class="st done"><i data-lucide="check"></i>등받이 10° 뒤로</span><span class="st done"><i data-lucide="check"></i>열선 1단</span><span class="st now"><i data-lucide="lamp"></i>앰버로 바꾸는 중</span></div>
+        </div>
+        <div class="edge" style="--remain:.92"><div class="track"></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>F4-02</b>30초 · Landscape <span class="tag">P0</span> · 카드는 틈이 있는 가운데로 모인다</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-02" data-o="l" data-theme="dark" data-light="amber">
+        <div class="seam" style="--ap:14;--glow-o:.6"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <div class="mask-card m-firm" style="background:var(--teum-cabin-shell);transform:scale(.62);opacity:.22"><div class="mini"></div><div class="nm"><span class="swatch"></span>단호한 나</div><p class="ds m0">오늘 08:41부터 함께였어요</p></div>
+          </div>
+          <p class="t-title m0">이제 가면 벗어도 돼요</p>
+          <div class="cabin-steps" style="margin-top:24px"><span class="st done"><i data-lucide="check"></i>등받이 10° 뒤로</span><span class="st done"><i data-lucide="check"></i>열선 1단</span><span class="st now"><i data-lucide="lamp"></i>앰버로 바꾸는 중</span></div>
+        </div>
+        <div class="edge" style="--remain:.92"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F4-04 ───────────── -->
+<section class="flow">
+  <header><h2>F4-04 털어내기 (선택)</h2><p>말이 쌓이는 화면. 받아쓴 줄이 위로 밀려 올라가며 흐려진다 (최근 줄이 가장 진하다). 큰 마이크가 주 버튼 역할. 저장할지는 다음 화면에서 고른다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F4-04</b>Portrait <span class="tag">P0</span> · 말하는 중</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-04" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">마음에 남은 거,<br>말로 내려놓을래요?</h2>
+          <div class="pile" style="margin-top:40px">
+            <p>오늘 회의에서 내 의견이</p>
+            <p>또 그냥 넘어간 게 계속 생각나</p>
+            <p>다음엔 처음부터 숫자로 <span class="interim">말해야겠어</span></p>
+          </div>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <button class="mic is-listening" aria-label="듣는 중"><i data-lucide="mic"></i></button>
+            <span class="mic-cap">듣고 있어요</span>
+          </div>
+          <div class="row" style="justify-content:center"><button class="text-btn is-quiet">건너뛰기</button></div>
+        </div>
+        <div class="edge" style="--remain:.62"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F4-04</b>Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-04" data-o="l" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div style="display:grid;grid-template-columns:1fr 520px;gap:96px;flex:1;align-items:center">
+            <div>
+              <h2 class="t-display m0">마음에 남은 거, 말로 내려놓을래요?</h2>
+              <div class="pile" style="margin-top:48px">
+                <p>오늘 회의에서 내 의견이</p>
+                <p>또 그냥 넘어간 게 계속 생각나</p>
+                <p>다음엔 처음부터 숫자로 <span class="interim">말해야겠어</span></p>
+              </div>
+            </div>
+            <div class="stack" style="align-items:center">
+              <button class="mic is-listening" aria-label="듣는 중"><i data-lucide="mic"></i></button>
+              <span class="mic-cap">듣고 있어요</span>
+              <button class="text-btn is-quiet" style="margin-top:48px">건너뛰기</button>
+            </div>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.62"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F4-04a ───────────── -->
+<section class="flow">
+  <header><h2>F4-04a 보관 또는 버리기</h2><p>받아쓴 내용 아래 무게가 같은 버튼 둘 (주 버튼 없음 — 어느 쪽도 정답이 아니다). [여기 두고 가기]를 누르면 글자가 입자처럼 흩어져 사라지고 앰비언트가 서서히 어두워진다. 저장하지 않는다는 것을 한 줄로 분명히 말한다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F4-04a</b>Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-04a" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">이 말을<br>어떻게 할까요?</h2>
+          <div class="session-body" style="justify-content:center">
+            <div class="letter"><p class="t-lead m0">오늘 회의에서 내 의견이 또 그냥 넘어간 게 계속 생각나. 다음엔 처음부터 숫자로 말해야겠어.</p></div>
+          </div>
+          <div class="session-foot">
+            <div class="subs"><button class="btn btn-l"><i data-lucide="sunrise"></i>내일 아침 다시 보기</button></div>
+            <div class="subs"><button class="btn btn-l"><i data-lucide="wind"></i>여기 두고 가기</button></div>
+            <p class="t-label ink-3 m0" style="text-align:center;margin-top:8px">여기 두고 가면 어디에도 저장하지 않아요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.56"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F4-04a</b>[여기 두고 가기] 직후 <span class="tag">P0</span> · 글자가 위로 흩어지며 사라진다 (1.2초, reduced-motion이면 opacity만)</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-04a" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center">
+            <p class="t-lead m0 scatter"><span style="--o:.5;--y:-6px">오늘</span> <span style="--o:.3;--y:-18px">회의에서</span> <span style="--o:.6;--y:-4px">내</span> <span style="--o:.15;--y:-30px">의견이</span> <span style="--o:.4;--y:-12px">또</span> <span style="--o:.1;--y:-36px">그냥</span> <span style="--o:.35;--y:-14px">넘어간</span> <span style="--o:.2;--y:-24px">게</span> <span style="--o:.5;--y:-8px">계속</span> <span style="--o:.12;--y:-32px">생각나.</span> <span style="--o:.3;--y:-20px">다음엔</span> <span style="--o:.45;--y:-10px">처음부터</span> <span style="--o:.18;--y:-28px">숫자로</span> <span style="--o:.4;--y:-12px">말해야겠어.</span></p>
+          </div>
+          <p class="t-title ink-2 m0" style="text-align:center;margin-bottom:96px">여기 두고 갈게요</p>
+        </div>
+        <div class="edge" style="--remain:.54"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F4-05a ───────────── -->
+<section class="flow">
+  <header><h2>F4-05a 내일의 나에게</h2><p>F4-05에서 [말하기]. 녹음 중에는 파형이 소리 크기대로 자라고, 끝나면 받아쓴 말을 편지 카드로 확인한다. [남기기] → 내일 아침 F1-01에서 재생된다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F4-05a</b>녹음 중 · Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-05a" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">내일의 나에게<br>한마디</h2>
+          <p class="t-body ink-3 m0" style="margin-top:16px">내일 아침 회사에 도착하면 들려 드릴게요</p>
+          <div class="session-body" style="align-items:center;justify-content:center;gap:40px">
+            <div class="wave" style="height:120px"><i style="--h:20"></i><i style="--h:44"></i><i style="--h:70"></i><i style="--h:38"></i><i style="--h:96"></i><i style="--h:60"></i><i style="--h:30"></i><i style="--h:82"></i><i style="--h:52"></i><i style="--h:104"></i><i style="--h:46"></i><i style="--h:24"></i><i style="--h:66"></i><i style="--h:40"></i><i style="--h:18"></i></div>
+            <span class="n-l">0:07</span>
+            <button class="mic is-listening" aria-label="녹음 끝내기"><i data-lucide="square"></i></button>
+            <span class="mic-cap" style="margin-top:-20px">다 말했어요</span>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.24"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F4-05a</b>확인 · Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-05a" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">이렇게 남길게요</h2>
+          <div class="session-body" style="justify-content:center">
+            <div class="letter">
+              <div class="date"><i data-lucide="moon"></i>11월 13일 목요일 밤 · 내일의 나에게</div>
+              <p class="v-xl m0">내일은 금요일이야. 오늘처럼만 하면 돼.</p>
+              <div class="row gap-16" style="margin-top:32px"><button class="icon-btn s basic circle" aria-label="다시 듣기"><i data-lucide="play"></i></button><span class="t-label ink-3">0:07</span></div>
+            </div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">남기기</button>
+            <div class="subs"><button class="btn btn-m"><i data-lucide="rotate-ccw"></i>다시 말하기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘남기기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.2"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F4-05a</b>확인 · Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-05a" data-o="l" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">이렇게 남길게요</h2>
+          <div class="session-body" style="justify-content:center">
+            <div class="letter" style="width:1100px">
+              <div class="date"><i data-lucide="moon"></i>11월 13일 목요일 밤 · 내일의 나에게</div>
+              <p class="v-xl m0">내일은 금요일이야. 오늘처럼만 하면 돼.</p>
+              <div class="row gap-16" style="margin-top:32px"><button class="icon-btn s basic circle" aria-label="다시 듣기"><i data-lucide="play"></i></button><span class="t-label ink-3">0:07</span></div>
+            </div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">남기기</button>
+            <div class="subs"><button class="btn btn-m"><i data-lucide="rotate-ccw"></i>다시 말하기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘남기기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.2"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F4-06 ───────────── -->
+<section class="flow">
+  <header><h2>F4-06 마무리</h2><p>오늘의 틈이 스탬프로 매듭지어진다. 음성 "이제 가족에게 가요. 내일 아침에 만나요." 10분이 되면 자동으로 이 화면이 되고, [5분 더]는 한 번만. 차는 앰비언트를 끄고 실내등을 켠다 (하차 신호). 등받이 원위치, 열선 끔, 창문 닫힘 확인. [들어가기] → C-03 → 하차.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F4-06</b>Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-06" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="align-items:center;justify-content:center;text-align:center">
+            <span class="stamp-big"><i data-lucide="stamp"></i></span>
+            <h2 class="t-display m0" style="margin-top:40px">오늘의 틈 3칸 완료</h2>
+            <div class="day4 lab" style="margin-top:32px"><span class="m-firm"><i class="done"></i>아침</span><span class="l-moon"><i class="done"></i>점심</span><span class="m-focus"><i class="done"></i>리허설</span><span><i class="now"></i>저녁</span></div>
+            <p class="say" style="justify-content:center;margin-top:48px"><i data-lucide="volume-2"></i>“이제 가족에게 가요. 내일 아침에 만나요.”</p>
+          </div>
+          <div class="cabin-steps" style="justify-content:center;margin-bottom:32px"><span class="st done"><i data-lucide="lightbulb"></i>실내등 켬</span><span class="st done"><i data-lucide="check"></i>열선 끔</span><span class="st done"><i data-lucide="check"></i>창문 닫힘</span></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">들어가기</button>
+            <div class="subs"><button class="btn btn-m">5분 더</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘들어가기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:0"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F4-06</b>Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-06" data-o="l" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center">
+            <div class="row gap-48">
+              <span class="stamp-big"><i data-lucide="stamp"></i></span>
+              <div>
+                <h2 class="t-display m0">오늘의 틈 3칸 완료</h2>
+                <div class="day4 lab" style="margin-top:24px"><span class="m-firm"><i class="done"></i>아침</span><span class="l-moon"><i class="done"></i>점심</span><span class="m-focus"><i class="done"></i>리허설</span><span><i class="now"></i>저녁</span></div>
+                <p class="say"><i data-lucide="volume-2"></i>“이제 가족에게 가요. 내일 아침에 만나요.”</p>
+              </div>
+            </div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">들어가기</button>
+            <div class="subs"><button class="btn btn-m">5분 더</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘들어가기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:0"><div class="track"></div></div>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F4-06</b>[바로 들어가기] 축약 <span class="tag">P0</span> · F4-01에서 바로. 돌아보기 없이 차만 정리한다</figcaption>
+      <div class="fz"><article class="frame" data-screen="F4-06" data-o="p" data-theme="dark" data-light="amber">
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center">
+            <h2 class="t-display m0">오늘도 수고했어요</h2>
+            <p class="t-lead ink-2 m0" style="margin-top:16px">내일 아침에 만나요</p>
+            <div class="cabin-steps" style="margin-top:56px"><span class="st done"><i data-lucide="lightbulb"></i>실내등 켬</span><span class="st done"><i data-lucide="check"></i>창문 닫힘</span></div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">들어가기</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘들어가기’라고 말해도 돼요</p>
+          </div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

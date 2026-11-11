@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · 홈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<!-- ───────────── H-01 상태 ───────────── -->
+<section class="flow">
+  <header><h2>H-01 홈 · 추천 카드 상태 다섯</h2><p>메인 추천 카드는 상황에 맞는 문구와 버튼 하나만 보여 준다. '다음 틈 예정' 상태 (점심 전, [3분 리셋])는 우선 시안 8 보드에 있다. 오늘의 카드 칩은 F1을 마친 날에만. [3분 리셋]이 추천 카드에 없을 때는 타임라인 아래 보조 버튼으로 내려온다. 가면을 고르기 전에는 문라이트.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>H-01</b>지금 틈이 있음 <span class="tag">P0</span> · 08:42. M-01에 10초 동안 답하지 않으면 카드가 접혀 여기 남는다</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="p" data-theme="dark">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">좋은 아침이에요</h2>
+          <section class="card rec" style="margin-top:24px">
+            <div class="seam" style="--glow-o:.45"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <div class="row"><h3 class="t-sub m0">가면 쓰기</h3><span class="t-label accent" style="margin-left:auto">지금 틈</span></div>
+            <p class="t-body ink-2 m0" style="margin-top:8px">출근까지 18분 · 가면 쓰기 7분</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">시작</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i now"><span class="mk"><i data-lucide="sun"></i></span><span class="when">지금</span><span class="what">가면 쓰기<small>7분 · 출근 전</small></span><span class="end">다음</span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35</span><span class="what">리차지<small>점심 먹고 오면</small></span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="mic"></i></span><span class="when">16:00</span><span class="what">중요한 순간<small>A사 신제품 제안 미팅</small></span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="house"></i></span><span class="when">저녁</span><span class="what">가면 벗기<small>집에 도착하면</small></span></li>
+          </ol>
+          <button class="btn btn-m" style="margin-top:16px;align-self:flex-start"><i data-lucide="wind"></i>3분 리셋</button>
+        </div>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>H-01</b>오늘 마무리 후 <span class="tag">P0</span> · 19:40. 하루 색은 F4-03에서 고른 '단호'</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="p" data-theme="dark" data-mask="firm">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">오늘도 수고했어요</h2>
+          <button class="today-chip" style="margin-top:24px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+          <section class="card rec" style="margin-top:16px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <div class="row"><h3 class="t-sub m0">오늘의 틈 3칸 완료</h3><span class="t-label ink-3 row gap-8" style="margin-left:auto"><span class="swatch m-firm"></span>하루 색 · 단호</span></div>
+            <p class="t-body ink-2 m0" style="margin-top:8px">다짐도 해냈어요. 내일 아침에 만나요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">오늘 기록 보기</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="wind"></i>3분 리셋</button></div>
+          <ol class="tl">
+            <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41</span><span class="what">가면 쓰기<small>단호한 나 · 7분</small></span></li>
+            <li class="tl-i done l-moon"><span class="mk"><i data-lucide="check"></i></span><span class="when">12:36</span><span class="what">리차지<small>20분</small></span></li>
+            <li class="tl-i done m-focus"><span class="mk"><i data-lucide="check"></i></span><span class="when">15:42</span><span class="what">A사 리허설<small>“잘 됐어요”</small></span></li>
+            <li class="tl-i done l-amber"><span class="mk"><i data-lucide="check"></i></span><span class="when">19:10</span><span class="what">가면 벗기<small>10분</small></span></li>
+          </ol>
+        </div>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>H-01</b>주말·휴일 <span class="tag">P0</span> · 틈을 찾지 않는 날. 타임라인은 '해당 없음'</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="p" data-theme="dark">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 15일 토요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">좋은 아침이에요</h2>
+          <section class="card rec" style="margin-top:24px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <h3 class="t-sub m0">오늘은 쉬는 날이에요</h3>
+            <p class="t-body ink-2 m0" style="margin-top:8px">숨이 필요할 때 3분만 쉬어 가요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">3분 리셋</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i na"><span class="mk"></span><span class="when">아침</span><span class="what">가면 쓰기</span></li>
+            <li class="tl-i na"><span class="mk"></span><span class="when">점심</span><span class="what">리차지</span></li>
+            <li class="tl-i na"><span class="mk"></span><span class="when">중요한 순간</span><span class="what">등록한 일정 없음</span></li>
+            <li class="tl-i na"><span class="mk"></span><span class="when">저녁</span><span class="what">가면 벗기</span></li>
+          </ol>
+        </div>
+      </article></div>
+    </figure>
+
+    <figure class="shot"><figcaption><b>H-01</b>장소·시각 미등록 <span class="tag">P0</span> · 온보딩에서 [나중에]를 고른 경우 → ST-01</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="p" data-theme="dark">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">오후도 반 왔어요</h2>
+          <section class="card rec" style="margin-top:24px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <h3 class="t-sub m0">회사와 집을 등록하면<br>틈을 찾아 드려요</h3>
+            <p class="t-body ink-2 m0" style="margin-top:8px">도착한 걸 알아야 먼저 말을 걸 수 있어요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">등록하기</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i na"><span class="mk"><i data-lucide="map-pin-off"></i></span><span class="when">아침</span><span class="what">가면 쓰기<small>회사를 등록하면 열려요</small></span></li>
+            <li class="tl-i na"><span class="mk"><i data-lucide="map-pin-off"></i></span><span class="when">점심</span><span class="what">리차지<small>회사를 등록하면 열려요</small></span></li>
+            <li class="tl-i na"><span class="mk"><i data-lucide="map-pin-off"></i></span><span class="when">저녁</span><span class="what">가면 벗기<small>집을 등록하면 열려요</small></span></li>
+          </ol>
+          <button class="btn btn-m" style="margin-top:16px;align-self:flex-start"><i data-lucide="wind"></i>3분 리셋</button>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── H-01 라이트 ───────────── -->
+<section class="flow">
+  <header><h2>H-01 라이트 테마</h2><p>홈·기록·설정은 차의 주간 모드를 따라 라이트로도 보인다 (세션 화면은 항상 다크). Pleos light 시맨틱 토큰으로 표면과 글자만 바뀌고, 가면 빛은 면(주 버튼, 타임라인 완료 점)에는 그대로, 선·글자에는 잉크와 섞어 대비 4.5:1을 지킨다. 틈 빛은 밝은 바탕에서 거의 보이지 않으므로 앱 아이콘 안에만 남는다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>H-01</b>라이트 · Portrait 840×1184 <span class="tag">P0</span> · 점심 전, 다음 틈 = 리차지</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="p" data-theme="light" data-mask="firm">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">점심 잘 먹었어요?</h2>
+          <button class="today-chip" style="margin-top:24px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+          <section class="card rec" style="margin-top:16px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <div class="row"><h3 class="t-sub m0">점심 리차지</h3><span class="t-label ink-3" style="margin-left:auto">다음 틈 · 12:35</span></div>
+            <p class="t-body ink-2 m0" style="margin-top:8px">점심 먹고 오면 20분 잘 수 있어요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">3분 리셋</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41</span><span class="what">가면 쓰기<small>단호한 나 · 7분</small></span></li>
+            <li class="tl-i now"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35</span><span class="what">리차지 예정<small>20분 잘 수 있어요</small></span><span class="end">다음</span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="mic"></i></span><span class="when">16:00</span><span class="what">중요한 순간<small>A사 신제품 제안 미팅</small></span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="house"></i></span><span class="when">저녁</span><span class="what">가면 벗기<small>집에 도착하면</small></span></li>
+          </ol>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>H-01</b>라이트 · Landscape 1700×1184 <span class="tag">P0</span> · 왼쪽 열은 Portrait와 같고, 오른쪽 열에 이번 주 기록. 타임라인은 가로 4칸.</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-01" data-o="l" data-theme="light" data-mask="firm">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px;height:1056px;padding-bottom:48px">
+          <div style="display:grid;grid-template-columns:780px 1fr;gap:48px">
+            <div class="stack">
+              <span class="t-cap ink-3">11월 13일 목요일</span>
+              <h2 class="t-title m0" style="margin-top:4px">점심 잘 먹었어요?</h2>
+              <button class="today-chip" style="margin-top:24px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+              <section class="card rec" style="margin-top:16px">
+                <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+                <div class="row"><h3 class="t-sub m0">점심 리차지</h3><span class="t-label ink-3" style="margin-left:auto">다음 틈 · 12:35</span></div>
+                <p class="t-body ink-2 m0" style="margin-top:8px">점심 먹고 오면 20분 잘 수 있어요</p>
+                <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">3분 리셋</button>
+              </section>
+            </div>
+            <section class="card stack" style="padding:40px">
+              <div class="row"><h3 class="t-sub m0">이번 주</h3><span class="t-label ink-3" style="margin-left:auto">가면 쓰기 4일 연속</span></div>
+              <div class="row" style="align-items:flex-end;justify-content:space-between;margin-top:16px">
+                <div class="metric"><span class="lab">되찾은 시간</span><span class="n-hero">74<small class="t-sub ink-2" style="margin-left:6px;letter-spacing:0">분</small></span></div>
+                <div class="week">
+                  <div class="d m-calm"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><span>월</span></div>
+                  <div class="d m-warm"><div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div><span>화</span></div>
+                  <div class="d m-flex"><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div><span>수</span></div>
+                  <div class="d today m-firm"><div class="bars"><i class="on"></i><i></i><i></i><i></i></div><span>목</span></div>
+                  <div class="d"><div class="bars"><i></i><i></i><i></i><i></i></div><span>금</span></div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <section class="card stack" style="margin-top:40px;flex:1;justify-content:center;padding:40px 40px 48px">
+            <div class="section-h" style="height:80px;margin-bottom:24px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+            <ol class="tl h">
+              <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41 · 아침</span><span class="what">가면 쓰기<small>단호한 나 · 7분</small></span></li>
+              <li class="tl-i now"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35 · 점심</span><span class="what">리차지 예정<small>20분 잘 수 있어요</small></span></li>
+              <li class="tl-i"><span class="mk"><i data-lucide="mic"></i></span><span class="when">16:00 · 중요한 순간</span><span class="what">A사 미팅<small>리허설 10분</small></span></li>
+              <li class="tl-i"><span class="mk"><i data-lucide="house"></i></span><span class="when">저녁</span><span class="what">가면 벗기<small>집에 도착하면</small></span></li>
+            </ol>
+          </section>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── H-02 ───────────── -->
+<section class="flow">
+  <header><h2>H-02 주행 중 화면</h2><p>큰 글씨 한 줄과 오늘 진행 점 넷뿐. 터치할 수 있는 요소가 없다. 주행 제한 신호가 오면 어떤 화면에서든 200ms 페이드 하나로 바로 이 화면이 된다. 자동 애니메이션 없음. 주행 중에 나오는 것은 V-01 음성 하나 (F4 보드).</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>H-02</b>Portrait <span class="tag">P0</span> · 점심까지 마친 오후. 점 색은 그 틈의 빛</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-02" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="drive">
+          <p class="t-drive m0">정차하면 틈을<br>열 수 있어요</p>
+          <div class="day4"><i class="done m-firm"></i><i class="done l-moon"></i><i></i><i></i></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>H-02</b>Landscape <span class="tag">P0</span> · 글자는 운전석 쪽 왼쪽</figcaption>
+      <div class="fz"><article class="frame" data-screen="H-02" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="drive">
+          <p class="t-drive m0">정차하면 틈을 열 수 있어요</p>
+          <div class="day4"><i class="done m-firm"></i><i class="done l-moon"></i><i></i><i></i></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── H-03 ───────────── -->
+<section class="flow">
+  <header><h2>H-03 세션 컴팩트 뷰 (P1)</h2><p>세션 중에 운전자가 내비 같은 다른 앱을 열어 틈틈이 1:1 분할의 한 창 (Portrait)으로 밀려났을 때. 세션 이름, 남은 시간 (num.l), 틈 라이트 미니, [크게 보기] (Landscape로 전환), [끝내기]. 차의 연출 (조명, 시트, 공조)은 그대로 이어진다. 미니 틈도 같은 9초 박자로 숨 쉰다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>H-03</b>Portrait <span class="tag">P1</span> · 가면 쓰기 호흡 중에 내비를 연 경우</figcaption>
+      <div class="fz"><article class="frame is-live" data-screen="H-03" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center">
+            <div class="compact">
+              <div class="mini-seam"><div class="seam is-breathing" style="--k:.5;--sh:84%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div></div>
+              <div>
+                <p class="t-label ink-3 m0">가면 쓰기 · 진정 호흡</p>
+                <p class="n-l m0" style="margin-top:8px">4<small class="t-sub ink-2" style="letter-spacing:0;margin-left:4px">분 남았어요</small></p>
+                <p class="t-body ink-2 m0" style="margin-top:16px">차는 계속 함께 숨 쉬고 있어요</p>
+              </div>
+            </div>
+          </div>
+          <div class="session-foot">
+            <div class="subs"><button class="btn btn-m"><i data-lucide="maximize-2"></i>크게 보기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘크게 보기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.44"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

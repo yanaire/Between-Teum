@@ -10,7 +10,6 @@ import android.os.SystemClock
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
@@ -19,101 +18,28 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import dev.pleos.starter.teum.content.RecommendDecision
-import dev.pleos.starter.teum.content.Recommendation
-import dev.pleos.starter.teum.content.SituationContent
 import dev.pleos.starter.teum.content.SituationIds
 import dev.pleos.starter.teum.content.TeumContentCatalog
-import dev.pleos.starter.teum.content.TeumRecommender
 import dev.pleos.starter.teum.content.TimePlan
 import dev.pleos.starter.teum.records.ActivityOutcome
 import dev.pleos.starter.teum.records.ActivityRecord
 import dev.pleos.starter.teum.records.RecordsRepository
 import dev.pleos.starter.teum.records.SharedPreferencesRecordStore
-import dev.pleos.starter.teum.records.newActivityRecord
 import dev.pleos.starter.teum.session.ClockReading
-import dev.pleos.starter.teum.session.PlanRequest
-import dev.pleos.starter.teum.session.Outcome
-import dev.pleos.starter.teum.session.PlanResult
-import dev.pleos.starter.teum.session.Planner
-import dev.pleos.starter.teum.session.Schedule
 import dev.pleos.starter.teum.session.ScheduleKind
-import dev.pleos.starter.teum.session.SessionEngine
 import dev.pleos.starter.teum.session.SessionState
-import dev.pleos.starter.teum.session.TimeInput
 import dev.pleos.starter.teum.vehicle.AaosSafetySource
 import dev.pleos.starter.teum.vehicle.CommandStage
 import dev.pleos.starter.teum.vehicle.Parking
 import dev.pleos.starter.teum.vehicle.PleosSettingsPort
-import dev.pleos.starter.teum.vehicle.SafeVehicleAdapter
-import dev.pleos.starter.teum.vehicle.SettingCapability
-import dev.pleos.starter.teum.vehicle.VehicleCommand
 import dev.pleos.starter.teum.vehicle.VehicleFeature
 import dev.pleos.starter.teum.vehicle.VehicleSafety
-import dev.pleos.starter.teum.vehicle.VehicleSetting
-import java.util.Calendar
 
-private enum class Screen { HOME, SETUP, SESSION, RESTORE, RECORD, HISTORY, SETTINGS, RECOVERY }
-
-private enum class TimeMode { DURATION, DEADLINE }
-
-private data class SetupState(
-    val meta: SituationMeta,
-    var mode: TimeMode = TimeMode.DURATION,
-    var minutes: Int = meta.defaultMinutes,
-    var travelMinutes: Int = meta.defaultTravelMinutes,
-    var arrivalHour: Int = 13,
-    var arrivalMinute: Int = 0,
-    var useAlternative: Boolean = false,
-    var shortConfirmed: Boolean = false
-)
-
-private data class SetupComputed(
-    val deadlineWallMillis: Long,
-    val availableSeconds: Int,
-    val recommendation: Recommendation,
-    val plan: TimePlan?,
-    val schedule: Schedule?,
-    val refusal: String?
-)
-
-private sealed class FeatureUi {
-    object Checking : FeatureUi()
-    data class Ready(val current: Double, val capability: SettingCapability) : FeatureUi()
-    data class Manual(val reason: String) : FeatureUi()
-}
-
-private data class AppliedChange(
-    val setting: VehicleSetting,
-    val initial: Double,
-    val target: Double,
-    var restored: Boolean = false
-)
-
-private class ActiveSession(
-    val meta: SituationMeta,
-    val content: SituationContent,
-    val schedule: Schedule,
-    val segments: List<Segment>,
-    val engine: SessionEngine,
-    val startedElapsedMillis: Long,
-    val startedWallMillis: Long
-) {
-    var elapsedMillis: Long = 0
-    var elapsedSeconds: Long = 0
-    var finished: Boolean = false
-    var restricted: Boolean = false
-    var finalElapsedSeconds: Long = 0
-    var finalWallMillis: Long = 0
-    var deadlineFinishStartedMillis: Long? = null
-    var progressAtDeadline: Long? = null
-    val timedTotalSeconds: Long get() = segments.sumOf { it.seconds.toLong() }
-}
-
-private data class Banner(val text: String, val clay: Boolean, val tag: String = "banner")
-
+// allow: SIZE_OK - Existing native renderer retained verbatim for this extraction; visual port belongs to the host increment.
 class TeumUiController(
     private val activity: Activity,
-    private val root: ViewGroup
+    private val root: ViewGroup,
+    sessionCoordinator: TeumSessionCoordinator? = null
 ) {
     private val theme = TeumTheme(activity)
     private val repo = RecordsRepository(SharedPreferencesRecordStore(activity))
@@ -122,137 +48,120 @@ class TeumUiController(
     private val uiPrefs = activity.getSharedPreferences("teum_ui_v1", Context.MODE_PRIVATE)
     private val handler = Handler(Looper.getMainLooper())
 
-    private var screen = Screen.HOME
-    private var banner: Banner? = null
-    private var safety = VehicleSafety()
-    private var safetySeen = false
     private var source: AaosSafetySource? = null
     private var port: PleosSettingsPort? = null
-    private var adapter: SafeVehicleAdapter? = null
     private var cue: TeumCuePlayer? = null
 
-    private var active: ActiveSession? = null
-    private var setup: SetupState? = null
-    private var draft: RecordDraft? = null
-    private var recovery: SessionSnapshot? = null
-    private var editable = RecordEditable()
+    val coordinator = (sessionCoordinator ?: TeumSessionCoordinator(repo, snapshots, object : SessionClock {
+        override fun reading() = ClockReading(System.currentTimeMillis(), SystemClock.elapsedRealtime())
+        override fun startReading(): ClockReading {
+            val elapsed = SystemClock.elapsedRealtime()
+            return ClockReading(System.currentTimeMillis(), elapsed)
+        }
+    })).also { it.onEffect = ::onSessionEffect }
 
-    private var soundEnabled = uiPrefs.getBoolean(KEY_SOUND, true)
-    private var restoreConsent = false
-    private var manualRestoreAck = false
-    private var awakeAcknowledged = false
-    private var cueCount = 0
-    private var lastLunchCueSecond = -1
-    private var lastPersistedSecond = -1L
-
-    private var recordNoteView: EditText? = null
-    private var recordNextView: EditText? = null
-    private var recordRecallView: CheckBox? = null
-
-    private val featureStatus = mutableMapOf<VehicleFeature, FeatureUi>()
-    private val featureTargets = mutableMapOf<VehicleFeature, Double>()
-    private val featureCommands = mutableMapOf<VehicleFeature, VehicleCommand>()
-    private val featurePreviewIds = mutableMapOf<VehicleFeature, Long>()
-    private val applyConsent = mutableMapOf<VehicleFeature, Boolean>()
-    private val restoreCommands = mutableMapOf<VehicleFeature, VehicleCommand>()
-    private val restoreOriginAck = mutableMapOf<VehicleFeature, Boolean>()
-    private val applied = mutableMapOf<VehicleFeature, AppliedChange>()
+    private val screen get() = coordinator.state.screen
+    private val banner get() = coordinator.state.banner
+    private val safety get() = coordinator.state.safety
+    private val safetySeen get() = coordinator.state.safetySeen
+    private val active get() = coordinator.state.active
+    private val setup get() = coordinator.state.setup
+    private val draft get() = coordinator.state.draft
+    private val recovery get() = coordinator.state.recovery
+    private val editable get() = coordinator.state.editable
+    private val soundEnabled get() = coordinator.state.soundEnabled
+    private val restoreConsent get() = coordinator.state.restoreConsent
+    private val manualRestoreAck get() = coordinator.state.manualRestoreAck
+    private val awakeAcknowledged get() = coordinator.state.awakeAcknowledged
+    private val cueCount get() = coordinator.state.cueCount
+    private val featureStatus get() = coordinator.state.featureStatus
+    private val featureTargets get() = coordinator.state.featureTargets
+    private val featureCommands get() = coordinator.state.featureCommands
+    private val applyConsent get() = coordinator.state.applyConsent
+    private val restoreCommands get() = coordinator.state.restoreCommands
+    private val restoreOriginAck get() = coordinator.state.restoreOriginAck
+    private val applied get() = coordinator.state.applied
 
     private val liveUpdaters = mutableListOf<() -> Unit>()
     private var renderQueued = false
-    private var lastRenderedStep = -1
 
     private val ticker = object : Runnable {
         override fun run() {
             if (active != null && screen == Screen.SESSION) {
-                tick()
+                coordinator.dispatch(TeumSessionAction.Tick)
                 handler.postDelayed(this, 1_000)
             }
         }
     }
 
-    fun onCreate() {
-        val saved = snapshots.load()
-        if (saved != null) {
-            recovery = saved
-            if (saved.restoredAndReadyToRecord) {
-                draft = draftFromSnapshot(saved, ready = true)
-                screen = Screen.RECORD
-                editable = RecordEditable()
-                banner = Banner("저장 전에 앱이 중단되었습니다. 실제 진행을 확인하고 기록하세요.", clay = false)
-            } else {
-                screen = Screen.RECOVERY
+    private fun onSessionEffect(effect: TeumSessionEffect) {
+        when (effect) {
+            TeumSessionEffect.Render -> render()
+            TeumSessionEffect.RequestRender -> requestRender()
+            TeumSessionEffect.UpdateLive -> updateLive()
+            is TeumSessionEffect.Timer -> if (effect.running) startTimer() else stopTimer()
+            is TeumSessionEffect.Cue -> {
+                cue?.speak(effect.text)
+                cue?.beep(urgent = effect.urgent)
+            }
+            TeumSessionEffect.StopCue -> cue?.stop()
+            is TeumSessionEffect.SoundPreference -> {
+                uiPrefs.edit().putBoolean(KEY_SOUND, effect.enabled).apply()
+                if (effect.enabled) cue?.beep()
             }
         }
-        render()
     }
+
+    fun onCreate() = coordinator.onCreate(uiPrefs.getBoolean(KEY_SOUND, true))
 
     fun onStart() {
         if (source == null) {
             try {
-                source = AaosSafetySource(activity) { observation -> onSafety(observation) }.also { it.start() }
+                source = AaosSafetySource(activity, coordinator::onSafety).also { it.start() }
             } catch (e: RuntimeException) {
                 source = null
             }
             try {
-                val settingsPort = PleosSettingsPort(activity)
-                port = settingsPort
-                adapter = SafeVehicleAdapter(settingsPort, SystemClock::elapsedRealtime) { command ->
-                    onCommand(command)
-                }
+                port = PleosSettingsPort(activity)
             } catch (e: RuntimeException) {
                 port = null
-                adapter = null
             }
             cue = TeumCuePlayer(activity).also { player ->
                 player.listener = { if (screen == Screen.SETTINGS) requestRender() else updateLive() }
             }
         }
-        if (active != null) startTimer()
-        if (screen == Screen.SETUP) {
-            featureCommands.clear()
-            featurePreviewIds.clear()
-            applyConsent.clear()
-            refreshFeatureStatus()
-        }
-        if (screen == Screen.RESTORE) {
-            restoreCommands.clear()
-            banner = Banner("화면을 떠난 동안 복원 정보가 초기화되었습니다. 설정은 직접 확인하세요.", clay = false)
-        }
-        render()
+        coordinator.onStart(port)
     }
 
     fun onStop() {
-        stopTimer()
+        // Classify foreground interruption before source.close() emits disconnected.
+        coordinator.onStop()
         cue?.close()
         cue = null
-        adapter?.cancelPending()
-        val session = active
-        if (session != null && !session.finished) {
-            val snapshot = snapshotOf(session, "앱이 화면을 떠나 타이머가 중단되었습니다.")
-            snapshots.save(snapshot)
-            recovery = snapshot
-            active = null
-            screen = Screen.RECOVERY
-            awakeAcknowledged = false
-            lastLunchCueSecond = -1
-        }
         source?.close()
         source = null
-        adapter?.close()
-        adapter = null
         port = null
     }
 
     fun onDestroy() {
-        stopTimer()
+        coordinator.onDestroy()
         cue?.close()
         cue = null
-        adapter?.close()
-        adapter = null
         source?.close()
         source = null
+        port = null
     }
+
+    private fun refreshFeatureStatus() = coordinator.dispatch(TeumSessionAction.RefreshFeatures)
+    private fun computeSetup(state: SetupState, nowWall: Long) = coordinator.computeSetup(state, nowWall)
+    private fun startBlockedReason(computed: SetupComputed, state: SetupState) = coordinator.startBlockedReason(computed, state)
+    private fun displayElapsed(session: ActiveSessionState) = session.displayElapsedSeconds
+    private fun finishNow() = coordinator.dispatch(TeumSessionAction.FinishNow)
+    private fun acknowledgeWake() = coordinator.dispatch(TeumSessionAction.WakeAcknowledgement(true))
+    private fun recordRestricted() = coordinator.dispatch(TeumSessionAction.RecordRestricted)
+    private fun previewFeature(feature: VehicleFeature, value: Double) =
+        coordinator.dispatch(TeumSessionAction.PreviewFeature(feature, value))
+    private fun restoreFeatureAllowed() = coordinator.restoreFeatureAllowed()
 
     fun onConfigurationChanged() {
         render()
@@ -262,372 +171,21 @@ class TeumUiController(
         when (screen) {
             Screen.HOME -> return false
             Screen.SETUP -> {
-                setup = null
-                adapter?.cancelPending()
-                featureCommands.clear()
-                featurePreviewIds.clear()
-                applyConsent.clear()
-                screen = Screen.HOME
-                render()
+                coordinator.dispatch(TeumSessionAction.Home)
             }
             Screen.HISTORY, Screen.SETTINGS -> {
-                screen = Screen.HOME
-                render()
+                coordinator.dispatch(TeumSessionAction.Home)
             }
             Screen.SESSION -> confirmFinish()
             Screen.RESTORE -> {
                 if (active?.restricted == true) recordRestricted() else {
-                    banner = Banner("복원 확인을 거친 뒤 기록할 수 있습니다.", clay = false)
-                    render()
+                    coordinator.dispatch(TeumSessionAction.RequireRestore)
                 }
             }
             Screen.RECORD -> confirmDiscardRecord()
             Screen.RECOVERY -> confirmDiscardRecovery()
         }
         return true
-    }
-
-    private fun onSafety(observation: VehicleSafety) {
-        safety = observation
-        safetySeen = true
-        adapter?.updateSafety(observation)
-        val session = active
-        if (session != null && !session.finished &&
-            observation.blockedReason(SystemClock.elapsedRealtime()) != null
-        ) {
-            parkingLost()
-            return
-        }
-        updateLive()
-    }
-
-    private fun parkingLost() {
-        val session = active ?: return
-        if (session.finished) return
-        val now = reading()
-        stopTimer()
-        cue?.stop()
-        adapter?.cancelPending()
-        try {
-            session.engine.parkingLost(now)
-        } catch (e: RuntimeException) {
-            // The UI still fails closed even if the state machine is already terminal.
-        }
-        session.restricted = true
-        session.finished = true
-        session.finalElapsedSeconds = session.elapsedSeconds
-        session.finalWallMillis = now.wallMillis
-        snapshots.save(snapshotOf(session, "주차/주행 제한 신뢰를 잃어 제어를 중단했습니다.", restricted = true))
-        screen = Screen.RESTORE
-        banner = Banner("주차 상태를 확인할 수 없어 제어를 중단했습니다. 자동 복원은 시도하지 않습니다.", clay = true)
-        render()
-    }
-
-    // ---------------------------------------------------------------- setup
-
-    private fun openSetup(meta: SituationMeta) {
-        val calendar = Calendar.getInstance().apply { add(Calendar.MINUTE, meta.defaultMinutes) }
-        var minute = ((calendar.get(Calendar.MINUTE) + 4) / 5) * 5
-        if (minute >= 60) {
-            calendar.add(Calendar.HOUR_OF_DAY, 1)
-            minute -= 60
-        }
-        setup = SetupState(
-            meta = meta,
-            arrivalHour = calendar.get(Calendar.HOUR_OF_DAY),
-            arrivalMinute = minute
-        )
-        featureStatus.clear()
-        featureStatus[VehicleFeature.SEAT_POSITION] = FeatureUi.Manual(SEAT_REASON)
-        featureTargets.clear()
-        featureCommands.clear()
-        featurePreviewIds.clear()
-        applyConsent.clear()
-        screen = Screen.SETUP
-        banner = null
-        refreshFeatureStatus()
-        render()
-    }
-
-    private fun refreshFeatureStatus() {
-        featureStatus[VehicleFeature.HVAC_TEMPERATURE] = FeatureUi.Checking
-        featureStatus[VehicleFeature.AMBIENT_BRIGHTNESS] = FeatureUi.Checking
-        featureStatus[VehicleFeature.SEAT_POSITION] = FeatureUi.Manual(SEAT_REASON)
-        val settingsPort = port
-        if (settingsPort == null) {
-            val reason = "차량 설정 연동을 시작할 수 없습니다. 차량 메뉴에서 직접 조정하세요."
-            featureStatus[VehicleFeature.HVAC_TEMPERATURE] = FeatureUi.Manual(reason)
-            featureStatus[VehicleFeature.AMBIENT_BRIGHTNESS] = FeatureUi.Manual(reason)
-            requestRender()
-            return
-        }
-        settingsPort.inspect(VehicleSetting(VehicleFeature.HVAC_TEMPERATURE, DRIVER_AREA)) { result ->
-            featureStatus[VehicleFeature.HVAC_TEMPERATURE] = result.fold(
-                onSuccess = { inspection ->
-                    if (featureTargets[VehicleFeature.HVAC_TEMPERATURE] == null) {
-                        featureTargets[VehicleFeature.HVAC_TEMPERATURE] = inspection.value
-                    }
-                    FeatureUi.Ready(inspection.value, inspection.capability)
-                },
-                onFailure = { FeatureUi.Manual(featureReason(it)) }
-            )
-            requestRender()
-        }
-        settingsPort.inspect(VehicleSetting(VehicleFeature.AMBIENT_BRIGHTNESS, DRIVER_AREA)) { result ->
-            featureStatus[VehicleFeature.AMBIENT_BRIGHTNESS] = result.fold(
-                onSuccess = { inspection ->
-                    if (featureTargets[VehicleFeature.AMBIENT_BRIGHTNESS] == null) {
-                        featureTargets[VehicleFeature.AMBIENT_BRIGHTNESS] = inspection.value
-                    }
-                    FeatureUi.Ready(inspection.value, inspection.capability)
-                },
-                onFailure = { FeatureUi.Manual(featureReason(it)) }
-            )
-            requestRender()
-        }
-    }
-
-    private fun featureReason(error: Throwable): String {
-        val message = error.message ?: error.javaClass.simpleName
-        return when {
-            message.contains("SecurityException") || message.contains("Permission") ->
-                "이 기기에서 읽기/제어 권한이 없습니다. 차량 메뉴에서 직접 조정하세요."
-            message.contains("PropertyNotAvailable") || message.contains("unsupported") ||
-                message.contains("not supported") ->
-                "이 기기에서 지원되지 않습니다. 차량 메뉴에서 직접 조정하세요."
-            message.contains("Timeout") -> "차량 응답이 없습니다. 차량 메뉴에서 직접 조정하세요."
-            else -> "지원 여부를 확인할 수 없습니다: ${message.take(90)}"
-        }
-    }
-
-    private fun computeSetup(state: SetupState, nowWall: Long): SetupComputed {
-        val travel = state.travelMinutes * 60
-        val deadline = if (state.mode == TimeMode.DURATION) {
-            nowWall + state.minutes * 60_000L
-        } else {
-            resolveDeadline(state.arrivalHour, state.arrivalMinute, nowWall)
-        }
-        val available = ((deadline - nowWall) / 1000L)
-            .coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()
-        val recommendation = TeumRecommender.recommend(state.meta.id, available, travel)
-        val chosen = if (state.useAlternative && recommendation.alternative != null) {
-            recommendation.alternative
-        } else {
-            recommendation.primary
-        }
-        if (chosen == null) {
-            return SetupComputed(deadline, available, recommendation, null, null, recommendation.reason)
-        }
-        val time = when {
-            recommendation.decision == RecommendDecision.START_SHORT_CONFIRM || state.useAlternative ->
-                TimeInput.Duration(chosen.totalSeconds().toLong())
-            state.mode == TimeMode.DEADLINE -> TimeInput.Deadline(deadline)
-            else -> TimeInput.Duration(state.minutes * 60L)
-        }
-        return when (val result = Planner.plan(
-            PlanRequest(state.meta.session, nowWall, time, travel.toLong())
-        )) {
-            is PlanResult.Available ->
-                SetupComputed(deadline, available, recommendation, chosen, result.schedule, null)
-            is PlanResult.Insufficient ->
-                SetupComputed(
-                    deadline, available, recommendation, chosen, null,
-                    "시간이 부족합니다. 최소 ${formatDuration(result.minimumSeconds)}가 필요합니다."
-                )
-            is PlanResult.Invalid ->
-                SetupComputed(deadline, available, recommendation, chosen, null, "시간을 계산할 수 없습니다.")
-        }
-    }
-
-    private fun startBlockedReason(computed: SetupComputed, state: SetupState): String? {
-        val schedule = computed.schedule ?: return computed.refusal ?: "시간이 부족합니다."
-        if (schedule.kind == ScheduleKind.SHORT && !state.shortConfirmed) {
-            return "짧은 활동으로 시작하려면 아래 확인이 필요합니다."
-        }
-        val blocked = safety.blockedReason(SystemClock.elapsedRealtime())
-        if (blocked != null) {
-            return "주차 P와 주행 제한 없음이 확인되어야 시작할 수 있습니다. ${safetyReason(blocked)}"
-        }
-        return null
-    }
-
-    private fun startSession() {
-        val state = setup ?: return
-        // Bracket normal wall elapsed inside monotonic elapsed; ticks sample wall first.
-        val nowElapsed = SystemClock.elapsedRealtime()
-        val nowWall = System.currentTimeMillis()
-        val now = ClockReading(nowWall, nowElapsed)
-        val computed = computeSetup(state, nowWall)
-        val schedule = computed.schedule ?: run {
-            banner = Banner(computed.refusal ?: "시간이 부족합니다.", clay = true)
-            render()
-            return
-        }
-        if (schedule.kind == ScheduleKind.SHORT && !state.shortConfirmed) return
-        val blocked = safety.blockedReason(now.elapsedMillis)
-        if (blocked != null) {
-            banner = Banner("주차 P와 주행 제한 없음이 확인되어야 시작할 수 있습니다. ${safetyReason(blocked)}", clay = true)
-            render()
-            return
-        }
-        if (!schedule.vehicleControlsAllowed) {
-            invalidateFeaturePreviews()
-        }
-        val engine = try {
-            SessionEngine.start(schedule, now, shortConfirmed = state.shortConfirmed)
-        } catch (e: IllegalArgumentException) {
-            banner = Banner("시작 시각이 계획 범위를 벗어났습니다. 시간을 다시 확인하세요.", clay = true)
-            render()
-            return
-        }
-        val content = TeumContentCatalog.get(state.meta.id) ?: return
-        val segments = buildSegments(
-            state.meta.id, schedule.kind, schedule.prepareSeconds,
-            schedule.activitySeconds, schedule.finishSeconds
-        )
-        applied.clear()
-        restoreCommands.clear()
-        restoreConsent = false
-        manualRestoreAck = false
-        awakeAcknowledged = false
-        cueCount = 0
-        lastLunchCueSecond = -1
-        lastPersistedSecond = -1
-        val session = ActiveSession(
-            meta = state.meta, content = content, schedule = schedule, segments = segments,
-            engine = engine, startedElapsedMillis = now.elapsedMillis, startedWallMillis = nowWall
-        )
-        active = session
-        setup = null
-        screen = Screen.SESSION
-        snapshots.save(snapshotOf(session, "세션을 시작했습니다."))
-        if (schedule.vehicleControlsAllowed) {
-            featureCommands.values.filter { it.stage == CommandStage.PREVIEW }.toList().forEach { command ->
-                adapter?.confirm(command.id, applyConsent[command.setting.feature] == true)
-            }
-        }
-        banner = null
-        lastRenderedStep = -1
-        startTimer()
-        render()
-        playStepCue(segments.firstOrNull())
-    }
-
-    // -------------------------------------------------------------- session
-
-    private fun reading(): ClockReading =
-        ClockReading(System.currentTimeMillis(), SystemClock.elapsedRealtime())
-
-    private fun displayElapsed(session: ActiveSession): Long {
-        val start = session.deadlineFinishStartedMillis ?: return session.elapsedSeconds
-        return session.schedule.prepareSeconds + session.schedule.activitySeconds +
-            (session.elapsedMillis - start).coerceAtLeast(0) / 1000L
-    }
-
-    private fun sessionStep(session: ActiveSession): Int =
-        stepIndexAt(session.segments, displayElapsed(session))
-
-    private fun tick() {
-        tick(reading())
-    }
-
-    private fun tick(now: ClockReading) {
-        val session = active ?: return
-        if (session.finished) return
-        session.elapsedMillis = (now.elapsedMillis - session.startedElapsedMillis).coerceAtLeast(0)
-        session.elapsedSeconds = session.elapsedMillis / 1000L
-        try {
-            session.engine.reevaluate(now)
-        } catch (e: RuntimeException) {
-            stopTimer()
-            cue?.stop()
-            adapter?.cancelPending()
-            val snapshot = snapshotOf(session, "타이머 상태를 확인할 수 없어 활동이 중단되었습니다.")
-            snapshots.save(snapshot)
-            recovery = snapshot
-            active = null
-            screen = Screen.RECOVERY
-            banner = Banner("타이머 오류로 활동을 중단했습니다. 차량 설정은 직접 확인하세요.", clay = true)
-            render()
-            return
-        }
-        adapter?.tick()
-        if (safety.blockedReason(now.elapsedMillis) != null) {
-            parkingLost()
-            return
-        }
-        val activityEnd = session.schedule.prepareSeconds + session.schedule.activitySeconds
-        if (session.engine.state == SessionState.FINISHING &&
-            session.elapsedSeconds < activityEnd && session.deadlineFinishStartedMillis == null
-        ) {
-            session.deadlineFinishStartedMillis = session.elapsedMillis
-            session.progressAtDeadline = session.elapsedSeconds
-            adapter?.cancelPending()
-        }
-        val step = sessionStep(session)
-        if (step != lastRenderedStep) {
-            lastRenderedStep = step
-            playStepCue(session.segments.getOrNull(step))
-            render()
-            return
-        }
-        if (session.meta.id == SituationIds.LUNCH_BREAK && !awakeAcknowledged) {
-            lunchCueTick(session)
-        }
-        val finishStarted = session.deadlineFinishStartedMillis
-        if ((if (finishStarted == null) session.elapsedSeconds >= session.timedTotalSeconds
-              else session.elapsedMillis - finishStarted >= session.schedule.finishSeconds * 1000L) &&
-            session.engine.state == SessionState.FINISHING
-        ) {
-            completeTimedSession(session, now)
-            return
-        }
-        if (session.elapsedSeconds - lastPersistedSecond >= 5) {
-            lastPersistedSecond = session.elapsedSeconds
-            snapshots.save(snapshotOf(session, "진행 중"))
-        }
-        updateLive()
-    }
-
-    private fun completeTimedSession(session: ActiveSession, now: ClockReading) {
-        stopTimer()
-        cue?.stop()
-        try {
-            session.engine.finishingDone(now)
-        } catch (e: IllegalStateException) {
-            // Already past finishing; no synthetic completion is created.
-        }
-        session.finished = true
-        session.finalElapsedSeconds = session.elapsedSeconds
-        session.finalWallMillis = now.wallMillis
-        snapshots.save(snapshotOf(session, if (session.progressAtDeadline == null)
-            "활동 시간이 실제로 모두 지났습니다." else "남은 시간 부족으로 활동을 일찍 마무리했습니다."))
-        screen = Screen.RESTORE
-        render()
-        playCue(if (session.progressAtDeadline == null) "활동을 마쳤습니다. 복원을 확인하세요."
-            else "남은 시간이 부족해 활동을 일찍 마무리했습니다. 복원을 확인하세요.")
-    }
-
-    private fun finishNow() {
-        val session = active ?: return
-        if (session.finished) return
-        val now = reading()
-        session.elapsedMillis = (now.elapsedMillis - session.startedElapsedMillis).coerceAtLeast(0)
-        session.elapsedSeconds = session.elapsedMillis / 1000L
-        stopTimer()
-        cue?.stop()
-        adapter?.cancelPending()
-        try {
-            session.engine.finishEarly(now)
-        } catch (e: IllegalStateException) {
-            // Idempotent cancellation; the record still reflects actual progress.
-        }
-        session.finished = true
-        session.finalElapsedSeconds = session.elapsedSeconds
-        session.finalWallMillis = now.wallMillis
-        snapshots.save(snapshotOf(session, "사용자가 지금 마무리를 선택했습니다."))
-        screen = Screen.RESTORE
-        render()
     }
 
     private fun confirmFinish() {
@@ -639,273 +197,15 @@ class TeumUiController(
             .show()
     }
 
-    private fun playStepCue(segment: Segment?) {
-        segment ?: return
-        if (!soundEnabled) return
-        cue?.speak("${segment.title}. ${segment.prompt}")
-        cue?.beep()
-        if (screen == Screen.SESSION) updateLive()
-    }
-
-    private fun playCue(text: String) {
-        if (!soundEnabled) return
-        cue?.speak(text)
-        cue?.beep()
-    }
-
-    private fun lunchCueTick(session: ActiveSession) {
-        if (!soundEnabled || awakeAcknowledged) return
-        val wakeIndex = session.segments.indexOfFirst { it.stepId == "wake" || it.stepId == "wrap" }
-        if (wakeIndex < 0) return
-        val wakeStart = segmentStart(session.segments, wakeIndex)
-        val wakeEnd = segmentEnd(session.segments, wakeIndex)
-        val elapsed = displayElapsed(session)
-        if (elapsed < wakeStart) return
-        val remaining = (wakeEnd - elapsed).toInt()
-        if (remaining < 0) return
-        val scheduled = setOf(180, 120, 90, 60, 45, 30, 20, 10, 5)
-        val due = remaining in scheduled || (remaining <= 60 && remaining % 10 == 0)
-        if (!due || remaining == lastLunchCueSecond) return
-        lastLunchCueSecond = remaining
-        cueCount++
-        cue?.speak("복귀 준비 시간입니다. 깨어 있으면 화면의 깨어 있음 확인을 눌러 주세요.")
-        cue?.beep(urgent = remaining <= 60)
-        updateLive()
-    }
-
-    private fun acknowledgeWake() {
-        awakeAcknowledged = true
-        playCue("깨어 있음을 확인했습니다. 복원은 다음 화면에서 직접 동의해야 합니다.")
-        render()
-    }
-
-    private fun snapshotOf(
-        session: ActiveSession, reason: String, restricted: Boolean = session.restricted
-    ): SessionSnapshot = SessionSnapshot(
-        situationId = session.meta.id,
-        kind = session.schedule.kind.name,
-        startWallMillis = session.schedule.startWallMillis,
-        deadlineWallMillis = session.schedule.deadlineWallMillis,
-        prepareSeconds = session.schedule.prepareSeconds,
-        activitySeconds = session.schedule.activitySeconds,
-        finishSeconds = session.schedule.finishSeconds,
-        travelSeconds = session.schedule.travelSeconds,
-        elapsedSeconds = session.elapsedSeconds,
-        wallMillis = System.currentTimeMillis(),
-        stage = if (session.finished) "FINISHED" else session.engine.state.name,
-        reason = reason,
-        restricted = restricted,
-        restoredAndReadyToRecord = false,
-        awakeAcknowledged = awakeAcknowledged,
-        progressSeconds = session.progressAtDeadline ?: session.elapsedSeconds,
-        deadlineFinishCompleted = session.deadlineFinishStartedMillis?.let {
-            session.elapsedMillis - it >= session.schedule.finishSeconds * 1000L
-        } == true
-    )
-
-    // -------------------------------------------------------------- restore
-
-    private fun confirmRestore() {
-        val session = active ?: return
-        if (session.restricted) {
-            recordRestricted()
-            return
-        }
-        if (!restoreConsent) return
-        if (session.meta.id == SituationIds.LUNCH_BREAK && !awakeAcknowledged) {
-            banner = Banner("깨어 있음 확인이 필요합니다. 확인 전에는 복원하지 않습니다.", clay = true)
-            render()
-            return
-        }
-        val now = reading()
-        val blocked = safety.blockedReason(now.elapsedMillis)
-        if (blocked != null) {
-            banner = Banner("복원을 확인할 수 없습니다: ${safetyReason(blocked)}", clay = true)
-            render()
-            return
-        }
-        if (restoreCommands.values.any {
-                it.stage in setOf(CommandStage.PREVIEW, CommandStage.QUEUED, CommandStage.REQUESTED)
-            }) {
-            banner = Banner("복원 요청이 처리 중입니다. 실제 읽기 확인을 기다리세요.", clay = false)
-            render()
-            return
-        }
-        if (applied.values.any { !it.restored } && !manualRestoreAck) {
-            banner = Banner("남은 설정을 직접 확인했다는 항목에 동의해야 기록할 수 있습니다.", clay = true)
-            render()
-            return
-        }
-        try {
-            session.engine.approveRestore(now, true)
-            session.engine.restoreFinished(now)
-        } catch (e: IllegalStateException) {
-            banner = Banner("복원 상태를 확정할 수 없습니다. 다시 확인하세요.", clay = true)
-            render()
-            return
-        }
-        // Keep the activity elapsed frozen at finish/cancel; restore-screen waiting
-        // must never turn an early finish into a completed record.
-        session.finalWallMillis = session.engine.actualFinishWallMillis ?: now.wallMillis
-        finalizeRecord(session)
-    }
-
-    private fun recordRestricted() {
-        val session = active ?: return
-        finalizeRecord(session)
-    }
-
-    private fun finalizeRecord(session: ActiveSession) {
-        val elapsed = if (session.finalElapsedSeconds > 0) session.finalElapsedSeconds else session.elapsedSeconds
-        val progress = session.progressAtDeadline ?: elapsed
-        val allTimed = session.engine.outcome != Outcome.EARLY_FINISH &&
-            session.progressAtDeadline == null && elapsed >= session.timedTotalSeconds
-        draft = RecordDraft(
-            situationId = session.meta.id,
-            segments = session.segments,
-            elapsedSeconds = elapsed,
-            plannedReturnWallMillis = session.schedule.plannedReturnWallMillis,
-            actualFinishWallMillis = session.finalWallMillis,
-            safetyInterrupted = session.restricted,
-            recovered = false,
-            allTimedPassed = allTimed,
-            restoredBeforeSave = !session.restricted,
-            progressSeconds = progress,
-            deadlineFinishCompleted = session.deadlineFinishStartedMillis?.let {
-                session.elapsedMillis - it >= session.schedule.finishSeconds * 1000L
-            } == true
-        )
-        snapshots.save(
-            SessionSnapshot(
-                situationId = session.meta.id,
-                kind = session.schedule.kind.name,
-                startWallMillis = session.schedule.startWallMillis,
-                deadlineWallMillis = session.schedule.deadlineWallMillis,
-                prepareSeconds = session.schedule.prepareSeconds,
-                activitySeconds = session.schedule.activitySeconds,
-                finishSeconds = session.schedule.finishSeconds,
-                travelSeconds = session.schedule.travelSeconds,
-                elapsedSeconds = elapsed,
-                wallMillis = session.finalWallMillis,
-                stage = if (session.engine.outcome == Outcome.EARLY_FINISH) "EARLY_FINISH"
-                    else session.engine.state.name,
-                reason = if (session.restricted) "안전 중단 후 기록 대기" else "복원 확인 후 기록 대기",
-                restricted = session.restricted,
-                restoredAndReadyToRecord = true,
-                awakeAcknowledged = awakeAcknowledged,
-                progressSeconds = progress,
-                deadlineFinishCompleted = session.deadlineFinishStartedMillis?.let {
-                    session.elapsedMillis - it >= session.schedule.finishSeconds * 1000L
-                } == true
-            )
-        )
-        active = null
-        stopTimer()
-        cue?.stop()
-        editable = RecordEditable()
-        screen = Screen.RECORD
-        banner = null
-        render()
-    }
-
-    private fun draftFromSnapshot(snapshot: SessionSnapshot, ready: Boolean): RecordDraft {
-        val meta = metaOf(snapshot.situationId) ?: TEUM_SITUATIONS.first()
-        val segments = buildSegments(
-            snapshot.situationId, ScheduleKind.valueOf(snapshot.kind),
-            snapshot.prepareSeconds, snapshot.activitySeconds, snapshot.finishSeconds
-        )
-        val allTimed = snapshot.stage != "EARLY_FINISH" &&
-            snapshot.progressSeconds >= snapshot.timedTotalSeconds
-        return RecordDraft(
-            situationId = snapshot.situationId,
-            segments = segments,
-            elapsedSeconds = snapshot.elapsedSeconds,
-            plannedReturnWallMillis = runCatching {
-                snapshot.toSchedule(meta.session).plannedReturnWallMillis
-            }.getOrNull(),
-            actualFinishWallMillis = snapshot.wallMillis,
-            safetyInterrupted = snapshot.restricted,
-            recovered = !ready,
-            allTimedPassed = allTimed,
-            restoredBeforeSave = ready && !snapshot.restricted,
-            progressSeconds = snapshot.progressSeconds,
-            deadlineFinishCompleted = snapshot.deadlineFinishCompleted
-        )
-    }
-
-    // --------------------------------------------------------------- record
-
-    private fun saveRecord() {
-        val current = draft ?: return
-        val note = recordNoteView?.text?.toString()?.trim().orEmpty()
-        val next = recordNextView?.text?.toString()?.trim().orEmpty()
-        val recall = recordRecallView?.isChecked == true
-        val outcome = draftOutcome(current)
-        val completed = current.actualCompletedIndexes()
-        val title = metaOf(current.situationId)?.activityTitle ?: "활동"
-        try {
-            repo.save(
-                newActivityRecord(
-                    situationId = current.situationId,
-                    activityTitle = title,
-                    totalSteps = current.totalSteps,
-                    completedStepIndexes = completed,
-                    elapsedSeconds = current.elapsedSeconds,
-                    outcome = outcome,
-                    note = note,
-                    nextAction = next,
-                    recallAccepted = recall && next.isNotBlank(),
-                    historyConsentAtSave = repo.isHistoryConsent()
-                )
-            )
-        } catch (e: IllegalArgumentException) {
-            banner = Banner("기록을 저장할 수 없습니다: ${e.message}", clay = true)
-            render()
-            return
-        }
-        snapshots.clear()
-        recovery = null
-        draft = null
-        active = null
-        editable = RecordEditable()
-        screen = Screen.HOME
-        banner = Banner("기록을 저장했습니다.", clay = false)
-        render()
-    }
-
     private fun confirmDiscardRecord() {
         AlertDialog.Builder(activity)
             .setTitle("기록을 저장하지 않을까요?")
             .setMessage("저장하지 않으면 이번 활동의 실제 진행과 시간은 남지 않습니다.")
             .setPositiveButton("저장하지 않고 나가기") { _, _ ->
-                snapshots.clear()
-                recovery = null
-                draft = null
-                active = null
-                editable = RecordEditable()
-                screen = Screen.HOME
-                banner = Banner("기록을 저장하지 않았습니다.", clay = false)
-                render()
+                coordinator.dispatch(TeumSessionAction.DiscardRecord)
             }
             .setNegativeButton("계속 기록하기", null)
             .show()
-    }
-
-    private fun openRecoveryRecord() {
-        val snapshot = recovery ?: return
-        draft = draftFromSnapshot(snapshot, snapshot.restoredAndReadyToRecord)
-        recovery = null
-        editable = RecordEditable()
-        screen = Screen.RECORD
-        banner = Banner(
-            if (snapshot.restoredAndReadyToRecord) {
-                "저장 전에 앱이 중단되었습니다. 실제 진행을 확인하고 기록하세요."
-            } else {
-                "앱이 중단되어 마지막으로 확인된 진행만 기록합니다."
-            },
-            clay = false
-        )
-        render()
     }
 
     private fun confirmDiscardRecovery() {
@@ -913,10 +213,7 @@ class TeumUiController(
             .setTitle("중단된 활동을 닫을까요?")
             .setMessage("기록 없이 닫으면 이 활동의 진행은 남지 않습니다. 차량 명령은 다시 보내지 않습니다.")
             .setPositiveButton("기록 없이 닫기") { _, _ ->
-                snapshots.clear()
-                recovery = null
-                screen = Screen.HOME
-                render()
+                coordinator.dispatch(TeumSessionAction.DiscardRecovery)
             }
             .setNegativeButton("취소", null)
             .show()
@@ -1004,80 +301,6 @@ class TeumUiController(
     }
 
     // ------------------------------------------------------------- commands
-
-    private fun invalidateFeaturePreviews() {
-        adapter?.cancelPending()
-        featureCommands.clear()
-        featurePreviewIds.clear()
-        applyConsent.clear()
-    }
-
-    private fun onCommand(command: VehicleCommand) {
-        val feature = command.setting.feature
-        if (!command.isRestore) {
-            featureCommands[feature] = command
-            if (command.stage == CommandStage.PREVIEW) featurePreviewIds[feature] = command.id
-            if (command.stage == CommandStage.READBACK) {
-                val initial = command.initial
-                if (initial != null) {
-                    applied[feature] = AppliedChange(
-                        command.setting, initial, command.readback ?: command.target
-                    )
-                }
-            }
-        } else {
-            restoreCommands[feature] = command
-            if (command.stage == CommandStage.READBACK) applied[feature]?.restored = true
-        }
-        when (screen) {
-            Screen.SETUP, Screen.RESTORE -> requestRender()
-            Screen.SESSION -> updateLive()
-            else -> Unit
-        }
-    }
-
-    private fun previewFeature(feature: VehicleFeature, value: Double) {
-        val state = setup ?: return
-        if (computeSetup(state, System.currentTimeMillis()).schedule?.vehicleControlsAllowed != true) {
-            invalidateFeaturePreviews()
-            requestRender()
-            return
-        }
-        val vehicleAdapter = adapter ?: return
-        invalidateFeaturePreviews()
-        featurePreviewIds[feature] = vehicleAdapter.previewChange(
-            VehicleSetting(feature, DRIVER_AREA), value
-        )
-        requestRender()
-    }
-
-    private fun restoreFeatureAllowed(): Boolean {
-        val session = active ?: return false
-        return !session.restricted && restoreConsent &&
-            (session.meta.id != SituationIds.LUNCH_BREAK || awakeAcknowledged) &&
-            safety.blockedReason(SystemClock.elapsedRealtime()) == null
-    }
-
-    private fun previewRestore(feature: VehicleFeature) {
-        if (!restoreFeatureAllowed()) return
-        val change = applied[feature] ?: return
-        adapter?.previewRestore(change.setting)
-        requestRender()
-    }
-
-    private fun confirmRestoreFeature(feature: VehicleFeature) {
-        if (!restoreFeatureAllowed()) return
-        val command = restoreCommands[feature] ?: return
-        if (command.requiresOriginConfirmation && restoreOriginAck[feature] != true) {
-            banner = Banner("앱 외 변경 여부를 확인했다는 항목에 먼저 동의하세요.", clay = true)
-            render()
-            return
-        }
-        adapter?.confirm(command.id, true, confirmUnknownOrigin = true)
-        requestRender()
-    }
-
-    // --------------------------------------------------------------- render
 
     private fun requestRender() {
         if (renderQueued) return
@@ -1273,14 +496,10 @@ class TeumUiController(
             gravity = Gravity.CENTER_VERTICAL
         }
         footer.addView(theme.quietButton("기록  ${repo.listAll().size}", "history_button", theme.pine) {
-            screen = Screen.HISTORY
-            banner = null
-            render()
+            coordinator.dispatch(TeumSessionAction.History)
         })
         footer.addView(theme.quietButton("설정 · 지원 기능", "settings_button") {
-            screen = Screen.SETTINGS
-            banner = null
-            render()
+            coordinator.dispatch(TeumSessionAction.Settings)
         })
         footer.addView(View(activity), theme.lp(0, 1, 1f))
         column.addView(footer, theme.lp(
@@ -1306,7 +525,7 @@ class TeumUiController(
     }
 
     private fun situationCard(meta: SituationMeta): LinearLayout {
-        val card = theme.clickableCard("situation_${meta.id}") { openSetup(meta) }
+        val card = theme.clickableCard("situation_${meta.id}") { coordinator.dispatch(TeumSessionAction.OpenSetup(meta.id)) }
         card.layoutParams = theme.lp(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
             0f, 0, 0, 0, TeumSpace.M
@@ -1341,13 +560,7 @@ class TeumUiController(
     private fun renderSetup(column: LinearLayout, wide: Boolean) {
         val state = setup ?: return
         addTopBar(column, state.meta.title + " 시간 정하기", "시작 전에 시간표와 차량 설정을 확인합니다.") {
-            screen = Screen.HOME
-            setup = null
-            adapter?.cancelPending()
-            featureCommands.clear()
-            featurePreviewIds.clear()
-            applyConsent.clear()
-            render()
+            coordinator.dispatch(TeumSessionAction.Home)
         }
         val now = System.currentTimeMillis()
         val computed = computeSetup(state, now)
@@ -1372,12 +585,8 @@ class TeumUiController(
         }
     }
 
-    private fun mutateSetup(block: (SetupState) -> Unit) {
-        val state = setup ?: return
-        invalidateFeaturePreviews()
-        block(state)
-        state.shortConfirmed = false
-        render()
+    private fun mutateSetup(block: (SetupState) -> SetupState) {
+        setup?.let { coordinator.dispatch(TeumSessionAction.UpdateSetup(block(it))) }
     }
 
     private fun timeCard(state: SetupState, computed: SetupComputed): LinearLayout {
@@ -1388,10 +597,10 @@ class TeumUiController(
             gravity = Gravity.CENTER_VERTICAL
         }
         val durationChip = theme.chip("남은 시간", "mode_duration", state.mode == TimeMode.DURATION) {
-            mutateSetup { it.mode = TimeMode.DURATION }
+            mutateSetup { it.copy(mode = TimeMode.DURATION) }
         }
         val deadlineChip = theme.chip("도착 시각", "mode_deadline", state.mode == TimeMode.DEADLINE) {
-            mutateSetup { it.mode = TimeMode.DEADLINE }
+            mutateSetup { it.copy(mode = TimeMode.DEADLINE) }
         }
         modeRow.addView(durationChip, theme.lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f, 0, 0, TeumSpace.XS, 0))
         modeRow.addView(deadlineChip, theme.lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f, TeumSpace.XS, 0, 0, 0))
@@ -1400,8 +609,8 @@ class TeumUiController(
         if (state.mode == TimeMode.DURATION) {
             card.addView(stepperRow(
                 "${state.minutes}분", "minutes_value", "minutes_minus", "minutes_plus",
-                onMinus = { mutateSetup { it.minutes = (it.minutes - 1).coerceAtLeast(1) } },
-                onPlus = { mutateSetup { it.minutes = (it.minutes + 1).coerceAtMost(180) } }
+                onMinus = { mutateSetup { it.copy(minutes = (it.minutes - 1).coerceAtLeast(1)) } },
+                onPlus = { mutateSetup { it.copy(minutes = (it.minutes + 1).coerceAtMost(180)) } }
             ))
             card.addView(theme.text(
                 "이동 시간까지 포함한 총 남은 시간입니다.", TeumText.CAPTION, theme.inkMuted
@@ -1413,7 +622,7 @@ class TeumUiController(
             }
             state.meta.quickMinutes.forEach { minutes ->
                 quick.addView(theme.chip("${minutes}분", "quick_$minutes", state.minutes == minutes) {
-                    mutateSetup { it.minutes = minutes }
+                    mutateSetup { it.copy(minutes = minutes) }
                 })
             }
             card.addView(scroll, theme.lp(
@@ -1426,8 +635,7 @@ class TeumUiController(
             ) {
                 TimePickerDialog(activity, { _, hour, minute ->
                     mutateSetup {
-                        it.arrivalHour = hour
-                        it.arrivalMinute = minute
+                        it.copy(arrivalHour = hour, arrivalMinute = minute)
                     }
                 }, state.arrivalHour, state.arrivalMinute, true).show()
             }
@@ -1449,7 +657,7 @@ class TeumUiController(
         travelRow.addView(theme.text("이동 시간", TeumText.LABEL, theme.inkMuted),
             theme.lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         travelRow.addView(theme.quietButton("-", "travel_minus", theme.pine) {
-            mutateSetup { it.travelMinutes = (it.travelMinutes - 1).coerceAtLeast(0) }
+            mutateSetup { it.copy(travelMinutes = (it.travelMinutes - 1).coerceAtLeast(0)) }
         })
         travelRow.addView(theme.text("${state.travelMinutes}분", TeumText.HEADING).apply {
             tag = "travel_value"
@@ -1457,7 +665,7 @@ class TeumUiController(
             minWidth = theme.dp(56)
         })
         travelRow.addView(theme.quietButton("+", "travel_plus", theme.pine) {
-            mutateSetup { it.travelMinutes = (it.travelMinutes + 1).coerceAtMost(60) }
+            mutateSetup { it.copy(travelMinutes = (it.travelMinutes + 1).coerceAtMost(60)) }
         })
         card.addView(travelRow, theme.lp(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -1524,8 +732,7 @@ class TeumUiController(
                         "short_alt_button"
                     ) {
                         mutateSetup {
-                            it.useAlternative = true
-                            it.shortConfirmed = false
+                            it.copy(useAlternative = true)
                         }
                     }, theme.lp(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -1534,8 +741,7 @@ class TeumUiController(
                 } else {
                     card.addView(theme.quietButton("정상 시간표로 돌아가기", "short_normal_button") {
                         mutateSetup {
-                            it.useAlternative = false
-                            it.shortConfirmed = false
+                            it.copy(useAlternative = false)
                         }
                     })
                 }
@@ -1545,8 +751,7 @@ class TeumUiController(
             card.addView(theme.checkBox(
                 "짧은 활동으로 시작하는 데 동의합니다", "short_confirm", state.shortConfirmed
             ) { checked ->
-                state.shortConfirmed = checked
-                render()
+                coordinator.dispatch(TeumSessionAction.ConfirmShort(checked))
             })
         }
         if (repo.isHistoryConsent()) {
@@ -1750,7 +955,6 @@ class TeumUiController(
                 }
                 row.addView(theme.quietButton("-", "${tag}_minus", theme.pine) {
                     val next = (target - step).coerceAtLeast(min)
-                    featureTargets[feature] = next
                     previewFeature(feature, next)
                 })
                 row.addView(theme.text(format(target), TeumText.HEADING).apply {
@@ -1759,7 +963,6 @@ class TeumUiController(
                 }, theme.lp(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
                 row.addView(theme.quietButton("+", "${tag}_plus", theme.pine) {
                     val next = (target + step).coerceAtMost(max)
-                    featureTargets[feature] = next
                     previewFeature(feature, next)
                 })
                 parent.addView(row)
@@ -1791,7 +994,7 @@ class TeumUiController(
                         parent.addView(theme.checkBox(
                             "이 변경을 시작과 함께 적용하는 데 동의합니다", "${tag}_consent",
                             applyConsent[feature] == true
-                        ) { checked -> applyConsent[feature] = checked })
+                        ) { checked -> coordinator.dispatch(TeumSessionAction.ApplyConsent(feature, checked)) })
                     }
                     CommandStage.QUEUED, CommandStage.REQUESTED -> parent.addView(theme.text(
                         "요청 처리 중 · 실제 적용은 읽기 확인 전입니다.", TeumText.CAPTION, theme.inkMuted
@@ -1826,7 +1029,7 @@ class TeumUiController(
             0f, TeumSpace.XS, 0, 0, 0
         ))
         val blocked = startBlockedReason(computed, state)
-        val start = theme.primaryButton("${state.meta.title} 시작", "start_button") { startSession() }
+        val start = theme.primaryButton("${state.meta.title} 시작", "start_button") { coordinator.dispatch(TeumSessionAction.Start) }
         start.minHeight = theme.dp(TeumSize.PRIMARY)
         start.minimumHeight = theme.dp(TeumSize.PRIMARY)
         theme.setEnabledLook(start, blocked == null)
@@ -1865,10 +1068,7 @@ class TeumUiController(
         header.addView(theme.quietButton(
             if (soundEnabled) "소리 끄기" else "소리 켜기", "session_sound"
         ) {
-            soundEnabled = !soundEnabled
-            uiPrefs.edit().putBoolean(KEY_SOUND, soundEnabled).apply()
-            if (soundEnabled) cue?.beep()
-            render()
+            coordinator.dispatch(TeumSessionAction.SetSound(!soundEnabled))
         })
         column.addView(header, theme.lp(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -1897,7 +1097,7 @@ class TeumUiController(
             0, TeumSpace.S, 0, TeumSpace.XL
         ))
 
-        val step = sessionStep(session)
+        val step = session.stepIndex
         val segment = session.segments.getOrNull(step)
         val stepCard = theme.card()
         stepCard.addView(theme.text(
@@ -1938,7 +1138,7 @@ class TeumUiController(
         ))
 
         if (session.meta.id == SituationIds.LUNCH_BREAK && !session.restricted) {
-            val wakeRelevant = session.engine.state == SessionState.FINISHING ||
+            val wakeRelevant = session.engineState == SessionState.FINISHING ||
                 segment?.stepId == "wake" || segment?.stepId == "wrap" ||
                 session.elapsedSeconds >= session.timedTotalSeconds - 180
             if (wakeRelevant) {
@@ -2013,12 +1213,12 @@ class TeumUiController(
                 val total = current.timedTotalSeconds
                 val remain = (total - displayElapsed(current)).coerceAtLeast(0)
                 remaining.text = formatMmSs(remain)
-                phase.text = when (current.engine.state) {
+                phase.text = when (current.engineState) {
                     SessionState.PREPARING -> "준비 단계"
                     SessionState.ACTIVE -> "활동 단계"
                     SessionState.FINISHING -> "마무리 · 복원 준비"
                     SessionState.AWAITING_RESTORE -> "복원 대기"
-                    else -> current.engine.state.name
+                    else -> current.engineState.name
                 }
                 val fraction = if (total <= 0) 1f
                 else (current.elapsedSeconds.toFloat() / total).coerceIn(0f, 1f)
@@ -2100,10 +1300,10 @@ class TeumUiController(
                             settingsCard.addView(theme.checkBox(
                                 "앱 외 변경 여부를 알 수 없음을 확인했습니다",
                                 "restore_origin_${feature.name}", restoreOriginAck[feature] == true
-                            ) { checked -> restoreOriginAck[feature] = checked })
+                            ) { checked -> coordinator.dispatch(TeumSessionAction.RestoreOriginAck(feature, checked)) })
                             val button = theme.secondaryButton(
                                 "복원 확인", "restore_confirm_${feature.name}"
-                            ) { confirmRestoreFeature(feature) }
+                            ) { coordinator.dispatch(TeumSessionAction.ConfirmRestoreFeature(feature)) }
                             settingsCard.addView(button)
                             liveUpdaters += { theme.setEnabledLook(button, restoreFeatureAllowed()) }
                         }
@@ -2118,7 +1318,7 @@ class TeumUiController(
                         else -> {
                             val button = theme.secondaryButton(
                                 "복원 미리보기", "restore_preview_${feature.name}"
-                            ) { previewRestore(feature) }
+                            ) { coordinator.dispatch(TeumSessionAction.PreviewRestore(feature)) }
                             settingsCard.addView(button)
                             liveUpdaters += { theme.setEnabledLook(button, restoreFeatureAllowed()) }
                         }
@@ -2161,20 +1361,17 @@ class TeumUiController(
         consentCard.addView(theme.checkBox(
             "주차 상태와 주변을 확인했고 복원을 진행하는 데 동의합니다", "restore_consent", restoreConsent
         ) { checked ->
-            restoreConsent = checked
-            if (!checked) adapter?.cancelPending()
-            updateLive()
+            coordinator.dispatch(TeumSessionAction.RestoreConsent(checked))
         })
         if (applied.values.any { !it.restored }) {
             consentCard.addView(theme.checkBox(
                 "남은 설정은 차량 메뉴에서 직접 확인하겠습니다", "manual_restore_ack", manualRestoreAck
             ) { checked ->
-                manualRestoreAck = checked
-                updateLive()
+                coordinator.dispatch(TeumSessionAction.ManualRestoreAck(checked))
             })
         }
         val confirm = theme.primaryButton("복원 확인하고 기록", "restore_confirm_button") {
-            confirmRestore()
+            coordinator.dispatch(TeumSessionAction.ConfirmRestore)
         }
         confirm.minHeight = theme.dp(TeumSize.PRIMARY)
         confirm.minimumHeight = theme.dp(TeumSize.PRIMARY)
@@ -2231,6 +1428,16 @@ class TeumUiController(
     }
 
     // ---------------------------------------------------------------- record
+
+    private fun bindRecordText(view: EditText, values: (String) -> RecordEditable) {
+        view.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                coordinator.dispatch(TeumSessionAction.EditRecord(values(text?.toString().orEmpty())))
+            }
+            override fun afterTextChanged(text: android.text.Editable?) = Unit
+        })
+    }
 
     private fun renderRecord(column: LinearLayout) {
         val current = draft ?: return
@@ -2307,7 +1514,7 @@ class TeumUiController(
             singleLine = meeting, minLines = 2
         )
         note.setText(editable.note)
-        recordNoteView = note
+        bindRecordText(note) { editable.copy(note = it) }
         memo.addView(note, theme.lp(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
             0f, TeumSpace.S, 0, 0, 0
@@ -2318,15 +1525,14 @@ class TeumUiController(
         ))
         val next = theme.editText("직접 적어 주세요", "record_next", singleLine = true)
         next.setText(editable.nextAction)
-        recordNextView = next
+        bindRecordText(next) { editable.copy(nextAction = it) }
         memo.addView(next, theme.lp(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
             0f, TeumSpace.XS, 0, 0, 0
         ))
         val recall = theme.checkBox(
             "다음 출근 때 이 기록을 다시 볼게요", "record_recall", editable.recall
-        ) { checked -> editable.recall = checked }
-        recordRecallView = recall
+        ) { checked -> coordinator.dispatch(TeumSessionAction.EditRecord(editable.copy(recall = checked))) }
         memo.addView(recall)
         memo.addView(theme.text(
             "다음 행동을 적고 직접 선택할 때만 다시 보기 목록에 남습니다.",
@@ -2334,7 +1540,7 @@ class TeumUiController(
         ))
         column.addView(memo)
 
-        val save = theme.primaryButton("기록 저장", "record_save_button") { saveRecord() }
+        val save = theme.primaryButton("기록 저장", "record_save_button") { coordinator.dispatch(TeumSessionAction.SaveRecord(editable)) }
         save.minHeight = theme.dp(TeumSize.PRIMARY)
         save.minimumHeight = theme.dp(TeumSize.PRIMARY)
         column.addView(save, theme.lp(
@@ -2359,8 +1565,7 @@ class TeumUiController(
 
     private fun renderHistory(column: LinearLayout) {
         addTopBar(column, "기록", "기기 안에만 저장됩니다.") {
-            screen = Screen.HOME
-            render()
+            coordinator.dispatch(TeumSessionAction.Home)
         }
         val consentCard = theme.card(TeumSpace.L)
         consentCard.addView(theme.text("이력 사용", TeumText.HEADING))
@@ -2453,8 +1658,7 @@ class TeumUiController(
 
     private fun renderSettings(column: LinearLayout) {
         addTopBar(column, "설정 · 지원 기능", "이 기기에서 실제로 확인된 것만 표시합니다.") {
-            screen = Screen.HOME
-            render()
+            coordinator.dispatch(TeumSessionAction.Home)
         }
         val safetyCard = theme.card()
         safetyCard.addView(theme.sectionLabel("차량 안전 상태"))
@@ -2578,10 +1782,7 @@ class TeumUiController(
         val audio = theme.card()
         audio.addView(theme.sectionLabel("소리 안내"))
         audio.addView(theme.switchRow("단계 알림음", "settings_sound", soundEnabled) { checked ->
-            soundEnabled = checked
-            uiPrefs.edit().putBoolean(KEY_SOUND, checked).apply()
-            if (checked) cue?.beep()
-            render()
+            coordinator.dispatch(TeumSessionAction.SetSound(checked))
         })
         val ttsStatus = theme.text("", TeumText.BODY, theme.inkMuted).apply { tag = "settings_tts" }
         audio.addView(ttsStatus)
@@ -2644,7 +1845,7 @@ class TeumUiController(
         ))
         val primary = theme.primaryButton(
             if (ready) "기록 저장 화면 열기" else "중단으로 기록 남기기", "recovery_record_button"
-        ) { openRecoveryRecord() }
+        ) { coordinator.dispatch(TeumSessionAction.OpenRecoveryRecord) }
         primary.minHeight = theme.dp(TeumSize.PRIMARY)
         primary.minimumHeight = theme.dp(TeumSize.PRIMARY)
         column.addView(primary, theme.lp(
@@ -2668,9 +1869,8 @@ class TeumUiController(
     }
 
     private companion object {
-        const val DRIVER_AREA = "ROW_1_LEFT"
         const val KEY_SOUND = "sound_enabled_v1"
         const val SEAT_REASON =
-            "안전 정지 계약과 OEM 동작이 검증되지 않아 좌석 이동은 제공하지 않습니다."
+            TeumSessionCoordinator.SEAT_REASON
     }
 }

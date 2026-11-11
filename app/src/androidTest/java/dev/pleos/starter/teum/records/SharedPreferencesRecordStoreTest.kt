@@ -1,6 +1,8 @@
 package dev.pleos.starter.teum.records
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.SharedPreferences
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import dev.pleos.starter.teum.content.SituationIds
@@ -14,8 +16,14 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class SharedPreferencesRecordStoreTest {
-    private val context: Context =
+    private val target: Context =
         InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+    private val testPrefsName = "teum_record_test_${java.util.UUID.randomUUID()}"
+    private val context: Context = object : ContextWrapper(target) {
+        override fun getApplicationContext(): Context = this
+        override fun getSharedPreferences(name: String, mode: Int): SharedPreferences =
+            target.getSharedPreferences(testPrefsName, mode)
+    }
 
     private fun freshStore(): SharedPreferencesRecordStore {
         context.getSharedPreferences(
@@ -27,10 +35,7 @@ class SharedPreferencesRecordStoreTest {
 
     @After
     fun cleanUp() {
-        context.getSharedPreferences(
-            SharedPreferencesRecordStore.PREFS_NAME,
-            Context.MODE_PRIVATE
-        ).edit().clear().apply()
+        target.deleteSharedPreferences(testPrefsName)
     }
 
     @Test

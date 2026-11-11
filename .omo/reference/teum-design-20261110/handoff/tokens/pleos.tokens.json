@@ -1,0 +1,3051 @@
+{
+ "$meta": {
+  "source": "Pleos Connect UI Design Guide + Design Resources (Pleos_Connect_design_assets_215.fig, Pleos_Connect_display_guide_215.fig)",
+  "url": "https://document.pleos.ai/docs/connect/guide/docs-design/Introduction/intro",
+  "extractedAt": "2026-11-09",
+  "units": "px at Connect-S 17in (160dpi, 1px = 1dp). Other form factors use their own column.",
+  "formFactorKeys": {
+   "S": "Connect-S 17in (default)",
+   "S14": "Connect-S 14.6in",
+   "L": "Connect-L 12.9in",
+   "W": "Connect-W 24.6in",
+   "WF": "Connect-WF 18.5in"
+  }
+ },
+ "formFactors": [
+  {
+   "id": "S",
+   "name": "Connect-S-17 (Default)",
+   "ratio": "16:9",
+   "inch": 17,
+   "dpi": 160,
+   "display": [
+    2560,
+    1440
+   ],
+   "landscape": [
+    1700,
+    1184
+   ],
+   "portrait": [
+    840,
+    1184
+   ]
+  },
+  {
+   "id": "S156",
+   "name": "Connect-S-15.6",
+   "ratio": "16:9",
+   "inch": 15.6,
+   "dpi": 160,
+   "display": [
+    2172,
+    1222
+   ],
+   "landscape": [
+    1408,
+    1018
+   ],
+   "portrait": [
+    692,
+    1018
+   ]
+  },
+  {
+   "id": "S14",
+   "name": "Connect-S-14.6",
+   "ratio": "16:9",
+   "inch": 14.6,
+   "dpi": 200,
+   "display": [
+    2048,
+    1152
+   ],
+   "landscape": [
+    1360,
+    948
+   ],
+   "portrait": [
+    672,
+    948
+   ]
+  },
+  {
+   "id": "L",
+   "name": "Connect-L-12.9",
+   "ratio": "16:9",
+   "inch": 12.9,
+   "dpi": 160,
+   "display": [
+    1920,
+    1080
+   ],
+   "landscape": [
+    1274,
+    855
+   ],
+   "portrait": [
+    628,
+    855
+   ]
+  },
+  {
+   "id": "W",
+   "name": "Connect-W-Standard",
+   "ratio": "9:2",
+   "inch": 24.6,
+   "dpi": 160,
+   "display": [
+    3840,
+    850
+   ],
+   "landscape": [
+    1640,
+    810
+   ],
+   "portrait": [
+    800,
+    810
+   ]
+  },
+  {
+   "id": "WX",
+   "name": "Connect-W-Extended",
+   "ratio": "24:9",
+   "inch": 24.6,
+   "dpi": 160,
+   "display": [
+    3840,
+    1440
+   ],
+   "landscape": [
+    1640,
+    1400
+   ],
+   "portrait": [
+    800,
+    1400
+   ]
+  },
+  {
+   "id": "WF",
+   "name": "Connect-WF (Waterfall)",
+   "ratio": "32:9",
+   "inch": 18.5,
+   "dpi": 200,
+   "display": [
+    3072,
+    816
+   ],
+   "landscape": [
+    1256,
+    800
+   ],
+   "portrait": [
+    648,
+    800
+   ]
+  }
+ ],
+ "systemUI": {
+  "bars/window_control/container_height": {
+   "S": 200,
+   "L": 176,
+   "W": 240,
+   "WF": 192,
+   "S14": 200
+  },
+  "bars/window_control/container_width": {
+   "S": 20,
+   "L": 18,
+   "W": 30,
+   "WF": 24,
+   "S14": 16
+  },
+  "bars/window_control/handle_height": {
+   "S": 160,
+   "L": 141,
+   "W": 132,
+   "WF": 128,
+   "S14": 160
+  },
+  "bars/window_control/handle_height_pressed": {
+   "S": 80,
+   "L": 70,
+   "W": 66,
+   "WF": 66,
+   "S14": 80
+  },
+  "bars/window_control/handle_width": {
+   "S": 4,
+   "L": 4,
+   "W": 8,
+   "WF": 6,
+   "S14": 4
+  },
+  "bars/window_control/padding_horizontal": {
+   "S": 8,
+   "L": 7,
+   "W": 16,
+   "WF": 8,
+   "S14": 8
+  },
+  "gnb/application/app_activate_height": {
+   "S": 8,
+   "L": 7,
+   "W": 8,
+   "WF": 8,
+   "S14": 8
+  },
+  "gnb/application/app_activate_width": {
+   "S": 8,
+   "L": 7,
+   "W": 8,
+   "WF": 8,
+   "S14": 8
+  },
+  "gnb/application/app_square": {
+   "S": 84,
+   "L": 74,
+   "W": 70,
+   "WF": 70,
+   "S14": 74
+  },
+  "gnb/controller/arrow_height": {
+   "S": 0,
+   "L": 0,
+   "W": 100,
+   "WF": 80,
+   "S14": 0
+  },
+  "gnb/controller/arrow_icon_sqaure": {
+   "S": 64,
+   "L": 56,
+   "W": 53,
+   "WF": 53,
+   "S14": 52
+  },
+  "gnb/controller/arrow_width": {
+   "S": 80,
+   "L": 70,
+   "W": 108,
+   "WF": 108,
+   "S14": 64
+  },
+  "gnb/controller/pressed_square": {
+   "S": 100,
+   "L": 88,
+   "W": 96,
+   "WF": 96,
+   "S14": 88
+  },
+  "gnb/gap_small": {
+   "S": 4,
+   "L": 4,
+   "W": 4,
+   "WF": 4,
+   "S14": 4
+  },
+  "gnb/menu/HMG_app_icon_radius": {
+   "S": 24,
+   "L": 21,
+   "W": 20,
+   "WF": 18,
+   "S14": 20
+  },
+  "gnb/menu/container_square": {
+   "S": 124,
+   "L": 109,
+   "W": 108,
+   "WF": 94,
+   "S14": 96
+  },
+  "gnb/menu/radius_bottom_left": {
+   "S": 30,
+   "L": 25,
+   "W": 30,
+   "WF": 24,
+   "S14": 30
+  },
+  "gnb/menu/radius_bottom_right": {
+   "S": 30,
+   "L": 25,
+   "W": 30,
+   "WF": 24,
+   "S14": 30
+  },
+  "gnb/menu/radius_top_left": {
+   "S": 30,
+   "L": 25,
+   "W": 30,
+   "WF": 24,
+   "S14": 30
+  },
+  "gnb/menu/radius_top_right": {
+   "S": 30,
+   "L": 25,
+   "W": 30,
+   "WF": 24,
+   "S14": 30
+  },
+  "gnb/remove_button/background_square": {
+   "S": 40,
+   "L": 35,
+   "W": 36,
+   "WF": 36,
+   "S14": 40
+  },
+  "gnb/remove_button/container_square": {
+   "S": 44,
+   "L": 39,
+   "W": 40,
+   "WF": 40,
+   "S14": 44
+  },
+  "gnb/remove_button/icon_height": {
+   "S": 3,
+   "L": 3,
+   "W": 4,
+   "WF": 4,
+   "S14": 3
+  },
+  "gnb/remove_button/icon_width": {
+   "S": 16,
+   "L": 14,
+   "W": 16,
+   "WF": 16,
+   "S14": 16
+  },
+  "gnb/temperature/container_width": {
+   "S": 164,
+   "L": 116,
+   "W": 108,
+   "WF": 108,
+   "S14": 132
+  },
+  "gnb/temperature/decimal_places_padding_top": {
+   "S": 12,
+   "L": 11,
+   "W": 14,
+   "WF": 0,
+   "S14": 6
+  },
+  "gnb/temperature/decimal_places_witdh": {
+   "S": 38,
+   "L": 33,
+   "W": 32,
+   "WF": 32,
+   "S14": 36
+  },
+  "gnb/temperature/gap_horizontal": {
+   "S": -2,
+   "L": -2,
+   "W": -4,
+   "WF": -6,
+   "S14": -2
+  },
+  "gnb/temperature/number_width": {
+   "S": 75,
+   "L": 69,
+   "W": 58,
+   "WF": 58,
+   "S14": 60
+  },
+  "gnb/temperature/wind_icon_square": {
+   "S": 48,
+   "L": 40,
+   "W": 27,
+   "WF": 27,
+   "S14": 40
+  },
+  "gnb/width": {
+   "S": 0,
+   "L": 0,
+   "W": 140,
+   "WF": 112,
+   "S14": 0
+  },
+  "statusbar/height": {
+   "S": 96,
+   "L": 84,
+   "W": 850,
+   "WF": 680,
+   "S14": 76
+  },
+  "window/apps/HMG_radius_app": {
+   "S": 40,
+   "L": 35,
+   "W": 33,
+   "WF": 33,
+   "S14": 32
+  },
+  "window/apps/application_height": {
+   "S": 1184,
+   "L": 855,
+   "W": 810,
+   "WF": 664,
+   "S14": 948
+  },
+  "window/apps/landscape_width": {
+   "S": 1700,
+   "L": 1274,
+   "W": 1640,
+   "WF": 1256,
+   "S14": 1360
+  },
+  "window/apps/portrait_width": {
+   "S": 840,
+   "L": 628,
+   "W": 800,
+   "WF": 648,
+   "S14": 672
+  },
+  "window/container_extended_height": {
+   "S": 0,
+   "L": 0,
+   "W": 1440,
+   "WF": 0,
+   "S14": 0
+  },
+  "window/container_height": {
+   "S": 1440,
+   "L": 1080,
+   "W": 850,
+   "WF": 680,
+   "S14": 1152
+  },
+  "window/container_width": {
+   "S": 2560,
+   "L": 1920,
+   "W": 3840,
+   "WF": 3072,
+   "S14": 2048
+  }
+ },
+ "color": {
+  "dark": {
+   "alpha/dark/100": "#FFFFFF1A",
+   "alpha/dark/200": "#FFFFFF33",
+   "alpha/dark/300": "#FFFFFF4C",
+   "alpha/dark/400": "#FFFFFF66",
+   "alpha/dark/50": "#FFFFFF0D",
+   "alpha/dark/500": "#FFFFFF80",
+   "alpha/light/100": "#1314171A",
+   "alpha/light/200": "#13141733",
+   "alpha/light/300": "#1314174C",
+   "alpha/light/400": "#13141766",
+   "alpha/light/50": "#1314170D",
+   "alpha/light/500": "#13141780",
+   "background/popup": "#313236",
+   "background/primary": "#1D1E21",
+   "background/secondary": "#131417",
+   "basic/00": "#131417",
+   "basic/100": "#313236",
+   "basic/200": "#44464E",
+   "basic/300": "#686A72",
+   "basic/400": "#A4A8AE",
+   "basic/50": "#1D1E21",
+   "basic/500": "#C7C9CE",
+   "basic/600": "#E0E1E6",
+   "basic/700": "#EDEEF2",
+   "basic/800": "#F7F8FA",
+   "basic/900": "#FFFFFF",
+   "button/basic/disabled": "#13141733",
+   "button/basic/enabled": "#FFFFFF0D",
+   "button/basic/pressed": "#FFFFFF1A",
+   "button/filled/disabled": "#FFFFFF0D",
+   "button/filled/enabled": "#E0E1E6",
+   "button/filled/pressed": "#C7C9CE",
+   "button/switch/disabled": "#1314174C",
+   "button/switch/enabled": "#FFFFFF33",
+   "button/switch/pressed": "#FFFFFF1A",
+   "climate/button_border_enabled": "#FFFFFF1A",
+   "climate/slider_background": "#313236",
+   "color/feature/driving_view/mask/filled_secondary": "#1D1E2100",
+   "color/feature/driving_view/mask/subtle_secondary": "#1D1E21",
+   "controller/slider/knop": "#FFFFFF4C",
+   "controller/slider/normal": "#FFFFFF1A",
+   "controller/slider/pressed": "#FFFFFF33",
+   "controller/stepper_background": "#FFFFFF1A",
+   "controller/tab_background": "#FFFFFF0D",
+   "dim/dark/primary": "#FFFFFF0D",
+   "dim/dark/secondary": "#FFFFFF1A",
+   "dim/dark/tertiary": "#FFFFFF33",
+   "dim/light/primary": "#13141780",
+   "dim/light/secondary": "#13141766",
+   "dim/light/tertiary": "#1314174C",
+   "divider/primary": "#FFFFFF0D",
+   "divider/secondary": "#FFFFFF1A",
+   "divider/tertiary": "#FFFFFF33",
+   "driving_view/gradient_start": "#13141700",
+   "dropdown/normal": "#FFFFFF1A",
+   "dropdown/pressed": "#FFFFFF4C",
+   "field/background": "#131417",
+   "field/focused": "#EDEEF2",
+   "gleo/Olf/surface_primary": "#44464E",
+   "icon/dark/primary": "#FFFFFF",
+   "icon/dark/quaternary": "#FFFFFF52",
+   "icon/dark/secondary": "#FFFFFFD6",
+   "icon/dark/tertiary": "#FFFFFFA3",
+   "icon/light/primary": "#131417",
+   "icon/light/quaternary": "#13141752",
+   "icon/light/secondary": "#131417D6",
+   "icon/light/tertiary": "#131417A3",
+   "informative/active": "#00E074",
+   "informative/autonomous_driving": "#6A57FF",
+   "informative/positive": "#0082FF",
+   "keyboard/normal/accents_normal": "#C7C9CE",
+   "keyboard/normal/accents_pressed": "#A4A8AE",
+   "keyboard/normal/active_normal": "#686A72",
+   "keyboard/normal/active_pressed": "#44464E",
+   "keyboard/normal/background": "#313236",
+   "keyboard/normal/primary_normal": "#686A72",
+   "keyboard/normal/primary_pressed": "#44464E",
+   "keyboard/normal/secondary_normal": "#44464E",
+   "keyboard/normal/secondary_pressed": "#686A72",
+   "keyboard/static/accents_normal": "#C7C9CE",
+   "keyboard/static/accents_pressed": "#A4A8AE",
+   "keyboard/static/active_normal": "#686A72",
+   "keyboard/static/active_pressed": "#44464E",
+   "keyboard/static/background": "#131417",
+   "keyboard/static/icon_dark": "#131417",
+   "keyboard/static/icon_disabled": "#FFFFFF1A",
+   "keyboard/static/icon_light": "#FFFFFF",
+   "keyboard/static/primary_normal": "#686A72",
+   "keyboard/static/primary_pressed": "#44464E",
+   "keyboard/static/secondary_normal": "#44464E",
+   "keyboard/static/secondary_pressed": "#686A72",
+   "keyboard/static/text": "#FFFFFF",
+   "media/radio_gradient_end": "#1D1E21",
+   "media/radio_gradient_start": "#1D1E2100",
+   "overlay/default": "#13141780",
+   "phone/accept_normal": "#3BD665",
+   "phone/end_normal": "#FF4C28",
+   "regulation/blue": "#0082FF",
+   "regulation/red": "#FF4339",
+   "static/dark/100": "#131417",
+   "static/dark/200": "#131417D6",
+   "static/dark/300": "#131417A3",
+   "static/dark/400": "#13141752",
+   "static/light/100": "#FFFFFF",
+   "static/light/200": "#FFFFFFD6",
+   "static/light/300": "#FFFFFFA3",
+   "static/light/400": "#FFFFFF52",
+   "surface/accent": "#44464E",
+   "surface/basic": "#1D1E21",
+   "surface/high": "#313236",
+   "switch/disabled": "#FFFFFF1A",
+   "switch/knob_disabled": "#FFFFFF33",
+   "switch/knob_off": "#A4A8AE",
+   "switch/knob_on": "#FFFFFF",
+   "switch/off": "#FFFFFF1A",
+   "switch/on": "#00E074",
+   "text/dark/primary": "#FFFFFF",
+   "text/dark/quaternary": "#FFFFFF52",
+   "text/dark/secondary": "#FFFFFFD6",
+   "text/dark/tertiary": "#FFFFFFA3",
+   "text/light/primary": "#131417",
+   "text/light/quaternary": "#13141752",
+   "text/light/secondary": "#131417D6",
+   "text/light/tertiary": "#131417A3",
+   "informative/negative": "#FF4C28",
+   "regulation/green": "#55F165",
+   "regulation/yellow": "#FFC224",
+   "regulation/orange": "#FF8A00",
+   "surface/low": "#131417"
+  },
+  "light": {
+   "alpha/dark/100": "#1314171A",
+   "alpha/dark/200": "#13141733",
+   "alpha/dark/300": "#1314174C",
+   "alpha/dark/400": "#13141766",
+   "alpha/dark/50": "#1314170D",
+   "alpha/dark/500": "#13141780",
+   "alpha/light/100": "#FFFFFF1A",
+   "alpha/light/200": "#FFFFFF33",
+   "alpha/light/300": "#FFFFFF4C",
+   "alpha/light/400": "#FFFFFF66",
+   "alpha/light/50": "#FFFFFF0D",
+   "alpha/light/500": "#FFFFFF80",
+   "background/popup": "#FFFFFF",
+   "background/primary": "#F7F8FA",
+   "background/secondary": "#FFFFFF",
+   "basic/00": "#FFFFFF",
+   "basic/100": "#EDEEF2",
+   "basic/200": "#E0E1E6",
+   "basic/300": "#C7C9CE",
+   "basic/400": "#A4A8AE",
+   "basic/50": "#F7F8FA",
+   "basic/500": "#686A72",
+   "basic/600": "#44464E",
+   "basic/700": "#313236",
+   "basic/800": "#1D1E21",
+   "basic/900": "#131417",
+   "button/basic/disabled": "#FFFFFF33",
+   "button/basic/enabled": "#1314170D",
+   "button/basic/pressed": "#1314171A",
+   "button/filled/disabled": "#1314170D",
+   "button/filled/enabled": "#44464E",
+   "button/filled/pressed": "#313236",
+   "button/switch/disabled": "#FFFFFF4C",
+   "button/switch/enabled": "#FFFFFF",
+   "button/switch/pressed": "#FFFFFF80",
+   "climate/button_border_enabled": "#13141733",
+   "climate/slider_background": "#FFFFFF",
+   "color/feature/driving_view/mask/filled_secondary": "#F7F8FA00",
+   "color/feature/driving_view/mask/subtle_secondary": "#F7F8FA",
+   "controller/slider/knop": "#FFFFFF",
+   "controller/slider/normal": "#13141733",
+   "controller/slider/pressed": "#1314174C",
+   "controller/stepper_background": "#FFFFFF",
+   "controller/tab_background": "#1314170D",
+   "dim/dark/primary": "#1314170D",
+   "dim/dark/secondary": "#1314171A",
+   "dim/dark/tertiary": "#13141733",
+   "dim/light/primary": "#FFFFFF80",
+   "dim/light/secondary": "#FFFFFF66",
+   "dim/light/tertiary": "#FFFFFF4C",
+   "divider/primary": "#1314170D",
+   "divider/secondary": "#1314171A",
+   "divider/tertiary": "#13141733",
+   "driving_view/gradient_start": "#FFFFFF00",
+   "dropdown/normal": "#FFFFFF",
+   "dropdown/pressed": "#EDEEF2",
+   "field/background": "#FFFFFF",
+   "field/focused": "#313236",
+   "gleo/Olf/surface_primary": "#FFFFFF",
+   "icon/dark/primary": "#131417",
+   "icon/dark/quaternary": "#13141752",
+   "icon/dark/secondary": "#131417D6",
+   "icon/dark/tertiary": "#131417A3",
+   "icon/light/primary": "#FFFFFF",
+   "icon/light/quaternary": "#FFFFFF52",
+   "icon/light/secondary": "#FFFFFFD6",
+   "icon/light/tertiary": "#FFFFFFA3",
+   "informative/active": "#02C265",
+   "informative/autonomous_driving": "#5A46FA",
+   "informative/positive": "#0064FF",
+   "keyboard/normal/accents_normal": "#44464E",
+   "keyboard/normal/accents_pressed": "#313236",
+   "keyboard/normal/active_normal": "#44464E",
+   "keyboard/normal/active_pressed": "#313236",
+   "keyboard/normal/background": "#E0E1E6",
+   "keyboard/normal/primary_normal": "#FFFFFF",
+   "keyboard/normal/primary_pressed": "#EDEEF2",
+   "keyboard/normal/secondary_normal": "#C7C9CE",
+   "keyboard/normal/secondary_pressed": "#A4A8AE",
+   "keyboard/static/accents_normal": "#C7C9CE",
+   "keyboard/static/accents_pressed": "#A4A8AE",
+   "keyboard/static/active_normal": "#686A72",
+   "keyboard/static/active_pressed": "#313236",
+   "keyboard/static/background": "#131417",
+   "keyboard/static/icon_dark": "#131417",
+   "keyboard/static/icon_disabled": "#FFFFFF1A",
+   "keyboard/static/icon_light": "#FFFFFF",
+   "keyboard/static/primary_normal": "#686A72",
+   "keyboard/static/primary_pressed": "#44464E",
+   "keyboard/static/secondary_normal": "#44464E",
+   "keyboard/static/secondary_pressed": "#686A72",
+   "keyboard/static/text": "#FFFFFF",
+   "media/radio_gradient_end": "#FFFFFF",
+   "media/radio_gradient_start": "#FFFFFF00",
+   "overlay/default": "#13141733",
+   "phone/accept_normal": "#32B957",
+   "phone/end_normal": "#FE3D16",
+   "regulation/blue": "#0064FF",
+   "regulation/red": "#F62E24",
+   "static/dark/100": "#131417",
+   "static/dark/200": "#131417D6",
+   "static/dark/300": "#131417A3",
+   "static/dark/400": "#13141752",
+   "static/light/100": "#FFFFFF",
+   "static/light/200": "#FFFFFFD6",
+   "static/light/300": "#FFFFFFA3",
+   "static/light/400": "#FFFFFF52",
+   "surface/accent": "#E0E1E6",
+   "surface/basic": "#FFFFFF",
+   "surface/high": "#EDEEF2",
+   "switch/disabled": "#1314171A",
+   "switch/knob_disabled": "#FFFFFF",
+   "switch/knob_off": "#FFFFFF",
+   "switch/knob_on": "#FFFFFF",
+   "switch/off": "#1314174C",
+   "switch/on": "#02C265",
+   "text/dark/primary": "#131417",
+   "text/dark/quaternary": "#13141752",
+   "text/dark/secondary": "#131417D6",
+   "text/dark/tertiary": "#131417A3",
+   "text/light/primary": "#FFFFFF",
+   "text/light/quaternary": "#FFFFFF52",
+   "text/light/secondary": "#FFFFFFD6",
+   "text/light/tertiary": "#FFFFFFA3",
+   "informative/negative": "#FE3D16",
+   "regulation/green": "#00BA13",
+   "regulation/yellow": "#FFC224",
+   "regulation/orange": "#FF8A00",
+   "surface/low": "#F7F8FA"
+  }
+ },
+ "typography": {
+  "family": {
+   "system": "Asta Sans",
+   "feature": "Manrope (Driving view speed, Ambient AI bubble)",
+   "brandFonts": "Hyundai/Kia/Genesis Sans UI (OEM theme only)"
+  },
+  "minimum": "12sp (Android) — practical min height 18px; driving-critical text ≥ 5mm glyph height, secondary ≥ 3mm",
+  "scale": [
+   {
+    "token": "headline.l",
+    "size": 60,
+    "lineHeight": 80,
+    "weights": [
+     "ExtraBold",
+     "Bold"
+    ]
+   },
+   {
+    "token": "headline.m",
+    "size": 56,
+    "lineHeight": 72,
+    "weights": [
+     "ExtraBold",
+     "Bold"
+    ]
+   },
+   {
+    "token": "headline.s",
+    "size": 48,
+    "lineHeight": 64,
+    "weights": [
+     "ExtraBold",
+     "Bold"
+    ]
+   },
+   {
+    "token": "title.l",
+    "size": 40,
+    "lineHeight": 52,
+    "weights": [
+     "ExtraBold",
+     "Bold",
+     "Regular"
+    ]
+   },
+   {
+    "token": "title.m",
+    "size": 36,
+    "lineHeight": 44,
+    "weights": [
+     "ExtraBold",
+     "Bold",
+     "Regular"
+    ]
+   },
+   {
+    "token": "title.s",
+    "size": 32,
+    "lineHeight": 40,
+    "weights": [
+     "ExtraBold",
+     "Bold",
+     "Regular"
+    ]
+   },
+   {
+    "token": "body.l",
+    "size": 30,
+    "lineHeight": 38,
+    "weights": [
+     "Bold",
+     "Regular"
+    ]
+   },
+   {
+    "token": "body.m",
+    "size": 28,
+    "lineHeight": 36,
+    "weights": [
+     "Bold",
+     "Regular"
+    ]
+   },
+   {
+    "token": "body.s",
+    "size": 26,
+    "lineHeight": 34,
+    "weights": [
+     "Bold",
+     "Regular"
+    ]
+   },
+   {
+    "token": "label.m",
+    "size": 24,
+    "lineHeight": 28,
+    "weights": [
+     "Regular"
+    ]
+   },
+   {
+    "token": "label.s",
+    "size": 20,
+    "lineHeight": 24,
+    "weights": [
+     "Regular"
+    ]
+   },
+   {
+    "token": "feature.speed",
+    "size": 112,
+    "lineHeight": 134,
+    "weights": [
+     "Bold"
+    ],
+    "letterSpacing": "-3%",
+    "family": "Manrope"
+   },
+   {
+    "token": "feature.bubble",
+    "size": 30,
+    "lineHeight": 48,
+    "weights": [
+     "ExtraBold",
+     "Bold"
+    ],
+    "family": "Manrope"
+   }
+  ],
+  "sizeByFormFactor": {
+   "font/line_height_sp/level1": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "font/line_height_sp/level10": {
+    "S": 44,
+    "L": 39,
+    "W": 37,
+    "WF": 47
+   },
+   "font/line_height_sp/level11": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "font/line_height_sp/level14": {
+    "S": 60,
+    "L": 46,
+    "W": 50,
+    "WF": 64
+   },
+   "font/line_height_sp/level19": {
+    "S": 80,
+    "L": 65,
+    "W": 66,
+    "WF": 84
+   },
+   "font/line_height_sp/level20": {
+    "S": 134,
+    "L": 118,
+    "W": 120,
+    "WF": 142
+   },
+   "font/line_height_sp/level3": {
+    "S": 28,
+    "L": 25,
+    "W": 23,
+    "WF": 29
+   },
+   "font/line_height_sp/level6": {
+    "S": 34,
+    "L": 28,
+    "W": 28,
+    "WF": 36
+   },
+   "font/line_height_sp/level7": {
+    "S": 36,
+    "L": 32,
+    "W": 30,
+    "WF": 38
+   },
+   "font/line_height_sp/level8": {
+    "S": 38,
+    "L": 33,
+    "W": 32,
+    "WF": 41
+   },
+   "font/line_height_sp/level9": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "font/size_sp/level11": {
+    "S": 36,
+    "L": 32,
+    "W": 30,
+    "WF": 38
+   },
+   "font/size_sp/level13": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "font/size_sp/level14": {
+    "S": 44,
+    "L": 39,
+    "W": 37,
+    "WF": 47
+   },
+   "font/size_sp/level15": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "font/size_sp/level16": {
+    "S": 52,
+    "L": 46,
+    "W": 43,
+    "WF": 55
+   },
+   "font/size_sp/level18": {
+    "S": 60,
+    "L": 53,
+    "W": 50,
+    "WF": 64
+   },
+   "font/size_sp/level19": {
+    "S": 64,
+    "L": 56,
+    "W": 53,
+    "WF": 68
+   },
+   "font/size_sp/level2": {
+    "S": 18,
+    "L": 16,
+    "W": 15,
+    "WF": 19
+   },
+   "font/size_sp/level20": {
+    "S": 112,
+    "L": 99,
+    "W": 93,
+    "WF": 119
+   },
+   "font/size_sp/level5": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "font/size_sp/level6": {
+    "S": 26,
+    "L": 23,
+    "W": 22,
+    "WF": 28
+   },
+   "font/size_sp/level7": {
+    "S": 28,
+    "L": 25,
+    "W": 23,
+    "WF": 29
+   },
+   "font/size_sp/level8": {
+    "S": 30,
+    "L": 26,
+    "W": 25,
+    "WF": 34
+   },
+   "font/size_sp/level9": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   }
+  }
+ },
+ "components": {
+  "bars": {
+   "app_control/container_height": {
+    "S": 60,
+    "L": 53,
+    "W": 100,
+    "WF": 128
+   },
+   "app_control/container_width": {
+    "S": 320,
+    "L": 282,
+    "W": 266,
+    "WF": 340
+   },
+   "app_control/handle_height": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "app_control/handle_width_normal": {
+    "S": 140,
+    "L": 123,
+    "W": 116,
+    "WF": 148
+   },
+   "app_control/padding_top": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "page_scroll/min_height": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "page_scroll/width": {
+    "S": 6,
+    "L": 5,
+    "W": 6,
+    "WF": 6
+   },
+   "radius": {
+    "S": 999,
+    "L": 999,
+    "W": 999,
+    "WF": 999
+   }
+  },
+  "buttons": {
+   "basic/disabled_border": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "basic/large/gap_horizontal": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "basic/large/height": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "basic/large/icon_sqaure": {
+    "S": 52,
+    "L": 46,
+    "W": 43,
+    "WF": 55
+   },
+   "basic/large/min_width": {
+    "S": 140,
+    "L": 123,
+    "W": 116,
+    "WF": 148
+   },
+   "basic/large/padding_horizontal": {
+    "S": 40,
+    "L": 35,
+    "W": 34,
+    "WF": 42
+   },
+   "basic/large/padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "basic/large/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "basic/medium/gap_horizontal": {
+    "S": 14,
+    "L": 12,
+    "W": 12,
+    "WF": 15
+   },
+   "basic/medium/height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "basic/medium/icon_sqaure": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "basic/medium/min_width": {
+    "S": 120,
+    "L": 106,
+    "W": 100,
+    "WF": 128
+   },
+   "basic/medium/padding_horizontal": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "basic/medium/padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "basic/medium/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "basic/small/gap_horizontal": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "basic/small/height": {
+    "S": 64,
+    "L": 56,
+    "W": 54,
+    "WF": 68
+   },
+   "basic/small/icon_sqaure": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "basic/small/min_width": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "basic/small/padding_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "basic/small/padding_vertical": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 10
+   },
+   "icon/circle_radius": {
+    "S": 999,
+    "L": 999,
+    "W": 999,
+    "WF": 999
+   },
+   "icon/medium/content": {
+    "S": 56,
+    "L": 49,
+    "W": 46,
+    "WF": 59
+   },
+   "icon/medium/height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "icon/medium/rounded_radius": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "icon/medium/width": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "icon/small/content": {
+    "S": 44,
+    "L": 39,
+    "W": 37,
+    "WF": 49
+   },
+   "icon/small/height": {
+    "S": 64,
+    "L": 56,
+    "W": 54,
+    "WF": 68
+   },
+   "icon/small/rounded_radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "icon/small/width": {
+    "S": 64,
+    "L": 56,
+    "W": 54,
+    "WF": 68
+   },
+   "keypad/border": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "keypad/height": {
+    "S": 108,
+    "L": 95,
+    "W": 80,
+    "WF": 116
+   },
+   "keypad/icon": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "keypad/min_width": {
+    "S": 200,
+    "L": 176,
+    "W": 166,
+    "WF": 212
+   },
+   "keypad/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "text/medium/gap": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "text/medium/icon": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "text/small/gap": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "text/small/icon": {
+    "S": 28,
+    "L": 25,
+    "W": 23,
+    "WF": 29
+   },
+   "toggle/disabled_border": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "toggle/large/gap_horizontal": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "toggle/large/height": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "toggle/large/icon_sqaure": {
+    "S": 52,
+    "L": 46,
+    "W": 43,
+    "WF": 55
+   },
+   "toggle/large/min_width": {
+    "S": 140,
+    "L": 123,
+    "W": 116,
+    "WF": 148
+   },
+   "toggle/large/padding_horizontal": {
+    "S": 40,
+    "L": 35,
+    "W": 34,
+    "WF": 42
+   },
+   "toggle/large/padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "toggle/large/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "toggle/medium/gap_horizontal": {
+    "S": 14,
+    "L": 12,
+    "W": 12,
+    "WF": 15
+   },
+   "toggle/medium/height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "toggle/medium/icon_square": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "toggle/medium/min_width": {
+    "S": 120,
+    "L": 106,
+    "W": 100,
+    "WF": 128
+   },
+   "toggle/medium/padding_horizontal": {
+    "S": 32,
+    "L": 28,
+    "W": 28,
+    "WF": 35
+   },
+   "toggle/medium/padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 16
+   },
+   "toggle/medium/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "toggle/small/gap_horizontal": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 12
+   },
+   "toggle/small/height": {
+    "S": 64,
+    "L": 56,
+    "W": 54,
+    "WF": 68
+   },
+   "toggle/small/icon_sqaure": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "toggle/small/min_width": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "toggle/small/padding_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "toggle/small/padding_vertical": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 10
+   },
+   "toggle/small/radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   }
+  },
+  "controller": {
+   "slider/border_large": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "slider/border_medium": {
+    "S": 3,
+    "L": 3,
+    "W": 3,
+    "WF": 3
+   },
+   "slider/border_small": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "slider/centered/knob/enabled_circle": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "slider/centered/knob/pressed_circle": {
+    "S": 56,
+    "L": 49,
+    "W": 46,
+    "WF": 59
+   },
+   "slider/centered/temporature/text_height": {
+    "S": 62,
+    "L": 55,
+    "W": 52,
+    "WF": 64
+   },
+   "slider/centered/track/height": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "slider/centered/track/min_width": {
+    "S": 320,
+    "L": 282,
+    "W": 266,
+    "WF": 340
+   },
+   "slider/centered/track/radius": {
+    "S": 999,
+    "L": 999,
+    "W": 999,
+    "WF": 999
+   },
+   "slider/continuous/medium/button_medium": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "slider/continuous/medium/icon_medium": {
+    "S": 56,
+    "L": 49,
+    "W": 46,
+    "WF": 59
+   },
+   "slider/continuous/medium/knob/radius": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "slider/continuous/medium/label_width": {
+    "S": 180,
+    "L": 158,
+    "W": 180,
+    "WF": 180
+   },
+   "slider/continuous/medium/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "slider/continuous/small/button_small": {
+    "S": 72,
+    "L": 63,
+    "W": 60,
+    "WF": 77
+   },
+   "slider/continuous/small/icon_small": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "slider/continuous/small/knob/radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "slider/continuous/small/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "slider/continuous/track/medium/icon": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "slider/continuous/track/medium/item_padding": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "slider/continuous/track/medium/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "slider/continuous/track/small/icon": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "slider/continuous/track/small/item_padding": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "slider/continuous/track/small/radius": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "slider/gap_horizontal_large": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "slider/gap_horizontal_small": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "slider/height_large": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "slider/height_medium": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "slider/height_small": {
+    "S": 72,
+    "L": 67,
+    "W": 64,
+    "WF": 81
+   },
+   "slider/padding_horizontal_large": {
+    "S": 40,
+    "L": 35,
+    "W": 34,
+    "WF": 42
+   },
+   "slider/padding_horizontal_medium": {
+    "S": 20,
+    "L": 18,
+    "W": 18,
+    "WF": 22
+   },
+   "slider/padding_horizontal_small": {
+    "S": 10,
+    "L": 9,
+    "W": 8,
+    "WF": 10
+   },
+   "slider/padding_vertical_large": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "slider/padding_vertical_medium": {
+    "S": 10,
+    "L": 9,
+    "W": 8,
+    "WF": 10
+   },
+   "slider/padding_vertical_small": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "slider/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "stepper/border": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "stepper/divider": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "stepper/gap_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "stepper/height": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "stepper/padding_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "stepper/padding_vertical": {
+    "S": 18,
+    "L": 16,
+    "W": 15,
+    "WF": 19
+   },
+   "stepper/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "stepper/width": {
+    "S": 420,
+    "L": 352,
+    "W": 340,
+    "WF": 426
+   }
+  },
+  "dropdown": {
+   "border": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "container/prefix_app_icon_border": {
+    "S": 1,
+    "L": 1,
+    "W": 1,
+    "WF": 1
+   },
+   "gap_vertical_medium": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "gap_vertical_small": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "medium/height": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "medium/prefix/icon_square": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 40
+   },
+   "medium/prefix/padding_horizontal": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "medium/prefix/padding_vertical": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "medium/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "padding_large": {
+    "S": 20,
+    "L": 18,
+    "W": 18,
+    "WF": 22
+   },
+   "padding_medium": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "padding_small": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "prefix/app_radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "prefix/container_square": {
+    "S": 56,
+    "L": 49,
+    "W": 46,
+    "WF": 59
+   },
+   "prefix/medium/app_icon_radius": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 12
+   },
+   "small/height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "small/radius": {
+    "S": 28,
+    "L": 25,
+    "W": 23,
+    "WF": 29
+   },
+   "suffix/dot_icon_square": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "suffix/icon_square": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   }
+  },
+  "fields": {
+   "number/border": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "number/cursor_height": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "number/cursor_width": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "number/input_radius": {
+    "S": 32,
+    "L": 28,
+    "W": 20,
+    "WF": 35
+   },
+   "number/large_height": {
+    "S": 180,
+    "L": 158,
+    "W": 150,
+    "WF": 190
+   },
+   "number/large_width": {
+    "S": 140,
+    "L": 123,
+    "W": 116,
+    "WF": 148
+   },
+   "number/medium_square": {
+    "S": 128,
+    "L": 113,
+    "W": 80,
+    "WF": 136
+   },
+   "text/medium/border": {
+    "S": 3,
+    "L": 3,
+    "W": 3,
+    "WF": 3
+   },
+   "text/medium/gap_horizontal": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "text/medium/height": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "text/medium/help_text_gap_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "text/medium/padding_horizontal": {
+    "S": 32,
+    "L": 28,
+    "W": 28,
+    "WF": 35
+   },
+   "text/medium/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "text/medium/suffix_icon_square": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "text/small/border": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "text/small/gap_horizontal": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "text/small/height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "text/small/help_text_gap_vertical": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "text/small/padding_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "text/small/suffix_icon_square": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   }
+  },
+  "imagery": {
+   "profile/circle": {
+    "S": 80,
+    "L": 70.4,
+    "W": 66,
+    "WF": 80
+   },
+   "profile/radius": {
+    "S": 999,
+    "L": 999,
+    "W": 999,
+    "WF": 999
+   }
+  },
+  "keyboard": {
+   "keyword/enter_width": {
+    "S": 200,
+    "L": 176,
+    "W": 166,
+    "WF": 212
+   },
+   "keyword/height": {
+    "S": 80,
+    "L": 70,
+    "W": 90,
+    "WF": 102
+   },
+   "keyword/icon_square": {
+    "S": 44,
+    "L": 39,
+    "W": 37,
+    "WF": 49
+   },
+   "keyword/normal_width": {
+    "S": 100,
+    "L": 88,
+    "W": 96,
+    "WF": 106
+   },
+   "keyword/radius": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "keyword/shift_width": {
+    "S": 165,
+    "L": 145,
+    "W": 136,
+    "WF": 174
+   },
+   "keyword/special_width": {
+    "S": 120,
+    "L": 106,
+    "W": 100,
+    "WF": 128
+   }
+  },
+  "notification": {
+   "border": {
+    "S": 1,
+    "L": 1,
+    "W": 1,
+    "WF": 1
+   },
+   "gap_large": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "gap_medium": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "padding_large": {
+    "S": 32,
+    "L": 28,
+    "W": 28,
+    "WF": 35
+   },
+   "padding_medium": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "padding_small": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 16
+   },
+   "system/imagary_square": {
+    "S": 100,
+    "L": 88,
+    "W": 83,
+    "WF": 106
+   },
+   "system/images/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "system/profile/app_radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "system/profile/app_square": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "system/profile/radius": {
+    "S": 999,
+    "L": 999,
+    "W": 999,
+    "WF": 999
+   },
+   "system/radius": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "system/text_gap_vertical": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "system/text_padding_horizontal": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 10
+   },
+   "system/text_padding_top": {
+    "S": 4,
+    "L": 3,
+    "W": 4,
+    "WF": 5
+   },
+   "system/width": {
+    "S": 700,
+    "L": 616,
+    "W": 582,
+    "WF": 745
+   }
+  },
+  "os_notification": {
+   "container/width": {
+    "S": 700,
+    "L": 700,
+    "W": 700,
+    "WF": 700
+   },
+   "contents/image_square": {
+    "S": 100,
+    "L": 88,
+    "W": 83,
+    "WF": 100
+   },
+   "contents/image_thumb_radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 16
+   }
+  },
+  "page_navigation": {
+   "border_bottom": {
+    "S": 1,
+    "L": 1,
+    "W": 1,
+    "WF": 1
+   },
+   "container_height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "divider_height": {
+    "S": 32,
+    "L": 28,
+    "W": 28,
+    "WF": 35
+   },
+   "divider_width": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "gap_extrasmall": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "gap_large": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "gap_medium": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "gap_samll": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "padding_extralarge": {
+    "S": 40,
+    "L": 35,
+    "W": 32,
+    "WF": 42
+   },
+   "padding_large": {
+    "S": 24,
+    "L": 21,
+    "W": 22,
+    "WF": 20
+   },
+   "padding_medium": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "padding_small": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "sub_title_gap_vertical": {
+    "S": 4,
+    "L": 4,
+    "W": 4,
+    "WF": 4
+   },
+   "title/app_icon/container_square": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "title/app_icon/radius": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "title/depth_gap_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "title/depth_icon_square": {
+    "S": 56,
+    "L": 49,
+    "W": 46,
+    "WF": 59
+   },
+   "title/dropdown_icon_square": {
+    "S": 28,
+    "L": 25,
+    "W": 23,
+    "WF": 29
+   },
+   "title/dropdown_menu_pressed/radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "title/group_gap_horizontal": {
+    "S": 48,
+    "L": 42,
+    "W": 32,
+    "WF": 51
+   }
+  },
+  "popup": {
+   "system/border": {
+    "S": 2,
+    "L": 2,
+    "W": 2,
+    "WF": 3
+   },
+   "system/close_icon_square": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "system/gap_extralarge": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "system/gap_extrasmall": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "system/gap_large": {
+    "S": 24,
+    "L": 21,
+    "W": 24,
+    "WF": 24
+   },
+   "system/header_padding_horizontal": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "system/icon_square": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "system/large_width": {
+    "S": 1200,
+    "L": 1056,
+    "W": 1000,
+    "WF": 1275
+   },
+   "system/list/item/icon_square": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 80
+   },
+   "system/max_height": {
+    "S": 1152,
+    "L": 827,
+    "W": 770,
+    "WF": 810
+   },
+   "system/max_height_extended": {
+    "S": 0,
+    "L": 0,
+    "W": 1240,
+    "WF": 1240
+   },
+   "system/medium_width": {
+    "S": 808,
+    "L": 614,
+    "W": 720,
+    "WF": 860
+   },
+   "system/padding_large": {
+    "S": 48,
+    "L": 35,
+    "W": 40,
+    "WF": 40
+   },
+   "system/padding_small": {
+    "S": 16,
+    "L": 14,
+    "W": 12,
+    "WF": 12
+   },
+   "system/radius": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "toast/icon": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "toast/margin_bottom": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "toast/margin_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "toast/max_width": {
+    "S": 792,
+    "L": 696,
+    "W": 760,
+    "WF": 840
+   },
+   "toast/padding_horizontal": {
+    "S": 40,
+    "L": 35,
+    "W": 34,
+    "WF": 42
+   },
+   "toast/padding_vertical": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "toast/radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   }
+  },
+  "scroll": {
+   "gap": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "padding_left": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "padding_right": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   }
+  },
+  "selections": {
+   "border_large": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "border_small": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "checkbox/normal_button_border": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "checkbox/radius": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "container_large": {
+    "S": 64,
+    "L": 56,
+    "W": 54,
+    "WF": 68
+   },
+   "container_medium": {
+    "S": 48,
+    "L": 42,
+    "W": 40,
+    "WF": 51
+   },
+   "switch/medium/knob_radius": {
+    "S": 8,
+    "L": 7,
+    "W": 7,
+    "WF": 9
+   },
+   "switch/medium/knob_square": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "switch/medium/padding": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "switch/medium/radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "switch/medium/width": {
+    "S": 80,
+    "L": 70,
+    "W": 70,
+    "WF": 84
+   },
+   "switch/small/knob_radius": {
+    "S": 8,
+    "L": 7,
+    "W": 7,
+    "WF": 9
+   },
+   "switch/small/knob_square": {
+    "S": 28,
+    "L": 25,
+    "W": 23,
+    "WF": 29
+   },
+   "switch/small/padding": {
+    "S": 6,
+    "L": 5,
+    "W": 6,
+    "WF": 6
+   },
+   "switch/small/radius": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "switch/small/width": {
+    "S": 64,
+    "L": 56,
+    "W": 56,
+    "WF": 68
+   }
+  },
+  "spinner": {
+   "focus_radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "gap_large": {
+    "S": 24,
+    "L": 28,
+    "W": 28,
+    "WF": 35
+   },
+   "gap_medium": {
+    "S": 20,
+    "L": 18,
+    "W": 18,
+    "WF": 22
+   },
+   "gap_small": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "list_height": {
+    "S": 88,
+    "L": 77,
+    "W": 74,
+    "WF": 93
+   },
+   "list_mask_height": {
+    "S": 60,
+    "L": 53,
+    "W": 50,
+    "WF": 64
+   },
+   "list_medium_height": {
+    "S": 96,
+    "L": 84,
+    "W": 80,
+    "WF": 102
+   },
+   "number_height": {
+    "S": 88,
+    "L": 77,
+    "W": 74,
+    "WF": 93
+   },
+   "number_width_large": {
+    "S": 200,
+    "L": 176,
+    "W": 166,
+    "WF": 212
+   },
+   "number_width_medium": {
+    "S": 140,
+    "L": 123,
+    "W": 116,
+    "WF": 148
+   },
+   "number_width_small": {
+    "S": 110,
+    "L": 97,
+    "W": 92,
+    "WF": 116
+   },
+   "panel/large_height": {
+    "S": 384,
+    "L": 327,
+    "W": 322,
+    "WF": 407
+   },
+   "panel/medium_height": {
+    "S": 288,
+    "L": 245,
+    "W": 234,
+    "WF": 297
+   },
+   "title_top_padding": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "wheel/date_min_width": {
+    "S": 540,
+    "L": 475,
+    "W": 448,
+    "WF": 574
+   },
+   "wheel/padding_horizontal": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "wheel/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "wheel/time_min_width": {
+    "S": 480,
+    "L": 422,
+    "W": 398,
+    "WF": 509
+   }
+  },
+  "tabs": {
+   "line/border_bottom": {
+    "S": 1,
+    "L": 1,
+    "W": 1,
+    "WF": 1
+   },
+   "line/button/gap_horizontal": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "line/button/padding_horizontal": {
+    "S": 14,
+    "L": 12,
+    "W": 12,
+    "WF": 15
+   },
+   "line/button/padding_vertical": {
+    "S": 18,
+    "L": 16,
+    "W": 16,
+    "WF": 19
+   },
+   "line/button/prefix_square": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "line/button/pressed_radius": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "line/button/wrap_padding_vertical": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "line/button/wrap_padding_vertical_large": {
+    "S": 26,
+    "L": 22,
+    "W": 22,
+    "WF": 22
+   },
+   "line/gap_horizontal": {
+    "S": 24,
+    "L": 21,
+    "W": 12,
+    "WF": 26
+   },
+   "line/padding_horizontal": {
+    "S": 28,
+    "L": 25,
+    "W": 24,
+    "WF": 29
+   },
+   "line/selected_border_bottom": {
+    "S": 4,
+    "L": 4,
+    "W": 3,
+    "WF": 4
+   },
+   "solid/large/button/gap_horizontal": {
+    "S": 14,
+    "L": 12,
+    "W": 12,
+    "WF": 16
+   },
+   "solid/large/button/height": {
+    "S": 84,
+    "L": 74,
+    "W": 70,
+    "WF": 90
+   },
+   "solid/large/button/padding_horizontal": {
+    "S": 28,
+    "L": 25,
+    "W": 24,
+    "WF": 29
+   },
+   "solid/large/button/padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 14,
+    "WF": 17
+   },
+   "solid/large/button/prefix_icon_square": {
+    "S": 52,
+    "L": 46,
+    "W": 43,
+    "WF": 55
+   },
+   "solid/large/button/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "solid/large/button/width": {
+    "S": 200,
+    "L": 176,
+    "W": 166,
+    "WF": 212
+   },
+   "solid/large/height": {
+    "S": 100,
+    "L": 88,
+    "W": 84,
+    "WF": 106
+   },
+   "solid/large/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "solid/large/three_segments_width": {
+    "S": 880,
+    "L": 774,
+    "W": 760,
+    "WF": 934
+   },
+   "solid/large/two_segments_width": {
+    "S": 880,
+    "L": 774,
+    "W": 760,
+    "WF": 934
+   },
+   "solid/medium/button/gap_horizontal": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   },
+   "solid/medium/button/height": {
+    "S": 64,
+    "L": 56,
+    "W": 54,
+    "WF": 68
+   },
+   "solid/medium/button/padding_horizontal": {
+    "S": 18,
+    "L": 16,
+    "W": 16,
+    "WF": 19
+   },
+   "solid/medium/button/padding_vertical": {
+    "S": 12,
+    "L": 11,
+    "W": 10,
+    "WF": 13
+   },
+   "solid/medium/button/prefix_square": {
+    "S": 40,
+    "L": 35,
+    "W": 33,
+    "WF": 42
+   },
+   "solid/medium/button/radius": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "solid/medium/button/width": {
+    "S": 160,
+    "L": 141,
+    "W": 134,
+    "WF": 170
+   },
+   "solid/medium/four_segments_width": {
+    "S": 960,
+    "L": 845,
+    "W": 800,
+    "WF": 1020
+   },
+   "solid/medium/height": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "solid/medium/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "solid/medium/three_segments_width": {
+    "S": 780,
+    "L": 686,
+    "W": 670,
+    "WF": 828
+   },
+   "solid/medium/two_segments_width": {
+    "S": 780,
+    "L": 686,
+    "W": 670,
+    "WF": 828
+   },
+   "solid/padding": {
+    "S": 8,
+    "L": 7,
+    "W": 8,
+    "WF": 9
+   }
+  },
+  "vehicle_settings": {
+   "list/item/container/padding_horizontal": {
+    "S": 20,
+    "L": 18,
+    "W": 17,
+    "WF": 22
+   },
+   "list/item/container/padding_vertical": {
+    "S": 16,
+    "L": 14,
+    "W": 13,
+    "WF": 17
+   },
+   "list/item/container/radius": {
+    "S": 24,
+    "L": 21,
+    "W": 20,
+    "WF": 26
+   },
+   "list/item/height": {
+    "S": 112,
+    "L": 99,
+    "W": 93,
+    "WF": 119
+   },
+   "list/item/icon_container_square": {
+    "S": 80,
+    "L": 70,
+    "W": 66,
+    "WF": 84
+   },
+   "list/padding_horizontal": {
+    "S": 20,
+    "L": 18,
+    "W": 20,
+    "WF": 20
+   },
+   "list/padding_vertical": {
+    "S": 24,
+    "L": 21,
+    "W": 24,
+    "WF": 24
+   },
+   "list/radius": {
+    "S": 32,
+    "L": 28,
+    "W": 27,
+    "WF": 35
+   },
+   "list/scroll_type_max_height": {
+    "S": 528,
+    "L": 465,
+    "W": 324,
+    "WF": 560
+   }
+  }
+ },
+ "radius": {
+  "level2": {
+   "S": 4,
+   "L": 4,
+   "W": 4,
+   "WF": 4
+  },
+  "level3": {
+   "S": 8,
+   "L": 7,
+   "W": 7,
+   "WF": 9
+  },
+  "level5": {
+   "S": 16,
+   "L": 14,
+   "W": 13,
+   "WF": 17
+  },
+  "level6": {
+   "S": 20,
+   "L": 18,
+   "W": 17,
+   "WF": 22
+  },
+  "level7": {
+   "S": 24,
+   "L": 21,
+   "W": 20,
+   "WF": 26
+  },
+  "level9": {
+   "S": 32,
+   "L": 28,
+   "W": 27,
+   "WF": 35
+  },
+  "max": {
+   "S": 999,
+   "L": 999,
+   "W": 999,
+   "WF": 999
+  },
+  "appWindow": {
+   "S": 40
+  }
+ },
+ "square": {
+  "level11": {
+   "S": 52,
+   "L": 46,
+   "W": 43,
+   "WF": 55
+  },
+  "level12": {
+   "S": 56,
+   "L": 49,
+   "W": 46,
+   "WF": 59
+  },
+  "level13": {
+   "S": 60,
+   "L": 53,
+   "W": 50,
+   "WF": 64
+  },
+  "level16": {
+   "S": 72,
+   "L": 63,
+   "W": 60,
+   "WF": 77
+  },
+  "level18": {
+   "S": 80,
+   "L": 70,
+   "W": 66,
+   "WF": 84
+  },
+  "level22": {
+   "S": 100,
+   "L": 88,
+   "W": 83,
+   "WF": 106
+  },
+  "level6": {
+   "S": 32,
+   "L": 28,
+   "W": 27,
+   "WF": 35
+  },
+  "level7": {
+   "S": 36,
+   "L": 28,
+   "W": 30,
+   "WF": 41
+  },
+  "level8": {
+   "S": 40,
+   "L": 35,
+   "W": 33,
+   "WF": 42
+  },
+  "level9": {
+   "S": 44,
+   "L": 39,
+   "W": 37,
+   "WF": 49
+  }
+ },
+ "line": {
+  "level1": {
+   "S": 1,
+   "L": 1,
+   "W": 1,
+   "WF": 1
+  },
+  "level2": {
+   "S": 2,
+   "L": 2,
+   "W": 2,
+   "WF": 3
+  },
+  "level3": {
+   "S": 3,
+   "L": 3,
+   "W": 3,
+   "WF": 3
+  },
+  "level4": {
+   "S": 4,
+   "L": 4,
+   "W": 3,
+   "WF": 4
+  },
+  "level5": {
+   "S": 6,
+   "L": 5,
+   "W": 5,
+   "WF": 5
+  }
+ },
+ "spacing": {
+  "03": 8,
+  "04": 12,
+  "05": 16,
+  "07": 32,
+  "note": "컴포넌트 gap/padding은 4·8·12·16·20·24·32·40·48 단계"
+ },
+ "shadow": {
+  "level1": [
+   {
+    "x": 0,
+    "y": 6,
+    "blur": 24,
+    "spread": 0,
+    "color": "#00000014"
+   }
+  ],
+  "level2": [
+   {
+    "x": 0,
+    "y": 8,
+    "blur": 32,
+    "spread": 0,
+    "color": "#00000029"
+   },
+   {
+    "x": 0,
+    "y": 2,
+    "blur": 2,
+    "spread": 0,
+    "color": "#00000014"
+   }
+  ],
+  "level3": [
+   {
+    "x": 0,
+    "y": 20,
+    "blur": 40,
+    "spread": 0,
+    "color": "#0000003D"
+   },
+   {
+    "x": 0,
+    "y": 2,
+    "blur": 4,
+    "spread": 0,
+    "color": "#00000033"
+   }
+  ],
+  "appIconLightingDark": [
+   {
+    "inner": true,
+    "x": 0,
+    "y": -1,
+    "blur": 1,
+    "color": "#FFFFFF1A"
+   },
+   {
+    "inner": true,
+    "x": 0,
+    "y": 1,
+    "blur": 1,
+    "color": "#FFFFFF40"
+   }
+  ]
+ },
+ "iconography": {
+  "grid": 48,
+  "styles": [
+   "Filled",
+   "Outlined"
+  ],
+  "note": "48×48dp 그리드로 1벌 제작 후 필요한 크기로 조정. 텍스트 라벨과 함께 제공"
+ },
+ "animation": {
+  "loaders": {
+   "Linear": "짧고 정적인 로딩",
+   "Tension": "페이지 로딩처럼 다소 긴 로딩"
+  },
+  "responseTime": "입력 후 0.25초 이내 응답, 넘으면 응답 중 상태 표시"
+ }
+}

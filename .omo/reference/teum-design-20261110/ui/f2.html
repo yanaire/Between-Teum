@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · F2 리차지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body">
+<main class="board">
+
+<section class="flow">
+  <header><h2>F2 리차지 · 점심 직후 최대 20분</h2><p>12:35 회사 지하주차장. 리차지 시간 = 13:00 − 12:35 − 걷는 시간 3분 − 깨어나는 시간 2분 = 20분 (잠들기 1 + 휴식 16 + 기상 3). 흐름: F2-01 제안 → F2-02 안심 체크 → (F2-03 자세, 처음 한 번) → F2-04 잠들기 → F2-05 수면 → F2-06 기상 → F2-07 기상 카드 → C-03 → C-04 → H-01. F2-01은 세션 공통 보드, F2-04·F2-06은 우선 시안 8 보드. 빛은 확인 단계에서 문라이트, 잠들면 딥 나이트, 깨면 앰버. 딥 나이트는 어두워 주 버튼에 쓰지 않는다.</p></header>
+</section>
+
+<!-- ───────────── F2-01a ───────────── -->
+<section class="flow">
+  <header><h2>F2-01a 시간 바꾸기</h2><p>System popup 안에 Tabs Solid M (10 · 15 · 20분)과 복귀 시각 Spinner (Time, 패널 288). 탭이나 시각을 바꾸면 뒤 카드의 큰 숫자가 바로 바뀐다. 걷는 시간과 깨어나는 시간을 뺀 값이라 고른 길이가 복귀 시각을 넘으면 그 탭은 비활성.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-01a</b>Portrait <span class="tag">P0</span> · 15분을 고른 상태. 뒤 카드 숫자도 15</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-01a" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sh:70%;--sy:30%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment" style="top:62%">
+          <div class="kicker"><i data-lucide="map-pin"></i>회사 주차장 · 12:35</div>
+          <div class="head"><h2 class="name">리차지</h2><span class="len n-hero">15<small>분</small></span></div>
+          <p class="sub">1시 복귀까지 25분 · 걷는 시간까지 계산했어요</p>
+          <div class="acts"><button class="btn btn-l btn-primary btn-wide">바로 자기</button></div>
+        </section>
+        <div class="scrim" style="z-index:3"></div>
+        <div class="popup enter" style="z-index:4">
+          <h3 class="ttl">얼마나 잘까요?</h3>
+          <div class="tabs fit"><button>10분</button><button class="is-on">15분</button><button>20분</button></div>
+          <p class="t-label ink-3" style="margin:40px 0 16px">복귀 시각</p>
+          <div class="spinner" style="width:100%"><div class="col"><span>12</span><span class="is-on">13</span><span>14</span></div><span class="sep">:</span><div class="col"><span>55</span><span class="is-on">00</span><span>05</span></div></div>
+          <div class="acts"><button class="btn btn-m">취소</button><button class="btn btn-m btn-filled">확인</button></div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F2-01a</b>Landscape <span class="tag">P0</span> · 카드는 운전석 쪽, 팝업은 창 가운데 (System popup은 모달이라 가운데 고정)</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-01a" data-o="l" data-theme="dark" data-mask="firm">
+        <div class="seam" style="--ap:28;--sh:100%;--sx:1240px"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <section class="moment" style="left:452px">
+          <div class="kicker"><i data-lucide="map-pin"></i>회사 주차장 · 12:35</div>
+          <div class="head"><h2 class="name">리차지</h2><span class="len n-hero">15<small>분</small></span></div>
+          <p class="sub">1시 복귀까지 25분 · 걷는 시간까지 계산했어요</p>
+          <div class="acts"><button class="btn btn-l btn-primary btn-wide">바로 자기</button></div>
+        </section>
+        <div class="scrim" style="z-index:3"></div>
+        <div class="popup enter" style="z-index:4">
+          <h3 class="ttl">얼마나 잘까요?</h3>
+          <div class="tabs fit"><button>10분</button><button class="is-on">15분</button><button>20분</button></div>
+          <p class="t-label ink-3" style="margin:40px 0 16px">복귀 시각</p>
+          <div class="spinner" style="width:100%"><div class="col"><span>12</span><span class="is-on">13</span><span>14</span></div><span class="sep">:</span><div class="col"><span>55</span><span class="is-on">00</span><span>05</span></div></div>
+          <div class="acts"><button class="btn btn-m">취소</button><button class="btn btn-m btn-filled">확인</button></div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F2-02 ───────────── -->
+<section class="flow">
+  <header><h2>F2-02 안심 체크</h2><p>눈을 감기 전에 걱정을 하나씩 지운다. 항목이 0.4초 간격으로 켜진다 (ChecklistReveal, 항목 112). 문이 안 잠겼으면 그 줄에 [잠그기]가 뜨고 누르면 차가 잠근다. 마지막 줄은 오후 첫 일정. 아래에 사운드 칩 넷. [다음] → 처음이면 F2-03, 저장한 자세가 있으면 F2-04.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-02</b>Portrait <span class="tag">P0</span> · 문이 열려 있는 경우. 이 줄만 체크 대신 [잠그기]</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-02" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">눈 감기 전에<br>확인할게요</h2>
+          <div class="list reveal" style="margin-top:48px">
+            <div class="li"><span class="ico ok"><i data-lucide="circle-parking"></i></span><span class="txt"><b>기어 P</b></span><span class="end ok"><i data-lucide="check"></i></span></div>
+            <div class="li doing"><span class="ico"><i data-lucide="lock-open"></i></span><span class="txt"><b>문이 열려 있어요</b><span>잠그면 밖에서 열 수 없어요</span></span><button class="btn btn-m"><i data-lucide="lock"></i>잠그기</button></div>
+            <div class="li"><span class="ico ok"><i data-lucide="app-window"></i></span><span class="txt"><b>창문 닫힘</b></span><span class="end ok"><i data-lucide="check"></i></span></div>
+            <div class="li"><span class="ico"><i data-lucide="calendar-clock"></i></span><span class="txt"><b>오후 첫 일정 13:30</b><span>팀 회의</span></span></div>
+          </div>
+          <p class="t-label ink-3 m0" style="margin-top:40px">들으며 잘 소리</p>
+          <div class="row gap-12" style="margin-top:16px"><button class="chip is-on"><i data-lucide="cloud-rain"></i>빗소리</button><button class="chip"><i data-lucide="audio-lines"></i>백색소음</button><button class="chip"><i data-lucide="trees"></i>숲</button><button class="chip"><i data-lucide="volume-x"></i>무음</button></div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">다음</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘다음’이라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:1"><div class="track"></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>F2-02</b>Landscape <span class="tag">P0</span> · 모두 확인된 경우. 체크는 왼쪽, 소리는 오른쪽</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-02" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="now"></i><i></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q" style="margin-top:32px">눈 감기 전에 확인했어요</h2>
+          <div style="display:grid;grid-template-columns:900px 1fr;gap:72px;margin-top:48px">
+            <div class="list reveal">
+              <div class="li"><span class="ico ok"><i data-lucide="circle-parking"></i></span><span class="txt"><b>기어 P</b></span><span class="end ok"><i data-lucide="check"></i></span></div>
+              <div class="li"><span class="ico ok"><i data-lucide="lock"></i></span><span class="txt"><b>문 잠김</b></span><span class="end ok"><i data-lucide="check"></i></span></div>
+              <div class="li"><span class="ico ok"><i data-lucide="app-window"></i></span><span class="txt"><b>창문 닫힘</b></span><span class="end ok"><i data-lucide="check"></i></span></div>
+              <div class="li"><span class="ico"><i data-lucide="calendar-clock"></i></span><span class="txt"><b>오후 첫 일정 13:30</b><span>팀 회의</span></span></div>
+            </div>
+            <div>
+              <p class="t-label ink-3 m0">들으며 잘 소리</p>
+              <div class="row gap-12" style="margin-top:16px;flex-wrap:wrap"><button class="chip is-on"><i data-lucide="cloud-rain"></i>빗소리</button><button class="chip"><i data-lucide="audio-lines"></i>백색소음</button><button class="chip"><i data-lucide="trees"></i>숲</button><button class="chip"><i data-lucide="volume-x"></i>무음</button></div>
+            </div>
+          </div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">다음</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘다음’이라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:1"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F2-03 ───────────── -->
+<section class="flow">
+  <header><h2>F2-03 자세 조절 (처음 한 번)</h2><p>옆에서 본 시트 실루엣 (SeatAngleControl), 각도 num.l, Stepper 420 × 100. 누르면 등받이가 실제로 움직이고, 움직이는 동안에는 [멈춤]이 보인다. 그림도 같은 속도로 기운다 (1.2초, ease-in-out). 저장하면 다음부터는 이 단계를 건너뛴다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-03</b>Portrait <span class="tag">P0</span> · [더 젖히기]를 눌러 움직이는 중</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-03" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <h2 class="t-display session-q">편한 각도로<br>맞춰요</h2>
+          <p class="t-body ink-3 m0" style="margin-top:16px">한 번 정해 두면 다음부터 바로 젖혀요</p>
+          <div class="session-body" style="align-items:center;justify-content:center">
+            <div class="seat-fig" style="--deg:34deg;zoom:1.1"><div class="arc"></div><div class="base"></div><div class="back"></div><div class="head"></div></div>
+            <p class="n-l m0" style="margin-top:48px">124<small class="t-sub ink-2" style="letter-spacing:0">°</small></p>
+            <div class="stepper" style="margin-top:24px"><button aria-label="덜 젖히기"><i data-lucide="chevron-up"></i></button><span class="val">등받이</span><button aria-label="더 젖히기" style="background:var(--teum-btn-basic-pressed)"><i data-lucide="chevron-down"></i></button></div>
+            <button class="btn btn-m" style="margin-top:24px"><i data-lucide="pause"></i>멈춤</button>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">이 각도로 저장</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘더 젖혀 줘’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:1"><div class="track"></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>F2-03</b>Landscape <span class="tag">P0</span> · 그림은 오른쪽 크게, 조작은 왼쪽 (운전석 쪽)</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-03" data-o="l" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div style="display:grid;grid-template-columns:720px 1fr;gap:72px;flex:1;align-items:center">
+            <div class="stack">
+              <h2 class="t-display m0">편한 각도로 맞춰요</h2>
+              <p class="t-body ink-3 m0" style="margin-top:16px">한 번 정해 두면 다음부터 바로 젖혀요</p>
+              <p class="n-l m0" style="margin-top:48px">124<small class="t-sub ink-2" style="letter-spacing:0">°</small></p>
+              <div class="row gap-16" style="margin-top:24px"><div class="stepper"><button aria-label="덜 젖히기"><i data-lucide="chevron-up"></i></button><span class="val">등받이</span><button aria-label="더 젖히기"><i data-lucide="chevron-down"></i></button></div><button class="btn btn-m"><i data-lucide="pause"></i>멈춤</button></div>
+            </div>
+            <div class="stack" style="align-items:center"><div class="seat-fig" style="--deg:34deg;zoom:1.7"><div class="arc"></div><div class="base"></div><div class="back"></div><div class="head"></div></div></div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">이 각도로 저장</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘더 젖혀 줘’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:1"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F2-05 · F2-05a ───────────── -->
+<section class="flow">
+  <header><h2>F2-05 수면 · F2-05a 미니 오버레이</h2><p>검은 화면 가운데 작은 호흡 점 하나 (0.1 Hz 맥동, 밝기 4%). 시계를 보지 않아도 된다. 차는 기어, 문, 착석을 계속 지켜본다. 화면을 누르면 5초 동안만 남은 시간과 버튼이 떠오른다. 밝기를 올리지 않으려고 주 버튼도 빛 배경 대신 basic L로 둔다.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-05</b>Portrait <span class="tag">P0</span> · 점이 10초에 한 번 아주 천천히 밝아졌다 어두워진다</figcaption>
+      <div class="fz"><article class="frame is-live" data-screen="F2-05" data-o="p" data-theme="dark" data-light="sleep">
+        <div class="fill" style="background:var(--pleos-static-dark-100)"></div>
+        <span class="sleep-dot" style="top:44%"></span>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F2-05</b>Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame is-live" data-screen="F2-05" data-o="l" data-theme="dark" data-light="sleep">
+        <div class="fill" style="background:var(--pleos-static-dark-100)"></div>
+        <span class="sleep-dot"></span>
+      </article></div>
+    </figure>
+    <figure class="shot"><figcaption><b>F2-05a</b>Portrait <span class="tag">P0</span> · 터치 후. 5초 뒤 저절로 사라진다. [3분 더]는 복귀 시각에 여유가 있을 때만</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-05a" data-o="p" data-theme="dark" data-light="sleep">
+        <div class="fill" style="background:var(--pleos-static-dark-100)"></div>
+        <span class="sleep-dot" style="top:30%;opacity:.5"></span>
+        <div class="session enter" style="justify-content:flex-end">
+          <div class="stack" style="align-items:center;text-align:center">
+            <p class="n-l m0">14<small class="t-sub ink-2" style="letter-spacing:0;margin-left:4px">분</small></p>
+            <p class="t-body ink-2 m0" style="margin-top:4px">남았어요 · 12:57에 깨워 드릴게요</p>
+          </div>
+          <div class="session-foot" style="margin-top:56px">
+            <button class="btn btn-l btn-wide">지금 일어나기</button>
+            <div class="subs"><button class="btn btn-m">3분 더</button></div>
+          </div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F2-07 ───────────── -->
+<section class="flow">
+  <header><h2>F2-07 기상 카드</h2><p>F2-06 기상 연출이 끝난 뒤. 회복한 시간과 이번 주 횟수, 아침 다짐 다시 보기 (오늘의 카드 칩), 오후 첫 일정까지 남은 시간. 창문이 2cm 열려 있으니 [창문 닫기]는 보조. 60초 동안 반응이 없으면 F2-07a. 빛은 앰버.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-07</b>Portrait <span class="tag">P0</span> · '이번 주 2번째'는 같은 날 저녁 F4-05의 '리차지 2번'과 맞춘 값</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-07" data-o="p" data-theme="dark" data-light="amber">
+        <div class="sunrise" style="--rise:22%"></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <p class="t-label ink-3 m0" style="margin-top:40px">12:58 · 이번 주 2번째</p>
+          <h2 class="t-display m0" style="margin-top:8px">20분 회복 완료</h2>
+          <p class="t-label ink-3 m0" style="margin-top:56px">아침에 정한 것</p>
+          <button class="today-chip" style="margin-top:12px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+          <div class="card" style="margin-top:16px;padding:32px 40px">
+            <div class="row"><div class="metric"><span class="lab">오후 첫 일정까지</span><span class="val">35<small>분</small></span></div><span class="t-body ink-2" style="margin-left:auto;text-align:right">13:30<br>팀 회의</span></div>
+          </div>
+          <div class="session-body"></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">완료</button>
+            <div class="subs"><button class="btn btn-m"><i data-lucide="app-window"></i>창문 닫기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘완료’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.01"><div class="track"></div></div>
+      </article></div>
+    </figure>
+
+    <figure class="shot l"><figcaption><b>F2-07</b>Landscape <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-07" data-o="l" data-theme="dark" data-light="amber">
+        <div class="sunrise" style="--rise:22%"></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div style="display:grid;grid-template-columns:1fr 720px;gap:96px;flex:1;align-items:center">
+            <div>
+              <p class="t-label ink-3 m0">12:58 · 이번 주 2번째</p>
+              <h2 class="t-display m0" style="margin-top:8px">20분 회복 완료</h2>
+              <p class="t-label ink-3 m0" style="margin-top:48px">아침에 정한 것</p>
+              <button class="today-chip" style="margin-top:12px;width:100%"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+            </div>
+            <div class="card" style="padding:40px">
+              <div class="metric"><span class="lab">오후 첫 일정까지</span><span class="val">35<small>분</small></span></div>
+              <p class="t-body ink-2 m0" style="margin-top:12px">13:30 팀 회의</p>
+            </div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">완료</button>
+            <div class="subs"><button class="btn btn-m"><i data-lucide="app-window"></i>창문 닫기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘완료’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.01"><div class="track"></div></div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────── F2-07a ───────────── -->
+<section class="flow">
+  <header><h2>F2-07a 2차 깨움</h2><p>F2-07에서 60초 동안 반응이 없을 때. 질문 하나와 큰 버튼 하나. 차는 소리를 키우고 실내등을 켜고 음성을 반복한다. 일출 빛이 끝까지 차오른 상태.</p></header>
+  <div class="shots">
+    <figure class="shot"><figcaption><b>F2-07a</b>Portrait <span class="tag">P0</span></figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-07a" data-o="p" data-theme="dark" data-light="amber">
+        <div class="sunrise" style="--rise:60%;height:100%"></div>
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"></div>
+          <div class="session-body" style="justify-content:center">
+            <h2 class="t-display m0">일어났어요?</h2>
+            <p class="say" style="margin-top:24px"><i data-lucide="volume-2"></i>“1시 5분 전이에요. 개운하게 일어나요.”</p>
+          </div>
+          <div class="cabin-steps" style="justify-content:center;margin-bottom:32px"><span class="st done"><i data-lucide="volume-2"></i>소리 키움</span><span class="st done"><i data-lucide="lightbulb"></i>실내등 켬</span></div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary btn-wide">일어났어요</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘일어났어요’라고 말해도 돼요</p>
+          </div>
+        </div>
+      </article></div>
+    </figure>
+    <figure class="shot l"><figcaption><b>F2-07a</b>Landscape <span class="tag">P0</span> · 일출 빛이 창 전체로. 버튼은 운전석 쪽 왼쪽 아래</figcaption>
+      <div class="fz"><article class="frame" data-screen="F2-07a" data-o="l" data-theme="dark" data-light="amber">
+        <div class="sunrise" style="--rise:60%;height:100%"></div>
+        <div class="session">
+          <div class="session-top" style="justify-content:flex-end"></div>
+          <div class="session-body" style="justify-content:center">
+            <h2 class="t-display m0">일어났어요?</h2>
+            <p class="say" style="margin-top:24px"><i data-lucide="volume-2"></i>“1시 5분 전이에요. 개운하게 일어나요.”</p>
+            <div class="cabin-steps" style="margin-top:40px"><span class="st done"><i data-lucide="volume-2"></i>소리 키움</span><span class="st done"><i data-lucide="lightbulb"></i>실내등 켬</span></div>
+          </div>
+          <div class="session-foot">
+            <button class="btn btn-l btn-primary">일어났어요</button>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘일어났어요’라고 말해도 돼요</p>
+          </div>
+        </div>
+      </article></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

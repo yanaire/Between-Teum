@@ -25,7 +25,8 @@ data class ActivityRecord(
     val recallAccepted: Boolean = false,
     val historyConsentAtSave: Boolean = false,
     val createdAtEpochMs: Long = 0L,
-    val updatedAtEpochMs: Long = 0L
+    val updatedAtEpochMs: Long = 0L,
+    val journeyFacts: JourneyFacts? = null
 ) {
     fun completedStepCount(): Int = completedStepIndexes.size
 
@@ -35,6 +36,7 @@ data class ActivityRecord(
             completedStepIndexes.size == totalSteps
 
     fun validate() {
+        journeyFacts?.validate()
         require(id.isNotBlank()) { "id must not be blank" }
         require(dev.pleos.starter.teum.content.SituationIds.isKnown(situationId)) {
             "unknown situationId: $situationId"
@@ -68,7 +70,8 @@ fun newActivityRecord(
     nextAction: String = "",
     recallAccepted: Boolean = false,
     historyConsentAtSave: Boolean = false,
-    nowEpochMs: Long = System.currentTimeMillis()
+    nowEpochMs: Long = System.currentTimeMillis(),
+    journeyFacts: JourneyFacts? = null
 ): ActivityRecord {
     val record = ActivityRecord(
         id = UUID.randomUUID().toString(),
@@ -83,7 +86,8 @@ fun newActivityRecord(
         recallAccepted = recallAccepted,
         historyConsentAtSave = historyConsentAtSave,
         createdAtEpochMs = nowEpochMs,
-        updatedAtEpochMs = nowEpochMs
+        updatedAtEpochMs = nowEpochMs,
+        journeyFacts = journeyFacts
     )
     record.validate()
     return record

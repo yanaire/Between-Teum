@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틈틈 UI · 17인치 화면 맥락</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@300..800&family=Manrope:wght@300..800&family=Gowun+Batang&display=swap">
+<link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="teum.css">
+<script defer src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script defer src="teum.js"></script>
+</head>
+<body class="board-body" data-z=".33">
+<main class="board">
+
+<section class="flow">
+  <header><h2>Connect-S 17″ 화면 맥락 · 2560 × 1440</h2><p>세로: Status bar 96 + 앱 영역 1184 + GNB 160. 가로: Driving view 840 (운전석 쪽, 앱이 가릴 수 없음) + 앱 영역 1700 (840 + 20 + 840) + 20. 앱 창 모서리 r40, 창 사이 20. 기본은 1:1 분할이고 틈틈은 Portrait에서 핵심을 완결한다. 시스템 영역 (Status bar, Driving view, GNB)과 옆 앱은 맥락을 보여 주기 위한 목업이라 일부러 흐리게 그렸다. 이 보드는 기본 배율 33%.</p></header>
+</section>
+
+<section class="flow">
+  <header><h2>1:1 분할 · 정차 중 홈</h2><p>틈틈 H-01 (Portrait)이 primary window, 옆에는 내비. 운전자 쪽에서 가까운 왼쪽 창이 primary.</p></header>
+  <div class="shots">
+    <figure class="shot xl"><figcaption><b>1:1</b>H-01 + 내비 · 11월 13일 12:20 회사 주차장</figcaption>
+      <div class="fz"><div class="screen">
+        <header class="sb"><span class="row gap-24"><i data-lucide="lock"></i><i data-lucide="search"></i><i data-lucide="bell"></i></span><span class="row gap-24"><i data-lucide="user-round"></i><i data-lucide="bluetooth"></i><i data-lucide="signal"></i><b>12:20</b></span></header>
+        <aside class="dv"><span class="gear">P</span><span class="spd">0<small>km/h</small></span><span class="dv-row"><i data-lucide="battery-medium"></i>78% · 412km</span></aside>
+        <div class="apps">
+<article class="frame" data-screen="H-01" data-o="p" data-theme="dark" data-mask="firm">
+        <nav class="pagenav"><span class="app-icon"><i></i></span><span class="title">틈틈</span>
+          <span class="sfx"><button class="icon-lab"><i data-lucide="calendar-check"></i>기록</button><button class="icon-lab"><i data-lucide="settings"></i>설정</button></span></nav>
+        <div class="content stack" style="margin-top:24px">
+          <span class="t-cap ink-3">11월 13일 목요일</span>
+          <h2 class="t-title m0" style="margin-top:4px">점심 잘 먹었어요?</h2>
+          <button class="today-chip" style="margin-top:24px"><span class="swatch m-firm"></span><b>단호한 나</b><q>기획안 초안 끝내기</q><i data-lucide="chevron-right"></i></button>
+          <section class="card rec" style="margin-top:16px">
+            <div class="seam"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+            <div class="row"><h3 class="t-sub m0">점심 리차지</h3><span class="t-label ink-3" style="margin-left:auto">다음 틈 · 12:35</span></div>
+            <p class="t-body ink-2 m0" style="margin-top:8px">점심 먹고 오면 20분 잘 수 있어요</p>
+            <button class="btn btn-l btn-primary btn-wide" style="margin-top:24px">3분 리셋</button>
+          </section>
+          <div class="section-h" style="margin-top:24px;height:80px"><h3 class="t-sub m0">오늘의 틈</h3><button class="btn btn-m"><i data-lucide="plus"></i>중요한 순간 등록</button></div>
+          <ol class="tl">
+            <li class="tl-i done m-firm"><span class="mk"><i data-lucide="check"></i></span><span class="when">08:41</span><span class="what">가면 쓰기<small>단호한 나 · 7분</small></span></li>
+            <li class="tl-i now"><span class="mk"><i data-lucide="moon"></i></span><span class="when">12:35</span><span class="what">리차지 예정<small>20분 잘 수 있어요</small></span><span class="end">다음</span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="mic"></i></span><span class="when">16:00</span><span class="what">중요한 순간<small>A사 신제품 제안 미팅</small></span></li>
+            <li class="tl-i"><span class="mk"><i data-lucide="house"></i></span><span class="when">저녁</span><span class="what">가면 벗기<small>집에 도착하면</small></span></li>
+          </ol>
+        </div>
+      </article>
+<article class="frame other-app" data-o="p" data-theme="dark">
+          <div class="map"><i class="road r1"></i><i class="road r2"></i><i class="road r3"></i><i class="route"></i><span class="pin"></span></div>
+          <div class="nav-card"><b>집까지 18분</b><span>19:10 도착 · 9.2km</span></div>
+          <span class="app-tag">다른 앱 · 내비 목업</span>
+        </article>
+        </div>
+        <footer class="gnb"><span class="clim">22.0°</span><span class="slots"><i data-lucide="car-front"></i><i data-lucide="navigation"></i><i data-lucide="music"></i><i data-lucide="phone"></i><span class="teum-slot"></span><i data-lucide="layout-grid"></i></span><span class="clim">22.0°</span></footer>
+      </div></div>
+    </figure>
+  </div>
+</section>
+
+<section class="flow">
+  <header><h2>2:0 · 세션을 크게 (Landscape)</h2><p>M-01이 뜰 때 Portrait였다면 [크게 보기]를 제안하고, 누르면 두 창을 합쳐 1700 × 1184로 쓴다 (강제 전환은 하지 않는다). 틈 라이트 양옆이 빛이 번지는 여백이 된다. 이 프레임의 틈은 실제로 숨 쉰다.</p></header>
+  <div class="shots">
+    <figure class="shot xl"><figcaption><b>2:0</b>F1-03 호흡 · 08:44</figcaption>
+      <div class="fz"><div class="screen">
+        <header class="sb"><span class="row gap-24"><i data-lucide="lock"></i><i data-lucide="search"></i><i data-lucide="bell"></i></span><span class="row gap-24"><i data-lucide="user-round"></i><i data-lucide="bluetooth"></i><i data-lucide="signal"></i><b>08:44</b></span></header>
+        <aside class="dv"><span class="gear">P</span><span class="spd">0<small>km/h</small></span><span class="dv-row"><i data-lucide="battery-medium"></i>81% · 428km</span></aside>
+        <div class="apps">
+<article class="frame is-live" data-screen="F1-03" data-o="l" data-theme="dark">
+        <div class="seam is-breathing"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div>
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body"></div>
+          <div style="width:620px">
+            <div class="phase t-display"><span>들이쉬고</span><span>한 번 더</span><span>길게 내쉬세요</span></div>
+            <p class="t-lead ink-3 m0" style="margin-top:12px">진정 호흡 · 세 번째 숨</p>
+            <button class="btn btn-m" style="margin-top:48px"><i data-lucide="eye-off"></i>눈 감고 하기</button>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.78"><div class="track"></div></div>
+      </article>
+        </div>
+        <footer class="gnb"><span class="clim">23.0°</span><span class="slots"><i data-lucide="car-front"></i><i data-lucide="navigation"></i><i data-lucide="music"></i><i data-lucide="phone"></i><span class="teum-slot"></span><i data-lucide="layout-grid"></i></span><span class="clim">22.0°</span></footer>
+      </div></div>
+    </figure>
+  </div>
+</section>
+
+<section class="flow">
+  <header><h2>1:1 · 세션 중 다른 앱을 열었을 때 (H-03)</h2><p>세션 중에 내비를 열면 틈틈은 컴팩트 뷰로 밀려나고 캐빈 연출은 그대로 이어진다. 시간이 끝나면 자동으로 복구.</p></header>
+  <div class="shots">
+    <figure class="shot xl"><figcaption><b>1:1</b>H-03 + 내비 · 08:46</figcaption>
+      <div class="fz"><div class="screen">
+        <header class="sb"><span class="row gap-24"><i data-lucide="lock"></i><i data-lucide="search"></i><i data-lucide="bell"></i></span><span class="row gap-24"><i data-lucide="user-round"></i><i data-lucide="bluetooth"></i><i data-lucide="signal"></i><b>08:46</b></span></header>
+        <aside class="dv"><span class="gear">P</span><span class="spd">0<small>km/h</small></span><span class="dv-row"><i data-lucide="battery-medium"></i>81% · 428km</span></aside>
+        <div class="apps">
+<article class="frame is-live" data-screen="H-03" data-o="p" data-theme="dark">
+        <div class="session">
+          <div class="session-top"><span class="dots"><i class="done"></i><i class="now"></i><i></i><i></i><i></i></span><button class="text-btn">끝내기<i data-lucide="x"></i></button></div>
+          <div class="session-body" style="justify-content:center">
+            <div class="compact">
+              <div class="mini-seam"><div class="seam is-breathing" style="--k:.5;--sh:84%"><div class="seam__spill"></div><div class="seam__glow"></div><div class="seam__core"></div></div></div>
+              <div>
+                <p class="t-label ink-3 m0">가면 쓰기 · 진정 호흡</p>
+                <p class="n-l m0" style="margin-top:8px">4<small class="t-sub ink-2" style="letter-spacing:0;margin-left:4px">분 남았어요</small></p>
+                <p class="t-body ink-2 m0" style="margin-top:16px">차는 계속 함께 숨 쉬고 있어요</p>
+              </div>
+            </div>
+          </div>
+          <div class="session-foot">
+            <div class="subs"><button class="btn btn-m"><i data-lucide="maximize-2"></i>크게 보기</button></div>
+            <p class="voice-hint m0"><i data-lucide="mic"></i>‘크게 보기’라고 말해도 돼요</p>
+          </div>
+        </div>
+        <div class="edge" style="--remain:.44"><div class="track"></div></div>
+      </article>
+<article class="frame other-app" data-o="p" data-theme="dark">
+          <div class="map"><i class="road r1"></i><i class="road r2"></i><i class="road r3"></i><i class="route"></i><span class="pin"></span></div>
+          <div class="nav-card"><b>집까지 18분</b><span>19:10 도착 · 9.2km</span></div>
+          <span class="app-tag">다른 앱 · 내비 목업</span>
+        </article>
+        </div>
+        <footer class="gnb"><span class="clim">23.0°</span><span class="slots"><i data-lucide="car-front"></i><i data-lucide="navigation"></i><i data-lucide="music"></i><i data-lucide="phone"></i><span class="teum-slot"></span><i data-lucide="layout-grid"></i></span><span class="clim">22.0°</span></footer>
+      </div></div>
+    </figure>
+  </div>
+</section>
+
+<section class="flow">
+  <header><h2>1:1 · 주행 중 (H-02)</h2><p>기어가 D로 바뀌는 순간 어떤 화면이든 H-02로. Driving view에 속도가 오르고, 틈틈 창에는 큰 글씨 한 줄과 진행 점뿐이다.</p></header>
+  <div class="shots">
+    <figure class="shot xl"><figcaption><b>1:1</b>H-02 + 내비 · 18:52 귀가 중</figcaption>
+      <div class="fz"><div class="screen">
+        <header class="sb"><span class="row gap-24"><i data-lucide="lock"></i><i data-lucide="search"></i><i data-lucide="bell"></i></span><span class="row gap-24"><i data-lucide="user-round"></i><i data-lucide="bluetooth"></i><i data-lucide="signal"></i><b>18:52</b></span></header>
+        <aside class="dv"><span class="gear">D</span><span class="spd">48<small>km/h</small></span><span class="dv-row"><i data-lucide="battery-medium"></i>64% · 340km</span></aside>
+        <div class="apps">
+<article class="frame" data-screen="H-02" data-o="p" data-theme="dark" data-mask="firm">
+        <div class="drive">
+          <p class="t-drive m0">정차하면 틈을<br>열 수 있어요</p>
+          <div class="day4"><i class="done m-firm"></i><i class="done l-moon"></i><i></i><i></i></div>
+        </div>
+      </article>
+<article class="frame other-app" data-o="p" data-theme="dark">
+          <div class="map"><i class="road r1"></i><i class="road r2"></i><i class="road r3"></i><i class="route"></i><span class="pin"></span></div>
+          <div class="nav-card"><b>집까지 18분</b><span>19:10 도착 · 9.2km</span></div>
+          <span class="app-tag">다른 앱 · 내비 목업</span>
+        </article>
+        </div>
+        <footer class="gnb"><span class="clim">22.0°</span><span class="slots"><i data-lucide="car-front"></i><i data-lucide="navigation"></i><i data-lucide="music"></i><i data-lucide="phone"></i><span class="teum-slot"></span><i data-lucide="layout-grid"></i></span><span class="clim">22.0°</span></footer>
+      </div></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

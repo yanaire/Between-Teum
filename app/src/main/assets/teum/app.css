@@ -1,0 +1,19 @@
+/* The actual Android app window replaces the prototype's outer demonstration shell. */
+html, body { width: 100%; height: 100%; }
+#app { width: 100%; height: 100%; }
+input, textarea, select { font: inherit; color: inherit; }
+input[type="text"], input[type="time"], textarea {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  max-width: 100%;
+}
+button:disabled { cursor: default; opacity: .45; }
+:focus-visible { outline: 3px solid var(--lime); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

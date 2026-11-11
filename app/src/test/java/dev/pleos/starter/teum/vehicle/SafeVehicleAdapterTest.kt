@@ -1,9 +1,64 @@
 package dev.pleos.starter.teum.vehicle
 
+import dev.pleos.starter.teum.ui.capabilityFact
+import dev.pleos.starter.teum.ui.positionFact
 import org.junit.Assert.*
 import org.junit.Test
 
 class SafeVehicleAdapterTest {
+    @Test fun cabinCallbacksAreRejectedAfterLifecycleInvalidation() {
+        val callbacks = CabinCallbackEpoch()
+        val firstOwner = callbacks.current()
+        assertTrue(callbacks.accepts(firstOwner))
+
+        val secondOwner = callbacks.invalidate()
+        assertFalse(callbacks.accepts(firstOwner))
+        assertTrue(callbacks.accepts(secondOwner))
+    }
+
+    @Test fun cabinReadSupportAndObservedPositionsNeverEnablePhysicalControls() {
+        for (status in CabinReadStatus.entries) {
+            val feature = CabinObservation(status, "READ_WRITE", mapOf(
+                "ROW_1_RIGHT" to CabinAreaObservation(
+                    listOf("ROW_1_RIGHT"), -17, 83, 12, CabinPositionStatus.OBSERVED)
+            ))
+            val capability = feature.capabilityFact()
+            assertNotEquals(status.name, "confirmed", capability["status"].asString)
+            assertFalse(capability["writeReady"].asBoolean)
+            assertNotEquals(status.name, "confirmed", feature.positionFact()["status"].asString)
+        }
+    }
+
+    @Test fun cabinProjectionPreservesRawBoundsNullPositionsAndActualAreaIdentity() {
+        val feature = CabinObservation(CabinReadStatus.READABLE, "READ", mapOf(
+            "ROW_2_RIGHT" to CabinAreaObservation(listOf("ROW_2_RIGHT"), -10, 37,
+                rawPosition = null, status = CabinPositionStatus.MISSING),
+            "ROW_1_CENTER+ROW_2_CENTER" to CabinAreaObservation(
+                listOf("ROW_1_CENTER", "ROW_2_CENTER"), 5, 98, 27, CabinPositionStatus.OBSERVED)
+        ))
+        val areas = feature.capabilityFact().getAsJsonArray("areas")
+        assertEquals(listOf("ROW_2_RIGHT"), areas[0].asJsonObject.getAsJsonArray("identity").map { it.asString })
+        assertTrue(areas[0].asJsonObject["rawPosition"].isJsonNull)
+        assertEquals(-10, areas[0].asJsonObject["rawMin"].asInt)
+        assertEquals(37, areas[0].asJsonObject["rawMax"].asInt)
+        assertEquals(listOf("ROW_1_CENTER", "ROW_2_CENTER"),
+            areas[1].asJsonObject.getAsJsonArray("identity").map { it.asString })
+        assertEquals(27, areas[1].asJsonObject["rawPosition"].asInt)
+        assertEquals("SDK_RAW_POSITION", areas[1].asJsonObject["unit"].asString)
+        assertEquals("unknown", feature.positionFact()["status"].asString)
+    }
+
+    @Test fun cabinPositionFailureCannotProjectAsAnObservedPosition() {
+        val feature = CabinObservation(CabinReadStatus.READABLE, "READ", mapOf(
+            "ROW_1_LEFT" to CabinAreaObservation(listOf("ROW_1_LEFT"), 0, 31,
+                status = CabinPositionStatus.FAILED, error = "VehicleException: unavailable")
+        ))
+        assertEquals("failed", feature.positionFact()["status"].asString)
+        val area = feature.capabilityFact().getAsJsonArray("areas")[0].asJsonObject
+        assertEquals("VehicleException: unavailable", area["error"].asString)
+        assertTrue(area["rawPosition"].isJsonNull)
+    }
+
     private val hvac = VehicleSetting(VehicleFeature.HVAC_TEMPERATURE, "ROW_1_LEFT")
     private val light = VehicleSetting(VehicleFeature.AMBIENT_BRIGHTNESS, "ROW_1_LEFT")
     private class Port : VehicleSettingsPort {
