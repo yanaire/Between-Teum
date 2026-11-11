@@ -1,5 +1,11 @@
 # Active task 6 checkpoint
 
+TASK6 IS NOW COMPLETE. Root read currentDisposition20261110 in qa-verdict:
+confirmed/task6Complete=true, all current criteria mapped. Plan6[x] and
+todo6done. Historical needs-fix fields remain intentionally preserved.
+Final phase is active: see `active-final.md`. Do not rerun passed task6
+tests/timers or revive its old producers.
+
 User requested complete local PLEOS app implementation and repeatedly requested
 continuation. No commit, merge, push, branch switch or destructive worktree
 cleanup is authorized. Main DOCX and unrelated `.omo` files remain protected.
@@ -48,6 +54,151 @@ disposable overlay, without code/test/platform workaround. Only re-run
 separately unfinished lint if necessary; preserve settled build/unit results.
 Do not create a competing emulator owner. Cue gate and final verify remain
 pending behind this owner.
+
+Later root read of `task6-cue-lifecycle-fix.md` found native same-PID14178
+two-session Android playback proof and 80 unit tests/lint exit0. The second
+full cold-boot 28-case suite still failed, at the existing fractional timing
+case with a missing view. Root read the COMPLETE large fresh log through
+Bun because grep searched only its first4MiB. Raw lines60229 onward show
+test start00:06:27.072, Activity RESUMED00:06:27.118, then dequeueBuffer
+-110 every4 seconds from00:06:31.323 through00:08:47.712. EmptyActivity
+starts00:08:35.389; target PAUSED00:08:43.710, STOPPED00:08:47.714,
+DESTROYED00:08:47.725; missingview NPE00:08:47.756. Root sent this exact
+sequence to the same owner: another render/idle/lifecycle stall precedes
+the missing view, native buffer owner remains unproven; no null guard,
+wait/retry or weakened timing assertions.
+
+Owner remains running and is extending bounded safety-loss cue regression.
+Immediate cancellation of a sounding cue on finish/safety is not yet proven.
+Do not confuse same-PID playback proof with this remaining cancellation gate.
+First RPC watch mon_VHSVRN597J6AR1E9 timed out; replacement persistent RPC
+watch mon_BM37QHHPHQA05594 (rpc_3) watches st_01a1c476. The DAG also remains
+active. No competing emulator or reviewer was launched.
+
+## Latest recovery after final task6 rejection
+
+The DAG has now settled 14 completed, but both cue and final QA verdicts are
+needs-fix. This is NOT task6 completion. Root read the complete current
+criteria matrix. Beyond full-suite/cancellation/provenance gaps, the
+verifier explicitly omitted its assigned phase-boundary visual inspection
+and some XML/action cross-checks. These are assigned back to the same
+verifier, not accepted as impossible evidence.
+
+Three live tracks now:
+
+- `st_01a1c492`: sole device/build owner, deep-low native recovery. Must
+  choose a material discriminating renderer/Activity surface experiment
+  (public supported fullscreen versus embedded TaskView is a candidate,
+  not a proven cause), then current complete combined Gradle command exit0
+  and active-cue cancellation/lifecycle proof. Evidence/temporary harness
+  only, no product/test/config workaround. A longer diagnostic tone may be
+  injected into the real player only in explicitly labeled temporary QA,
+  so cancellation can be measured before natural tone expiry. No default
+  timer evidence may be replaced by that injection.
+- `st_01a1c476` revived evidence-only: recover ACTUAL captured pre-edit
+  controller from persistent kernel/backup, export only if it matches
+  `d94ef158f307317785e5cd67e6f6e8723f7f593ee9a375139e6dfd0dc92d0e43`,
+  then actual bounded diff. No device or build.
+- `st_01a1c48e` revived evidence-only: complete its own originally required
+  decode/visual inspection of every phase boundary/start/end/segment join
+  and actual lunch gates, P/D/restart records, recall/edit/delete artifacts.
+  Writes `task6-existing-evidence-audit.md`; no new timers/device/Gradle.
+
+All have completion notifications. Do not spawn another native owner.
+Amend the same task6 DAG's cue-gate/verify after these actual reports arrive;
+do not start final F1-F4 until confirmed. JS kernel has `finalAuditDag`
+prepared (four independent reviews plus fan-in); it is NOT started.
+`final-review-brief.md` is its durable contract.
+
+Boulder had unexpectedly been paused while work ran; root restored both
+status fields to active under the user's current continuation request.
+Latest ledger records this recovery. Main workspace now ALSO has copied
+product source: its controller hashes to final27c316..., so the old delivery
+inventory is stale. Preserve all main contents and inventory/hash again
+before delivery; do not overwrite assumed absent paths.
+
+Latest evidence recovery:
+
+- Root read `task6-existing-evidence-audit.md` and visually inspected all ten
+  contact sheets covering68 boundary/join frames. See
+  `task6-root-frame-review.md` for actual observations and provenance limits.
+- Existing-evidence verifier was corrected: the plan's subsequent selected
+  commute recall does not require literal next-calendar-morning waiting.
+  Actual selection/action evidence is still required; timestamp honesty stays.
+- Original cue owner could not find captured historical controller bytes in
+  kernel or backups. It was revived epoch2 to reverse its ACTUAL recorded
+  patch hunks in memory and export ONLY if the reconstructed bytes match the
+  exact historical SHA. This alternative is hash-verified reconstruction,
+  not an invented baseline. No product source writes are permitted.
+- Native recovery chose documented public portrait split as one material
+  experiment. Root inspected landscape.png/portrait.png/in-suite.png:
+  portrait applied initially but suite returned to wide landscape. Root
+  instructed the same owner not to call this a portrait-suite result.
+  Owner st_01a1c492 was revived after an erroneous setup-only final and
+  continues its existing resources. It owes actual recovery/cancellation
+  proof and cleanup, not a proposed next action.
+
+## Latest verified recovery and live follow-up
+
+Root independently hashed `task6-cue-controller-before.kt`: exact historical
+SHA d94ef158... verified. Root ran actual `diff -u` against current controller:
+exactly four hunks, parkingLost/finalizeRecord close/null replaced by stop,
+and two audio status text blocks. Timing/restoration/records regions do not
+change. Reconstruction provenance is explicit in
+`task6-cue-controller-before-diff.md`; this closes the missing old-byte gap.
+
+Root read complete `task6-native-recovery.md`. It establishes portrait
+selection reset by ConnectWindowUtil launch bounds before MainActivity and
+EmptyActivity; not a portrait-suite test. Combined command failed exit1 at
+deadline,19actual XML cases18pass/1ownerterminated,9notreached. Not28green.
+Actual long diagnostic tone in existing player proved AudioFlinger termination
+on real early finish, public D safety loss, and onStop; not physicalaudibility.
+All owned recovery resources were actually cleaned per detailed receipt.
+
+Native owner `st_01a1c492` revived epoch2 with a MATERIAL next experiment:
+inspect actual installed emulator help/features and primary docs for native
+asynchronous swap/buffer queue controls (AsyncSwap only if truly supported),
+then one supported discriminating startup condition, not identical retry.
+No product/test/platformpackage changes. Also use scoped own-app JDI
+Activity.finish() to observe actual onStop->close->onDestroy and fresh start.
+Do not require a player remain active after onStop just to test onDestroy.
+Current full28 combined pass is still mandatory.
+
+Independent cue gate `st_01a1c48b` revived evidence-only to verify exact
+old/new diff and raw cancellation data, writing
+`task6-cue-recovered-evidence-verification.md`. No device/build; sole native
+owner remains st_01a1c492.
+
+Persistent RPC watch rpc_3 for old producer was explicitly killed after it
+ceased to be relevant. Current recovery/gate task completion notifications
+are the live resumption channels. The original task6 DAG remains settled
+needs-fix; amend its gate/verify after concrete recovery results, never
+treat node counts as completion.
+
+## Current suite now genuinely passed; independent gate active
+
+Root read actual `task6-native-swap/experiment.md`, `gradle.log` and
+`gradle-exit.json`. Installed supported feature is GLAsyncSwap (not guessed
+AsyncSwap). The owner chose `-feature -GLAsyncSwap` with all other normal
+visible hostGPU coldboot/read-only conditions unchanged, after inspecting
+installed advancedFeatures.ini and primary docs. Literal full combined
+Gradle command printed BUILD SUCCESSFUL in34s, exit0, no deadline.
+Root separately parsed actual connected XML:28unique testcase nodes,
+zero failures/errors/skips. Do NOT rerun this settled passing check.
+One clean supported configuration does not establish universal platform fix.
+
+Owner also captured actual Activity.finish lifecycle order and Android
+track termination/fresh launch; raw `finish-probe.log` and related audio/
+Activity files are ready. It is finishing cleanup/report; requested exact
+finalreport `task6-native-swap.md` and
+`task6-native-swap/cleanup-receipt.md`. No further experiments are requested.
+
+Cue gate `st_01a1c48b` revived epoch2 to verify actual featureoverride,
+all28testnames/source/currenthashes, lifecycle/cancellationrawproof and
+finalcleanup, then update task6-cue-verdict.json. No device or Gradle.
+After confirmed cuegate, amend final verify in ORIGINAL task6 DAG to consume
+existing-evidence-audit, exactsourcecomparison, new swap/lifecycle report.
+Only after qa-verdict confirmed marktask6done and start prepared finalAuditDag.
 
 Delivery preparation is recorded in `delivery-preflight.md` next to this
 checkpoint, including protected DOCX/README hashes and main path inventory.

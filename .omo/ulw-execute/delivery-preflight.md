@@ -1,5 +1,44 @@
 # Local delivery preflight
 
+## Later authoritative inventory
+
+Root re-inventoried main after cue gate confirmation, while task6 final
+reconciliation was running. The main workspace now contains the app source,
+Gradle wrapper/configuration, SDK skill, AGENTS.md and reports. A direct
+comparison against `task6-native-swap/source-after.json` found50 of51
+protected files identical. The sole difference is
+`app/src/androidTest/java/dev/pleos/starter/teum/ui/TeumUiTest.kt`:
+main `bfb505f2c419860862112e045401c9b25b46c45ecb56219a63fe2702b84109a0`,
+reviewed worktree
+`9d746596e105246703a5ac550cc198ef8cf26de112cc5ad4d2e611d1362648e1`.
+The main test is the earlier cue-regression version. Before delivery, inspect
+the actual test diff and preserve any newer concurrent changes; sync only
+the verified in-scope increment. Do not blanket-copy the whole worktree.
+
+Root subsequently ran `diff -u` on those actual two test files. The complete
+diff contains four vehicle-observation imports and extends only
+`cueRemainsAvailableForSecondSessionAfterRecording`: inject safety loss,
+assert terminal state/no replay on safe return, save safety-interrupted record,
+explicitly start again and assert a live nonclosed player. No prior assertion
+is removed or changed. This is the verified current regression increment;
+main has no additional difference in this file at the observed hashes.
+Recheck for intervening user changes before applying only that increment.
+
+Main `gradlew` mode is100755. Main debug APK at
+`app/build/outputs/apk/debug/app-debug.apk` is absent; an explicit reviewed
+APK deliverable is still owed.
+
+The protected DOCX still hashes exactly to53a7cb... below. README.md changed
+outside this root's edits and now describes the app, screenshot, development
+setup and separately unimplemented music/Gleo features. Its current hash is
+`8aa26b2328a6c0bcbb46cd5d127811fcd8ab8898a350e497cbe3c79d28bcedf0`.
+Root read it. Preserve it; do not restore its original hash or overwrite it.
+Use TEUM_README.md for this task's verified delivery/test instructions,
+including actual supported GLAsyncSwap-off QA environment and capability
+limits. Existing source and README changes do not authorize adding music.
+
+The original inventory below is historical and is superseded by this one.
+
 Root observed these paths while task6 cue repair was still running.
 This is delivery preparation, not a task6 or final-review pass.
 

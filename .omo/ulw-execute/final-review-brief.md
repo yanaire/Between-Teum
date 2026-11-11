@@ -1,5 +1,48 @@
 # Final audit dispatch contract
 
+## Current review inputs after corrective task7
+
+The current feature APK is
+`bf975dfac77481a3851d19431c338252f7ead0d405908e89198b387ac1d8b252`.
+The correct current full-suite report is `final-permission-fixture.md`,
+with immutable raw evidence in `final-permission-fixture-v2/` (a documented
+copy of the single completed green `final-permission-fixture-retry/` run).
+Literal command used --rerun-tasks --no-build-cache, exit0,147tasks executed:
+80units and28connected (21feature app plus7isolated permission fixture),
+all zero failures/errors/skips. Both lint reports completed, each0errors
+and5warnings. Root inspected actual command/log/exit/XML/source/cleanup.
+Earlier final-fresh and fixture-v1 failures remain historical, not passes.
+
+Task7 adds exactly CONTROL_CAR_CLIMATE and CONTROL_CAR_LIGHTS permission
+declarations in the feature manifest. Its actual emulator install grants
+them; a declaration is not a universal grant or physical-control proof.
+Two whole test classes moved byte-for-byte to the separate permissionProbe
+application, which requests the original read permissions but no controls.
+Fixture sourceSets compiles the actual existing production vehicle directory,
+not a copied implementation. Inspect new module/settings wiring and BOTH
+relocations in addition to the complete original product/test diff.
+
+The latest `f3-qa.md` is APPROVE and includes same-main-PID positive counter
+calibration after the restart zero window. F3 raw sources are first-attempt
+`f3-native/`, r2's46images/contact sheets in `f3-native-r2/`, and focused
+P/D/P plus calibrated restart in `f3-native-followup/`. Root independently
+read all report content and decisive raw logs, compared actual record bytes,
+viewed46r2frames via4sheets and the3original final D/P/recovery images.
+Synthetic positive audit events are explicitly recorder self-test, NOT native
+SDK setter/physical control; the zero observations precede these events.
+All owned F3 overlays/forwards/debugger/browser resources have actual cleanup.
+F3 checkbox is complete; do not rerun any native or full build checks.
+
+F1 must reconcile task7 against those actual artifacts and finish EVERY
+assigned product/test hunk, including the full controller and new fixture.
+Earlier unattempted inspection is incomplete review, not a product defect.
+F2 must explicitly cover the requested programming/test-overfit/slop review
+perspective and trace actual code, rather than claim a missing skill alone
+as a product failure. F4 maps actual supported/fallback paths and wording.
+Each reviewer writes only its report and retains earlier REJECT history.
+Current task7 checkbox awaits its F1 reconciliation; the pending checkbox
+does not mean its source correction or fresh/native proof is absent.
+
 Start only after task6 `qa-verdict.json` is independently confirmed and the
 root has read its load-bearing artifacts. This file is preparation, not
 approval or evidence of completed audits.

@@ -1,28 +1,342 @@
 {
   "schema_version": 2,
-  "active_work_id": "teum-app",
+  "active_work_id": "teum-context-music",
   "works": {
+    "teum-context-music": {
+      "work_id": "teum-context-music",
+      "active_plan": ".omo/plans/teum-context-music.md",
+      "plan_name": "teum-context-music",
+      "session_ids": [
+        "senpi:01a1c46f-9951-7000-9543-8c9e58832d2a"
+      ],
+      "status": "blocked",
+      "blocked_reason": "Owner confirmed credentials not prepared; Jev key/eligibility and Apple SDK/account/contract/category gates unmet. Feature unimplemented; evidence-only final audits and owned cleanup finished.",
+      "accepted_tasks": [
+        "1"
+      ],
+      "unmet_tasks": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "F1",
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "final_evidence": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a/.omo/evidence/teum-context-music/music-exec-01a1c46f/final-disposition/final-matrix.json",
+      "delivery_mode": "direct-feature-worktree",
+      "phase": "final-disposition",
+      "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a",
+      "planned_worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a",
+      "branch": "feature/teum-context-music",
+      "run_id": "dag_4fb89fc6-98f5-412b-a0eb-88b6d31b2e78",
+      "task_sessions": {
+        "1": {
+          "task_id": "st_01a1c574",
+          "status": "completed",
+          "verification": "confirmed",
+          "verifier_task_id": "st_01a1c57d",
+          "verification_artifact": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a/.omo/evidence/teum-context-music/music-exec-01a1c46f/01-independent-verdict-final.json",
+          "attempt": 1,
+          "checkpoint_opened_at": "2026-11-10T12:33:42.927Z",
+          "category": "deep-low"
+        },
+        "2": {
+          "run_id": "dag_3f2af609-1b2f-4a3a-9577-cdc79cb5f0b7",
+          "node_id": "jev",
+          "status": "unmet",
+          "verification": "needs-human-review",
+          "attempt": 1,
+          "checkpoint_opened_at": "2026-11-10T13:00:44.268Z"
+        },
+        "3": {
+          "run_id": "dag_3f2af609-1b2f-4a3a-9577-cdc79cb5f0b7",
+          "node_id": "apple",
+          "status": "unmet",
+          "verification": "needs-human-review",
+          "attempt": 1,
+          "checkpoint_opened_at": "2026-11-10T13:00:44.268Z"
+        },
+        "4": {
+          "run_id": "dag_3f2af609-1b2f-4a3a-9577-cdc79cb5f0b7",
+          "node_id": "regression",
+          "status": "unmet",
+          "verification": "needs-human-review",
+          "attempt": 1,
+          "checkpoint_opened_at": "2026-11-10T13:00:44.268Z"
+        }
+      },
+      "session_origins": {},
+      "stale_since": "2026-11-10T12:33:57.686Z"
+    },
     "teum-app": {
       "work_id": "teum-app",
       "active_plan": ".omo/plans/teum-pleos-app.md",
       "plan_name": "teum-pleos-app",
+      "session_ids": [],
+      "previous_session_ids": [
+        "senpi:01a19c55-7b9a-7000-9e55-c15d35558015"
+      ],
+      "status": "cancelled",
+      "superseded_by": "teum-design-port",
+      "cancellation_reason": "User cancelled the previous goal and replaced it with original-design Android porting. Unfinished checks remain historical, not passed.",
+      "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-app",
+      "session_origins": {},
+      "stale_since": "2026-11-10T08:28:33.652Z",
+      "task_sessions": {}
+    },
+    "teum-design-port": {
+      "work_id": "teum-design-port",
+      "active_plan": ".omo/plans/teum-design-port.md",
+      "plan_name": "teum-design-port",
       "session_ids": [
         "senpi:01a19c55-7b9a-7000-9e55-c15d35558015"
       ],
       "status": "paused",
       "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-app",
+      "delivery_mode": "local; user2026-11-11 authorizes verified6a snapshot commit/push to yanaire/pleos-connect-starter main, no force/history rewrite/merge/PR",
       "session_origins": {},
-      "stale_since": "2026-11-10T07:51:25.822Z",
-      "task_sessions": {}
+      "phase": "original-interaction-repair-and-arrival-admission-review",
+      "checkpoint_stop": {
+        "requested_at": "2026-11-11",
+        "after_tasks": ["6a", "6b", "6c"],
+        "deliver": "Verified interaction-restoration APK plus same-version commit/push to yanaire/pleos-connect-starter main",
+        "then": "Pause remaining feature work and full-plan continuation as explicitly requested; preserve unchecked rows and do not claim whole goal complete"
+      },
+      "owned_native_monitor": null,
+      "last_native_verification": "Real twenty-minute nap, wake prompt, saved record and existing data preservation verified; physical restoration unverified; mon_21SCXJ31AN4TAFHT exited 0.",
+      "task_sessions": {
+        "6a-original-back-contract": {
+          "task_id": "st_01a1c735",
+          "status": "source-diagnosis-reviewed",
+          "verification": "Parent read complete17case report, table, contract and11source excerpts. Missing reverse transitions, destructive retry/header conflation, active SelectDay rejection/tick overwrite and lost F3 round cause established. Proposal only; runtime unverified.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-original-back-native": {
+          "task_id": "st_01a1c735",
+          "status": "native-contract-reviewed-frontend-pending",
+          "verification": "Parent read all818diff lines/report/frontend contract,41serialized facts, raw green/restored success/red+mutant failures and25XML218pass. IDs/facts/elapsed/progress, reverse/review timers/persistence and strict correlation covered. No assets or actual Android execution; visible Back and full entry choices remain open.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-entry-reconfiguration": {
+          "task_id": "st_01a1c735",
+          "status": "native-contract-reviewed-frontend-pending",
+          "verification": "Parent reviewed changed production hunks,40facts, initial25rawXML234pass and red/mutant/restored logs; reviewed correction diff/runtime ordering and compile+2targeted tests+lint0errors4existing warnings exit0. Snapshot commit/update now precedes origin resolution, failed save retains binding. Owned build roots cleaned; no assets/Android execution.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-original-header-previous": {
+          "task_id": "st_01a1c759",
+          "status": "browser-unit-reviewed-native-pending",
+          "verification": "Parent reviewed all binding diff/304line request fixture,330raw passes,18header bands+2closeups,actual PNG decoder/80exact chevron masks and8stable23/23pixel captures. Apparent missing arrow not reproduced in encoded pixels; no product/capture bug or extra product edit.0owned resources; native/joint proof pending.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T6-native-speech-comparison": {
+          "task_id": "st_01a1c73b",
+          "status": "feature-T6-accepted-joint-pending",
+          "feature_acceptance": "T6 checkbox accepted2026-11-11 using actual two-round output plus reviewed RMS display fix and current accepted unit boundaries. Latest joint/native regression remains in final gate.",
+          "verification": "Parent reviewed raw two rounds/AudioFlinger/SDK/cleanup and7nativePNG. Actual5190ms/4845ms, normalized RMS, tokens5/5 fillers0/0, first fields preserved, original F3 comparison pass; no music playback. RMS number clipping confirmed, second viewport unverified. All owned resources cleaned; pre-T9 only.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T6-metric-display": {
+          "task_id": "st_01a1c759",
+          "status": "browser-unit-reviewed-native-pending",
+          "verification": "Parent reviewed one-expression diff/full executed fixture/raw exit/results/cleanup and20PNG. Baseline4clip failures then16cases pass at840/1700 light/dark for measured,0,1,null; raw measurement unchanged, hero/seat preserved. No new native or joint APK proof.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T4-T8-native-voice-persistence": {
+          "task_id": "st_01a1c73b",
+          "status": "feature-T8-accepted-T4-partial-joint-pending",
+          "feature_acceptance": "T8 checkbox accepted2026-11-11 using actual evening save/cold reload/next-day OS-fixture native consumption plus reviewed paired retention/repository boundaries and user day+2 selection. T4 and joint gate remain open.",
+          "verification": "Recovered completed artifact despite collector error; parent read report/receipt/raw persistence+SDK/clock/cleanup and all31PNG. Evening color/story and morning intention/FOCUS saved/requeried/cold-restarted with identical record hashes; OS next-day real7s transition consumed canonical text, stayed removed after restart. Dedicated evening transcript review absent, no AI summary/new viewport/joint claim. Clock/owned5572/auth/forwards/temp cleaned.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6-observation": {
+          "task_id": "st_01a1c733",
+          "status": "completed",
+          "verification": "Parent reviewed all five edited paths, 192 passing unit tests, compile/lint exit 0 and cleanup evidence; native observation integration unverified.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6-unit-contract": {
+          "task_id": "st_01a1c734",
+          "status": "completed",
+          "verification": "research reviewed; physical controls remain unmet",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T10-live-date": {
+          "task_id": "st_01a1c735",
+          "status": "native-unit-reviewed-with-limitations",
+          "verification": "Recovered completed evidence after child error. Parent read receipts/raw six native checks/cleanup and six final native PNGs; APK hash verified. Date/week refresh and readonly observation passed on pre-T9 APK; records-header fidelity, graceful disposal and denied transitions remain unverified.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T6-synthetic-microphone-contract": {
+          "task_id": "st_01a1c73b",
+          "status": "native-microphone-unit-reviewed",
+          "verification": "Parent reviewed runtime report, receipt, six native PNGs, AudioFlinger and ON_DEVICE logs plus cleanup. Two distinct F1 recordings and retry passed AudioRecord-to-visible-transcript using authenticated synthetic injectAudio on fresh emulator-5572. F3 metrics/comparison and intention save remain unverified. Owned AVD, keys, processes, forwards and temporary assets removed; original5570 untouched.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T2-location-provider-contract": {
+          "task_id": "st_01a1c734",
+          "status": "completed-static-backend-reviewed",
+          "verification": "Parent read report, receipt and focused raw DEX methods: Android LocationManager provider order, Location.getTime timestamp and non-null memory cache priority established for shipped artifact. Active runtime cause and T2 success remain unverified.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T9-arrival-integration-contract": {
+          "task_id": "st_01a1c733",
+          "status": "motion-browser-unit-reviewed-native-pending",
+          "verification": "Parent reviewed narrow corrected diff/full fixture/baseline and final JSON/raw exits/cleanup and12entry PNGs. Both widths normal/reduced admit with0finite animations, infinite artwork excluded, ownership invalidation and prior invitation/modal/input cases pass.199Kotlin not rerun; synthetic event fixtures not real native focus proof.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-graphic-rubber-drag": {
+          "task_id": "st_01a1c733",
+          "status": "browser-unit-reviewed-native-pending",
+          "verification": "Parent read all160source lines, raw100case totals/trusted pointer/model assertions/cleanup,2contact sheets+6rawPNG. Normal lifecycle31cases before deadline+1actual probe; no full command exit0 claimed. Gesture/snap blocks admission and preserves state/drafts/bridge, unsafe/DOM/blur cleanup. Existing source weekly-color transition finding retained;0owned resources.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-previous-transition-receipt": {
+          "task_id": "st_01a1c735",
+          "status": "native-implementation-running",
+          "verification": "Parent reviewed112line seven-field contract and all long commit/catch/reload/nonce sections.735epoch8 authorized only Controller/Host/Protocol/ProtocolTest production receipt boundary, full native suite+lint once, no assets/device/buildAPK.234baseline settled; actual boundary/runtime proof pending.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-original-entry-frontend": {
+          "task_id": "st_01a1c733",
+          "status": "review-harness-schema-correction",
+          "verification": "Parent reviewed118line app diff and all779original fixture lines,3sheets+6rawPNG. Returned283rows NOT accepted: native fact adapter drops flat first/second speech/story and misplaced mood/atmosphere;733repairing evidence only. Entry source stable. Reverse still unimplemented;735traces native ephemeral committed-PREVIOUS receipt, no user decision required.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6b-publication-preflight": {
+          "task_id": "st_01a1c759",
+          "status": "preflight-reviewed-checkpoint-gated",
+          "verification": "Explicit private targetmain eabb788 confirmed, origin wrong, related diverged histories.142candidate files/protected paths inventoried. Parent calculated both moved permissionProbe test Git blobs equal target oldapp paths; migration disposition recorded.0resources, no staging/integration/push. Refresh source/target and verify APK after6a.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-checkpoint-native": {
+          "task_id": "st_01a1c73b",
+          "status": "environment-ready-waiting-source-gate",
+          "verification": "Parent read environment-ready: task incomplete3/17, private5572 user10 unlocked, privateADB5039 onlyownserial, hostmicOFF/JWTbound; no snapshot/build/install. Source gate mon_GNT20JMWS90Q0FPP waits fresh source-ready.json nonce checkpoint-6a-20261111-a. Ownedresources retained through sole native lane; release only after receipt/consumer acceptance.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "7-final-native-automated": {
+          "task_id": "st_01a1c73b",
+          "status": "baseline-reviewed-future-receipt-excluded",
+          "verification": "Parent parsed25rawXML234tests0failure/error/skip and actual executed Gradle tasks exit0, independently hashed121current inputs with0mismatch, read cleanup.28app instrumentation cases compiled not run. Native baseline before future PREVIOUS receipt only; no device/APK or latest joint claim.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "7-regression-host": {
+          "task_id": "st_01a1c759",
+          "status": "compile-and-preservation-reviewed-runtime-pending",
+          "verification": "Actual evidence recovered under root project .omo/evidence/teum-design-port/regression-host. Parent read full report/receipt/diff, raw compile exit 0, merged declaration and preservation comparisons: all 28 cases retained. Native runtime remains unverified.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "7-full-native-matrix": {
+          "task_id": "st_01a1c759",
+          "status": "inventory-reviewed",
+          "verification": "All 57 screens, seven overlays and six extra boundaries inventoried with four cases each; full current native fidelity unverified. Parent reviewed report/coverage and identified missing original interactions for task6a.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "8-delivery-feature-status": {
+          "task_id": "st_01a1c734",
+          "status": "as-of-doc-delta-reviewed-checkpoint-pending",
+          "verification": "Parent reviewed initial13changed row fields, nativeR01-vs-F1/F2 correction, accepted234baseline scope and current5physical-unit scope changes.35IDs149facets retained; four output hashes match;0resources. Angle/cm mapping excluded byuser, broader control/safety not complete. Historical as-of draft accepted; checkpoint APK/publish and latest receipt/consumer remain pending.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "T8-reflection-retention-contract": {
+          "task_id": "st_01a1c734",
+          "status": "user-policy-resolved-documents-reviewed",
+          "verification": "User selected next-day-end midnight, matching existing local day+2 expiry. Parent reviewed appended current-session decision and matching report/features hashes. Consumed text immediate logical removal, next maintenance for inactive app, no24h SLA or exact-midnight alarm. Native voice-persistence still pending.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-home-hero": {
+          "task_id": "st_01a1c759",
+          "status": "browser-unit-reviewed-native-pending",
+          "verification": "Parent read full helper/original/diff/fixture/raw logs/results/cleanup and all20PNG. Baseline25fail; after25pass plus historical metadata replay1pass, exit0. Current/next/all-resolved selection and daily actual total restored; only helper111 changed. Native joint APK and remaining6a Back/drag unverified.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        },
+        "6a-seat-preference-drag": {
+          "task_id": "st_01a1c759",
+          "status": "browser-unit-reviewed-native-pending",
+          "verification": "Parent reviewed full diff/executed fixture/report/results/raw exit0/cleanup and12PNG. Baseline2fail then13scenarios pass: original geometry, scaled clamps, rest/nap drafts/ticks/save intents, real touchcancel/capture loss/removal guards. Only screens.js90-123 changed; no physical actuation or native persistence proof.",
+          "category": "deep-low",
+          "model": "chatgpt-subscription/gpt-6.1-sol"
+        }
+      },
+      "stale_since": "2026-11-10T22:22:56.458Z"
     }
   },
   "session_ids": [
-    "senpi:01a19c55-7b9a-7000-9e55-c15d35558015"
+    "senpi:01a1c46f-9951-7000-9543-8c9e58832d2a"
   ],
   "session_origins": {},
-  "task_sessions": {},
-  "active_plan": ".omo/plans/teum-pleos-app.md",
-  "plan_name": "teum-pleos-app",
-  "status": "paused",
-  "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-app"
+  "task_sessions": {
+    "1": {
+      "task_id": "st_01a1c574",
+      "status": "completed",
+      "verification": "confirmed",
+      "verifier_task_id": "st_01a1c57d",
+      "verification_artifact": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a/.omo/evidence/teum-context-music/music-exec-01a1c46f/01-independent-verdict-final.json",
+      "attempt": 1,
+      "checkpoint_opened_at": "2026-11-10T12:33:42.927Z",
+      "category": "deep-low"
+    },
+    "2": {
+      "run_id": "dag_3f2af609-1b2f-4a3a-9577-cdc79cb5f0b7",
+      "node_id": "jev",
+      "status": "unmet",
+      "verification": "needs-human-review",
+      "attempt": 1,
+      "checkpoint_opened_at": "2026-11-10T13:00:44.268Z"
+    },
+    "3": {
+      "run_id": "dag_3f2af609-1b2f-4a3a-9577-cdc79cb5f0b7",
+      "node_id": "apple",
+      "status": "unmet",
+      "verification": "needs-human-review",
+      "attempt": 1,
+      "checkpoint_opened_at": "2026-11-10T13:00:44.268Z"
+    },
+    "4": {
+      "run_id": "dag_3f2af609-1b2f-4a3a-9577-cdc79cb5f0b7",
+      "node_id": "regression",
+      "status": "unmet",
+      "verification": "needs-human-review",
+      "attempt": 1,
+      "checkpoint_opened_at": "2026-11-10T13:00:44.268Z"
+    }
+  },
+  "active_plan": ".omo/plans/teum-context-music.md",
+  "plan_name": "teum-context-music",
+  "status": "blocked",
+  "worktree_path": "/Users/yanaire/OmO Projects/project-wt/teum-context-music-a"
 }

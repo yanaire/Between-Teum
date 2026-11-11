@@ -1,5 +1,9 @@
 # teum-pleos-app - Work Plan
 
+> CANCELLED by the user on 2026-11-10. Superseded by
+> `.omo/plans/teum-design-port.md`. Preserve historical evidence and unchecked
+> items; do not resume this plan or interpret cancellation as passing its gates.
+
 ## TL;DR (For humans)
 <!-- Fill this LAST, after the detailed plan below is written, so it summarizes the REAL plan. -->
 <!-- Plain English for a non-engineer: NO file paths, NO todo numbers, NO wave/agent/tool names. -->
@@ -133,7 +137,7 @@ Your next move: 계획 검토 후 별도 실행 요청. 이 문서는 구현 시
   Evidence: .omo/evidence/teum/ui-actions.jsonl 및 각 화면 스크린샷.
   Commit: Y, 별도 허용 시; feat(ui): integrate parked micro-moment journeys.
 
-- [ ] 6. 실제 에뮬레이터에서 전체 시나리오와 회귀 검증
+- [x] 6. 실제 에뮬레이터에서 전체 시나리오와 회귀 검증
   Recommended task executor category: unspecified-high
   What to do / Must NOT do: 제품 코드 수정 없이 먼저 검증. 발견한 결함은 소유 단계로 반환하고 재검증. 런타임 cache/port/context/PID는 시작 시 등록하고 종료 receipt 남김. 에뮬레이터를 이미 사용자가 켰다면 임의 종료하지 않음.
   Closes: GAP-1, GAP-2, GAP-3
@@ -145,6 +149,11 @@ Your next move: 계획 검토 후 별도 실행 요청. 이 문서는 구현 시
   Restart QA: P에서 세션 시작 후 `adb -s SERIAL shell am force-stop dev.pleos.starter`; `adb -s SERIAL shell am start -W -n dev.pleos.starter/.MainActivity`; SDK 재연결 완료 후 fresh confirmation 전에 vehicle-actions.jsonl의 신규 설정·복원 명령 수0, 완료 기록 새로 생성0, interrupted/recovery 안내 표시가 PASS. 중단·재연결·동의 전후 구간과 실제 명령을 scenario-results.json에 기록. 자동 테스트에서는 pending command가 있는 상태의 프로세스 재생성도 검증. 주입 테스트와 실제 프로세스 종료 증거를 구분.
   Commit: Y, 별도 허용 시; test(qa): capture scenario and safety verification.
 
+- [ ] 7. 최종 심사에서 발견한 공조·조명 제어 권한 선언 누락 보완
+  Closes: GAP-2 / IS-2. Existing PleosSettingsPort requires CONTROL_CAR_CLIMATE and CONTROL_CAR_LIGHTS, but the manifest omitted both. Declare exactly those two permissions; retain all runtime permission, capability, consent, parking, readback and disabled-seat checks.
+  Acceptance: fresh assembly/lint/unit/full connected command exit0, actual packaged and installed requested-permission inspection, native fallback or genuinely granted supported behavior captured by F3, and independent F1 reconciliation. A declaration is not a grant or physical-control proof. No permission bypass or physical vehicle manipulation.
+  Evidence: .omo/evidence/teum/final-permission-source-ready.json, final-fresh-execution.md, f3-qa.md and f1-compliance.md.
+
 ## Final verification wave
 > Runs in parallel after ALL todos. ALL must APPROVE. Surface results and wait for the user's explicit okay before declaring complete.
 - [ ] F1. Plan compliance audit
@@ -153,7 +162,7 @@ Your next move: 계획 검토 후 별도 실행 요청. 이 문서는 구현 시
 - [ ] F2. Code quality review
   Recommended task executor category: unspecified-high
   Inspect lifecycle release, pending command invalidation, local data isolation and diagnostics. Read final-build.log and test reports; every invoked task must execute rather than NO-SOURCE for intended tests. PASS when no criterion-affecting defect remains. Evidence: .omo/evidence/teum/f2-quality.md.
-- [ ] F3. Real manual QA
+- [x] F3. Real manual QA
   Recommended task executor category: unspecified-high
   Independently read video/action log timestamps and execute the failure cases from qa-invocations.md on the same emulator build. PASS only with screenshots, command output and cleanup receipt. Evidence: .omo/evidence/teum/f3-qa.md.
 - [ ] F4. Ideal-state fidelity
