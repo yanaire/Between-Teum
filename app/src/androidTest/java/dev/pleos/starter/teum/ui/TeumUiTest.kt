@@ -10,12 +10,15 @@ import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import dev.pleos.starter.MainActivity
 import dev.pleos.starter.R
 import dev.pleos.starter.teum.records.ActivityOutcome
 import dev.pleos.starter.teum.records.RecordsRepository
 import dev.pleos.starter.teum.records.SharedPreferencesRecordStore
 import dev.pleos.starter.teum.records.newActivityRecord
+import dev.pleos.starter.teum.vehicle.Parking
+import dev.pleos.starter.teum.vehicle.ParkingObservation
+import dev.pleos.starter.teum.vehicle.UxObservation
+import dev.pleos.starter.teum.vehicle.VehicleSafety
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -28,10 +31,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
+// allow: SIZE_OK - Keep the seven existing UI intents in their established suite during extraction.
 class TeumUiTest {
     private val context: Context
         get() = InstrumentationRegistry.getInstrumentation().targetContext
-    private lateinit var scenario: ActivityScenario<MainActivity>
+    private lateinit var scenario: ActivityScenario<NativeRegressionActivity>
 
     @Before
     fun clearState() {
@@ -51,7 +55,7 @@ class TeumUiTest {
     }
 
     private fun launch() {
-        scenario = ActivityScenario.launch(MainActivity::class.java)
+        scenario = ActivityScenario.launch(NativeRegressionActivity::class.java)
         waitForTag("situation_lunch-break", 20_000)
     }
 
@@ -133,6 +137,11 @@ class TeumUiTest {
     @Test
     fun cueRemainsAvailableForSecondSessionAfterRecording() {
         launch()
+        lateinit var fixture: NativeCoordinatorFixture
+        scenario.onActivity { activity ->
+            fixture = NativeCoordinatorFixture(activity)
+            fixture.controller.onStart()
+        }
         openLunchSetup()
         waitEnabled("start_button")
         click("start_button")
@@ -153,21 +162,48 @@ class TeumUiTest {
         click("start_button")
         waitForTag("finish_now_button")
         scenario.onActivity { activity ->
-            val ui = activity.javaClass.getDeclaredField("ui").apply { isAccessible = true }.get(activity)
+            val ui = fixture.controller
             val cue = ui.javaClass.getDeclaredField("cue").apply { isAccessible = true }.get(ui)
             assertNotNull("second session must have a live cue player", cue)
             val closed = cue!!.javaClass.getDeclaredField("closed").apply { isAccessible = true }
             assertFalse("second session cue player must not be closed", closed.getBoolean(cue))
-            val session = ui.javaClass.getDeclaredField("active").apply { isAccessible = true }.get(ui)!!
-            val segments = (session.javaClass.getDeclaredField("segments").apply { isAccessible = true }
-                .get(session) as List<*>).filterIsInstance<Segment>()
+            val session = requireNotNull(fixture.state.active)
+            val segments = session.segments
             val wake = segments.indexOfFirst { it.stepId == "wake" || it.stepId == "wrap" }
             assertTrue(wake >= 0)
-            session.javaClass.getDeclaredField("elapsedSeconds").apply { isAccessible = true }
-                .setLong(session, (segmentEnd(segments, wake) - 60).toLong())
-            ui.javaClass.getDeclaredMethod("lunchCueTick", session.javaClass).apply { isAccessible = true }
-                .invoke(ui, session)
-            assertEquals(1, ui.javaClass.getDeclaredField("cueCount").apply { isAccessible = true }.getInt(ui))
+            val now = fixture.clock.reading()
+            val elapsed = (segmentEnd(segments, wake) - 60) * 1000L
+            val wakeTime = dev.pleos.starter.teum.session.ClockReading(
+                now.wallMillis + elapsed - 1, now.elapsedMillis + elapsed)
+            fixture.tick(wakeTime)
+            fixture.tick(wakeTime)
+            assertEquals(1, fixture.state.cueCount)
+            fixture.owner.onSafety(VehicleSafety())
+            val interrupted = requireNotNull(fixture.state.active)
+            assertTrue(interrupted.finished)
+            fixture.clock.fixed = null
+            fixture.freshSafety()
+            assertEquals(interrupted, fixture.state.active)
+            assertEquals(1, fixture.state.cueCount)
+            assertNotNull(activity.findViewById<ViewGroup>(R.id.teum_root)
+                .findViewWithTag<View>("restricted_record_button"))
+        }
+        click("restricted_record_button")
+        waitForTag("record_save_button")
+        click("record_save_button")
+        waitForTag("situation_lunch-break")
+        assertEquals(1, SharedPreferencesRecordStore(context).loadAll()
+            .count { it.outcome == ActivityOutcome.SAFETY_INTERRUPTED })
+        openLunchSetup()
+        waitEnabled("start_button")
+        click("start_button")
+        waitForTag("finish_now_button")
+        scenario.onActivity { activity ->
+            val ui = fixture.controller
+            val cue = ui.javaClass.getDeclaredField("cue").apply { isAccessible = true }.get(ui)
+            assertNotNull("new session after safety interruption must have a cue player", cue)
+            assertFalse(cue!!.javaClass.getDeclaredField("closed").apply { isAccessible = true }
+                .getBoolean(cue))
         }
     }
 
@@ -262,7 +298,7 @@ class TeumUiTest {
                 awakeAcknowledged = false
             )
         )
-        scenario = ActivityScenario.launch(MainActivity::class.java)
+        scenario = ActivityScenario.launch(NativeRegressionActivity::class.java)
         waitForTag("recovery_record_button")
         assertTrue(containsText("이전 활동이 중단되었습니다"))
         assertTrue(containsText("다시 보내지 않으며"))

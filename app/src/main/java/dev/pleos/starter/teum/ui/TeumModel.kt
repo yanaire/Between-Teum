@@ -1,5 +1,7 @@
 package dev.pleos.starter.teum.ui
 
+// allow: SIZE_OK - Existing metadata and version-1 marker codec stay together for storage compatibility.
+
 import android.content.Context
 import dev.pleos.starter.R
 import dev.pleos.starter.teum.content.SituationIds
@@ -268,16 +270,16 @@ object SessionSnapshotCodec {
     }
 }
 
-class SessionSnapshotStore(context: Context) {
+class SessionSnapshotStore(context: Context) : SessionMarkers {
     private val prefs = context.getSharedPreferences("teum_session_v1", Context.MODE_PRIVATE)
 
-    fun load(): SessionSnapshot? = SessionSnapshotCodec.decode(prefs.getString(KEY, null))
+    override fun load(): SessionSnapshot? = SessionSnapshotCodec.decode(prefs.getString(KEY, null))
 
-    fun save(snapshot: SessionSnapshot) {
+    override fun save(snapshot: SessionSnapshot) {
         prefs.edit().putString(KEY, SessionSnapshotCodec.encode(snapshot)).apply()
     }
 
-    fun clear() {
+    override fun clear() {
         prefs.edit().remove(KEY).apply()
     }
 
@@ -316,7 +318,7 @@ fun draftOutcome(draft: RecordDraft): String = when {
 }
 
 data class RecordEditable(
-    var note: String = "",
-    var nextAction: String = "",
-    var recall: Boolean = false
+    val note: String = "",
+    val nextAction: String = "",
+    val recall: Boolean = false
 )

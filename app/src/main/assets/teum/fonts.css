@@ -1,0 +1,36 @@
+/* Original prototype font families, hosted locally for offline use. */
+@font-face {
+  font-family: 'Asta Sans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('fonts/AstaSans.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('fonts/Manrope.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Doto';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/Doto.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Gowun Batang';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/GowunBatang.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'MaruBuri';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/MaruBuri.woff2') format('woff2');
+}

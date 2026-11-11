@@ -1,5 +1,8 @@
 package dev.pleos.starter.teum.records
 
+import java.time.Instant
+import java.time.ZoneId
+
 class RecordsRepository(
     private val store: RecordStore,
     private val nowEpochMs: () -> Long = System::currentTimeMillis
@@ -75,4 +78,57 @@ class RecordsRepository(
             .sortedByDescending { it.createdAtEpochMs }
             .firstOrNull()
     }
+
+    /** Explicit lifecycle maintenance; never silently run as a read side effect. */
+    fun maintainHistory(zone: ZoneId, deleteEveningStoryAfterNextMorning: Boolean): HistoryMaintenance {
+        val now = nowEpochMs()
+        val current = store.loadAll()
+        val result = RecordRetention.apply(current, now, HistoryPolicy(zone, deleteEveningStoryAfterNextMorning))
+        if (result.records != current) store.persistAll(result.records)
+        return result
+    }
+
+    /** Yesterday's unconsumed reflection only; callers display native stored text. */
+    fun morningReflection(zone: ZoneId): MorningReflection? {
+        val today = Instant.ofEpochMilli(nowEpochMs()).atZone(zone).toLocalDate()
+        return store.loadAll().sortedByDescending { it.knownTimeEpochMs() ?: 0 }
+            .firstNotNullOfOrNull { record ->
+                val facts = record.journeyFacts ?: return@firstNotNullOfOrNull null
+                val reflection = facts.reflection ?: return@firstNotNullOfOrNull null
+                val time = facts.finishedAtEpochMs ?: facts.startedAtEpochMs ?: return@firstNotNullOfOrNull null
+                val day = Instant.ofEpochMilli(time).atZone(zone).toLocalDate()
+                if (day != today.minusDays(1) || reflection.consumedAtEpochMs != null ||
+                    (reflection.story == null && reflection.greeting == null)) null
+                else MorningReflection(record.id, reflection.story, reflection.greeting)
+            }
+    }
+
+    /**
+     * Invoke after presenting the selected reflection. With deletion enabled,
+     * source story and its derived greeting are removed in the same store write.
+     */
+    fun consumeMorningReflection(
+        recordId: String,
+        zone: ZoneId,
+        deleteEveningStoryAfterNextMorning: Boolean
+    ): MorningReflection? {
+        val selected = morningReflection(zone)?.takeIf { it.recordId == recordId } ?: return null
+        val now = nowEpochMs()
+        val current = store.loadAll()
+        val updated = current.map { record ->
+            if (record.id != recordId) record else {
+                val facts = requireNotNull(record.journeyFacts)
+                val reflection = requireNotNull(facts.reflection)
+                val consumed = if (deleteEveningStoryAfterNextMorning) {
+                    EveningReflection(consumedAtEpochMs = now)
+                } else reflection.copy(consumedAtEpochMs = now)
+                record.copy(journeyFacts = facts.copy(reflection = consumed), updatedAtEpochMs = now)
+            }
+        }
+        store.persistAll(updated)
+        return selected
+    }
+
+    fun weeklyStats(weekContaining: java.time.LocalDate, zone: ZoneId): WeeklyJourneyStats =
+        JourneyStatistics.week(listAll(), weekContaining, zone)
 }

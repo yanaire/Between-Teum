@@ -3,15 +3,15 @@ package dev.pleos.starter
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
-import dev.pleos.starter.teum.ui.TeumUiController
+import dev.pleos.starter.teum.ui.TeumWebController
 
 class MainActivity : Activity() {
-    private lateinit var ui: TeumUiController
+    private lateinit var ui: TeumWebController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ui = TeumUiController(this, findViewById(R.id.teum_root))
+        ui = TeumWebController(this, findViewById(R.id.teum_root))
         ui.onCreate()
     }
 
@@ -33,6 +33,13 @@ class MainActivity : Activity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         ui.onConfigurationChanged()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        ui.onPermissionResult(requestCode)
     }
 
     @Suppress("DEPRECATION")
