@@ -8,28 +8,28 @@
 
 ## 앱 실행 화면
 
-PLEOS Connect 에뮬레이터에서 실제 앱을 실행하며 캡처한 화면입니다.
+2026-11-11 기준 `main`의 소스
+`25b285d7ce257d6f310e94eeb6d3c0c03a17c66b`에서 새로 빌드한 APK를
+독립된 PLEOS Connect 2.1.0 에뮬레이터에 설치해 실행한 화면입니다.
+온보딩을 거쳐 홈의 기록·설정 버튼으로 이동한 뒤 Android `screencap`으로
+2560×1440 원본을 캡처했습니다. 새 앱 데이터에서 장소·일정은 등록하지 않았으며,
 차량 설정의 지원 여부와 표시 상태는 실행 환경에 따라 달라질 수 있습니다.
 
 ### 홈
 
-![PLEOS 에뮬레이터에서 실행 중인 틈 홈 화면](assets/teum-screen.png)
-
-### 점심 휴식 시간 설정
-
-![점심 휴식 시간과 이동 시간을 설정하고 일정을 미리 보는 화면](assets/teum-lunch-setup.png)
-
-### 점심 휴식 진행
-
-![점심 휴식의 현재 단계와 남은 시간을 보여주는 화면](assets/teum-lunch-session.png)
-
-### 미팅 준비 시간 설정
-
-![미팅 준비 시간과 활동 일정을 확인하는 화면](assets/teum-meeting-setup.png)
+![실제 main APK의 홈 화면: 상황별 활동과 이번 주 누적 시간](assets/readme/main-home.png)
 
 ### 활동 기록
 
-![완료한 점심 휴식의 단계와 메모를 기록하는 화면](assets/teum-activity-record.png)
+활동을 생성하지 않은 초기 상태로, 누적 시간과 저장된 활동은 0입니다.
+
+![실제 main APK의 이번 주 기록 화면: 누적 0분, 저장된 활동 0번](assets/readme/main-records.png)
+
+### 설정
+
+장소 이름은 미설정이며 위치 권한을 요청하지 않은 상태입니다.
+
+![실제 main APK의 설정 화면: 설정 메뉴와 미등록 회사·집, 위치 권한 안내](assets/readme/main-settings.png)
 
 ## 현재 구현된 부분
 
