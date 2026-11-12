@@ -278,8 +278,19 @@ class TeumWebProtocolTest {
             TeumWebProtocol.decode("""{"requestId":"q","epoch":2,"action":"openJourney","journey":"quick"}""")?.action
         )
         assertEquals(
+            TeumWebAction.InspectVehicle(WebVehicleFeature.AMBIENT_BRIGHTNESS),
+            TeumWebProtocol.decode("""{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"AMBIENT_BRIGHTNESS"}""")?.action
+        )
+        assertEquals(
+            TeumWebAction.InspectVehicle(WebVehicleFeature.WINDOW_POSITION),
+            TeumWebProtocol.decode("""{"requestId":"w","epoch":2,"action":"inspectVehicle","feature":"WINDOW_POSITION"}""")?.action
+        )
+        assertEquals(
             TeumWebAction.ConfirmVehicle(42),
             TeumWebProtocol.decode("""{"requestId":"v","epoch":2,"action":"confirmVehicle","previewId":42}""")?.action
+        )
+        assertNull(
+            TeumWebProtocol.decode("""{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"WINDOW"}""")
         )
     }
 

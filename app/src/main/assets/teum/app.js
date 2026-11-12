@@ -481,6 +481,18 @@ Object.assign(ACT, {
       sec('위치 권한',null,'permission:LOCATION'))}${pri('계속하기','ON-04')}</div>
     </div></div>`),
   permission: permission => send('requestPermission', {permission}),
+  inspectVehicle: feature => send('inspectVehicle', {feature}),
+  previewVehicle: feature => {
+    const input = document.querySelector(`[data-bind="vehicle:${feature}"]`);
+    const value = Number(input?.value);
+    if (!Number.isFinite(value)) { toast('차량 값을 확인해 주세요'); return; }
+    send('previewVehicle', {feature, value});
+  },
+  confirmVehicle: previewId => {
+    const id = Number(previewId);
+    if (!Number.isSafeInteger(id) || id <= 0) return;
+    send('confirmVehicle', {previewId:id});
+  },
   completeOnboarding: () => send('completeOnboarding'),
   captureLocation: place => send('captureLocation', {home:place === 'home'}),
   savePlace: place => send('savePlaceLabel', {home:place === 'home',label:binding(`place:${place}`) ?? ''}),

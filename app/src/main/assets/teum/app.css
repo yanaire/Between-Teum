@@ -8,6 +8,12 @@ input[type="text"], input[type="time"], textarea {
   border-bottom: 1px solid var(--line);
   max-width: 100%;
 }
+.ambient-range {
+  width: 100%;
+  min-height: 64px;
+  margin: 0;
+  accent-color: var(--ink);
+}
 button:disabled { cursor: default; opacity: .45; }
 :focus-visible { outline: 3px solid var(--lime); outline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) {

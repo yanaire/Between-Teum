@@ -329,7 +329,7 @@ S['F2-06'] = { session: true, aura: 'sunrise', auraCls: 'rise', view: s => scr({
 S['F2-07'] = { session: true, aura: 'sunrise', view: s => scr({ cls: 'mid-side', top: bar(null, 5, 5),
   vis: `<div class="wake-card glass"><p class="lab">방금 잔 시간</p><div class="row-c" style="align-items:baseline;gap:12px"><span class="dotnum">${esc(minutes(s.context?.napElapsedSeconds))}</span><span class="lead">분</span></div>${RULER(Math.min(1,(s.context?.napElapsedSeconds || 0)/1800))}<div class="row-c cap" style="justify-content:space-between;margin-top:12px"><span>0</span><span>15</span><span>30분</span></div></div>`,
   side: copy('실제로 쉰 시간이에요', `${esc(s.context?.meetingSummary)}<br>필요하면 차량 설정을 직접 확인하고 조정해 주세요`),
-  acts: pri('마치기', null, 'finish:noon') + `<button class="btn sec m wide" data-do="closeWin" ${s.hardware?.capabilities?.windows?.status === 'confirmed' ? '' : 'disabled'}>${I('app-window')}${s.hardware?.capabilities?.windows?.status === 'confirmed' ? '창문 닫기' : '창문 제어 미지원·미확인'}</button>` }) };
+  acts: pri('마치기', null, 'finish:noon') + `<button class="btn sec m wide" disabled aria-disabled="true" title="닫힘 기준을 확인할 수 없어 차량에 요청하지 않아요">${I('app-window')}닫힘 기준 미확인</button>` }) };
 S['F2-07a'] = { session: true, aura: 'sunrise', auraCls: 'rise', view: s => scr({ cls: 'mid-side', top: bar(null, 5, 5),
   vis: G('orb', 'wake', 420, { wrap: 'beat', liquid: true }), side: copy('일어났어요?', '차량 복구 전에 깨어 있는지 확인해 주세요'), acts: pri('일어났어요', null, 'awake') }) };
 
@@ -410,13 +410,58 @@ const setting = (id, body) => { const row = ST_ROWS.find(r => r[3] === id); if (
     <div class="md-detail"><h2 class="h2 md-title">${title}</h2>${typeof d === 'function' ? d(s) : d}</div></div></section>`; } }; };
 const sw = (t, sub, on = true) => `<div class="li"><span class="t"><b>${t}</b>${sub ? `<span>${sub}</span>` : ''}</span><button class="switch ${on ? 'on' : ''}" data-do="toggle" aria-label="${t}"></button></div>`;
 const stRow = (i, t, sub, go) => `<button class="li" ${go ? `data-go="${go}"` : ''}><span class="iconbtn glass">${I(i)}</span><span class="t"><b>${t}</b>${sub ? `<span>${sub}</span>` : ''}</span><span class="v">${I('chevron-right')}</span></button>`;
+function vehicleControlPanel(s, feature, title, valueLabel, note = '') {
+  const control = s.hardware?.vehicleControls?.[feature] || {};
+  const capability = control.capability;
+  const command = control.command;
+  const current = control.currentValue;
+  const areaLabel = control.area === 'ROW_1_LEFT' ? '운전석 영역' : '지원 영역';
+  const currentObserved = capability?.canRead === true && Number.isFinite(current);
+  const key = `vehicle:${feature}`;
+  const draft = drafts.has(key) ? Number(drafts.get(key)) : current;
+  const draftInRange = Number.isFinite(draft) && capability &&
+    draft >= capability.min && draft <= capability.max &&
+    Math.abs((draft - capability.min) / capability.step -
+      Math.round((draft - capability.min) / capability.step)) < 0.001;
+  const target = draftInRange ? draft : current;
+  const writable = capability?.canRead === true && capability.canWrite === true &&
+    control.safetyReason == null && Number.isFinite(target);
+  const commandText = !command ? '' : ({
+    PREVIEW: `현재 ${esc(command.initial)} → 요청 ${esc(command.target)}. 확인을 눌러야 차량에 요청해요.`,
+    QUEUED: '현재 값과 주차·주행 제한을 다시 확인하고 있어요.',
+    REQUESTED: command.requestAcknowledged
+      ? '요청 응답을 받았어요. 실제 값을 다시 읽고 있어요.'
+      : '차량에 요청했어요. 실제 적용 여부는 아직 확인되지 않았어요.',
+    READBACK: `실제 조회값 ${esc(command.readback)}이 요청값과 일치해요.`,
+    UNKNOWN: command.readback != null && command.readback !== command.target
+      ? `요청 응답은 받았지만 실제 조회값 ${esc(command.readback)}이 요청값 ${esc(command.target)}과 달라요.`
+      : `실제 조회로 적용을 확인하지 못했어요. ${esc(command.reason)}`,
+    FAILED: `요청 실패 · ${esc(command.reason)}`,
+    MANUAL: `제어할 수 없어요 · ${esc(command.reason)}`
+  })[command.stage] || '';
+  return `<div class="list glass" style="margin-top:24px">
+    <div class="li"><span class="t"><b>${title}</b><span>${control.safetyReason ? esc(control.safetyReason) :
+      capability ? `${valueLabel} · ${areaLabel} · ${esc(capability.min)}–${esc(capability.max)} · ${esc(capability.step)} 단위` :
+      esc(control.error || '차량 지원과 현재 값을 확인해 주세요')}</span></span>
+      <button class="btn sec m" data-do="inspectVehicle:${feature}">현재 값 확인</button></div>
+    ${currentObserved ? `<div class="li"><label class="t" for="${key}"><b>${valueLabel}</b><span>현재 ${esc(current)}</span></label>
+      <input class="ambient-range" id="${key}" type="range" min="${esc(capability.min)}" max="${esc(capability.max)}" step="${esc(capability.step)}" value="${esc(target ?? capability.min)}" data-bind="${key}" aria-label="${valueLabel}" ${writable ? '' : 'disabled'}></div>` : ''}
+    ${commandText ? `<div class="li"><span class="t" role="status"><span>${commandText}</span></span></div>` : ''}
+    ${capability?.canRead && capability.canWrite && !control.safetyReason ? `<div class="li"><span class="t"><span>선택한 값을 미리 보고, 확인을 누른 뒤에만 변경을 요청해요.</span></span>
+      <button class="btn sec m" data-do="previewVehicle:${feature}" ${draftInRange && writable ? '' : 'disabled'}>미리 보기</button></div>` : ''}
+    ${command?.stage === 'PREVIEW' ? `<div class="li"><span class="t"><b>변경을 확인해 주세요</b><span>${esc(command.initial)} → ${esc(command.target)}</span></span>
+      <button class="btn pri m" data-do="confirmVehicle:${esc(command.id)}">확인하고 변경</button></div>` : ''}
+    ${control.error && !commandText ? `<div class="li"><span class="t" role="status"><span>${esc(control.error)}</span></span></div>` : ''}
+    ${note ? `<div class="li"><span class="t"><span>${esc(note)}</span></span></div>` : ''}
+  </div>`;
+}
 setting('ST-01', placeControls);
 setting('ST-02', s => scheduleControls(s) + `<div class="list glass"><div class="li"><span class="t"><b>재택하는 날</b><span>이날은 알려 드리지 않아요</span></span></div><div class="chips" style="padding:24px">${['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'].map((d,i)=>`<button class="chip glass ${s.preferences?.schedule?.workFromHomeDays?.includes(d) ? 'on' : ''}" data-do="workFromHomeDay:${d}" aria-pressed="${!!s.preferences?.schedule?.workFromHomeDays?.includes(d)}">${['월','화','수','목','금','토','일'][i]}</button>`).join('')}</div></div>`);
 setting('ST-03', s => `<div class="list glass"><div class="li"><span class="t"><b>쉴 때 등받이</b></span><span class="v"><input class="body" type="number" min="106" max="146" data-bind="backrest:restDegrees" value="${s.preferences?.backrest?.restDegrees == null ? '' : esc(s.preferences.backrest.restDegrees)}" aria-label="쉴 때 등받이 선호값" style="width:120px;background:transparent;border:0;color:inherit;font:inherit">°</span></div><div class="li"><span class="t"><b>낮잠 등받이</b></span><span class="v"><input class="body" type="number" min="106" max="160" data-bind="backrest:napDegrees" value="${s.preferences?.backrest?.napDegrees == null ? '' : esc(s.preferences.backrest.napDegrees)}" aria-label="낮잠 등받이 선호값" style="width:120px;background:transparent;border:0;color:inherit;font:inherit">°</span></div><div class="li"><span class="t"><b>쉴 때 소리</b></span><span class="v"><select data-bind="restSound" aria-label="쉴 때 소리" style="background:transparent;border:0;color:inherit;font:inherit">${s.preferences?.restSound ? '' : '<option value="">소리 미설정</option>'}${SOUNDS.map(([t],i)=>`<option value="${SOUND_KEYS[i]}" ${s.preferences?.restSound === SOUND_KEYS[i] ? 'selected' : ''}>${t}</option>`).join('')}</select></span></div><div class="li"><span class="t"><b>깨울 때 음악</b></span><span class="v">${esc(s.music?.wakeTitle)}</span></div><div class="li"><span class="t"><b>마음 준비 음악</b></span><span class="v">${esc(s.music?.preparationTitle)}</span></div>${preferenceSwitch(s,'음성 안내','VOICE_GUIDE',s.preferences?.voiceGuide)}</div><p class="cap">앱의 자세 선호값이며 실제 SDK 각도가 아니에요 · ${fact(s,'capabilities','seat')}</p>${lnk('자세 선호값 저장',null,'saveBackrest:settings')}`);
 setting('ST-04', s => `<div class="list glass">${[['am','MORNING','morning','회사에 도착하면'],['noon','NAP','nap','점심 먹고 차에 돌아오면'],['meet','PREPARATION','preparation','등록한 일정 전에'],['pm','EVENING','evening','집에 도착하면']].map(([k,flag,key,sub])=>preferenceSwitch(s,NAME[k],flag,s.preferences?.notifications?.[key],sub,`<span class="sg">${MINI(k,64)}</span>`)).join('')}${preferenceSwitch(s,'도착 전에 미리 묻기','ASK_BEFORE_HOME_ARRIVAL',s.preferences?.notifications?.askBeforeHomeArrival,'위치와 알림 권한이 필요해요')}</div>`);
 setting('ST-05', s => `<div class="moodgrid">${Object.entries(MOODS).map(([k,[n,d]])=>`<button class="mg glass" data-do="atmosphere:${k.toUpperCase()}" aria-pressed="${s.preferences?.atmosphere === k.toUpperCase()}">${SHAPE(MOODSHAPE[k],k,140,{blur:5})}<b>${n}</b><span class="cap">${d}</span></button>`).join('')}</div>`);
 setting('ST-06', s => `<div class="list glass"><div class="li"><span class="t"><b>기록 보관 기간</b><span>확인된 시각을 기준으로 보관해요</span></span><span class="v">1년</span></div>${preferenceSwitch(s,'저녁에 말한 내용 다음 날까지 지우기','DELETE_EVENING_STORY_AFTER_NEXT_MORNING',s.preferences?.privacy?.deleteEveningStoryAfterNextMorning,'다음 날 아침에 사용하면 지우고, 남은 이야기도 다음 날이 끝나면 지워요')}<button class="li" data-do="wipeAsk"><span class="t"><b style="color:var(--pleos-informative-negative)">모든 기록 지우기</b></span></button></div>`);
-setting('ST-07', s => `<div class="list glass">${[['전동 등받이','seat'],['앰비언트 라이트','light'],['통풍 시트','ventilation'],['스마트글라스','glass'],['블라인드','blinds']].map(([t,k])=>`<div class="li"><span class="t"><b>${t}</b></span><span class="v">${fact(s,'capabilities',k)}</span></div>`).join('')}</div>`);
+setting('ST-07', s => `<div class="list glass">${[['전동 등받이','seat'],['앰비언트 라이트','light'],['창문 위치','window'],['통풍 시트','ventilation'],['스마트글라스','glass'],['블라인드','blinds']].map(([t,k])=>`<div class="li"><span class="t"><b>${t}</b></span><span class="v">${fact(s,'capabilities',k)}</span></div>`).join('')}</div>${vehicleControlPanel(s,'AMBIENT_BRIGHTNESS','앰비언트 밝기','SDK 밝기 값')}${vehicleControlPanel(s,'WINDOW_POSITION','창문 위치 (SDK 원시값)','SDK 원시 위치 값','닫힘에 대응하는 값은 확인되지 않아, 이 값으로 닫기를 뜻하지 않아요.')}`);
 setting('ST-08', s => `<div class="stack-c" style="padding:48px 0"><span class="appicon xl">${MARK(158)}</span><p class="h2" style="margin-top:24px">틈틈</p><p class="cap">버전 ${esc(s.appVersion)}</p></div><div class="list glass">${stRow('rotate-ccw','처음 안내 다시 보기','','ON-01')}</div>`);
 setting('ST');
 

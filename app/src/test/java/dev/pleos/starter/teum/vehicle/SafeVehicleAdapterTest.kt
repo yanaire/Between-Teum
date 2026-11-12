@@ -132,6 +132,12 @@ class SafeVehicleAdapterTest {
         fun parked(generation: Long = 1) = VehicleSafety(true,
             ParkingObservation(Parking.PARKED, now, "P"),
             UxObservation(false, 0, now), generation)
+        fun advanceTo(target: Long) {
+            while (now < target) {
+                now = minOf(now + 2_000L, target)
+                adapter.updateSafety(parked())
+            }
+        }
         fun latest() = events.last()
         fun apply(setting: VehicleSetting, value: Double) {
             adapter.confirm(adapter.previewChange(setting, value), true)
@@ -382,6 +388,80 @@ class SafeVehicleAdapterTest {
         f.apply(light, 25.0)
         assertEquals(CommandStage.READBACK, f.events.last { it.setting == hvac }.stage)
         assertEquals(CommandStage.FAILED, f.events.last { it.setting == light }.stage)
+    }
+
+    @Test fun ordinarySpeedConfirmationSucceedsWhenSafetyRefreshed() {
+        val f = Fixture()
+        val id = f.adapter.previewChange(hvac, 24.0)
+        assertEquals(CommandStage.PREVIEW, f.latest().stage)
+        f.advanceTo(5_000)
+        f.adapter.confirm(id, true)
+        assertEquals(CommandStage.READBACK, f.latest().stage)
+        assertEquals(listOf(24.0), f.port.sent)
+    }
+
+    @Test fun confirmationNearDeadlineStartsAFreshExecutionBudget() {
+        val f = Fixture()
+        val id = f.adapter.previewChange(hvac, 24.0)
+        f.advanceTo(29_000)
+        f.adapter.confirm(id, true)
+        assertEquals(CommandStage.READBACK, f.latest().stage)
+        assertEquals(listOf(24.0), f.port.sent)
+    }
+
+    @Test fun expiredConfirmationIsRejectedWithoutSending() {
+        val f = Fixture()
+        val id = f.adapter.previewChange(hvac, 24.0)
+        f.advanceTo(30_001)
+        f.adapter.tick()
+        assertEquals(CommandStage.FAILED, f.latest().stage)
+        f.adapter.confirm(id, true)
+        assertEquals(CommandStage.FAILED, f.latest().stage)
+        assertTrue(f.port.sent.isEmpty())
+    }
+
+    @Test fun staleSafetyRejectsOrdinarySpeedConfirmation() {
+        val f = Fixture()
+        val id = f.adapter.previewChange(hvac, 24.0)
+        f.now = 5_000
+        f.adapter.confirm(id, true)
+        assertEquals(CommandStage.FAILED, f.latest().stage)
+        assertTrue(f.port.sent.isEmpty())
+    }
+
+    @Test fun driveChangeRejectsPendingConfirmation() {
+        val f = Fixture()
+        val id = f.adapter.previewChange(hvac, 24.0)
+        f.now = 5_000
+        f.adapter.updateSafety(f.parked().copy(parking = ParkingObservation(Parking.NOT_PARKED, 5_000, "D")))
+        f.adapter.confirm(id, true)
+        assertEquals(CommandStage.FAILED, f.latest().stage)
+        assertTrue(f.port.sent.isEmpty())
+    }
+
+    @Test fun uxRestrictionRejectsPendingConfirmation() {
+        val f = Fixture()
+        val id = f.adapter.previewChange(hvac, 24.0)
+        f.now = 5_000
+        f.adapter.updateSafety(f.parked().copy(ux = UxObservation(true, 1, 5_000)))
+        f.adapter.confirm(id, true)
+        assertEquals(CommandStage.FAILED, f.latest().stage)
+        assertTrue(f.port.sent.isEmpty())
+    }
+
+    @Test fun lateReadbackNeverBecomesSuccess() {
+        val f = Fixture()
+        f.port.delayRead = true
+        val id = f.adapter.previewChange(hvac, 24.0)
+        f.port.reads[0].invoke()
+        assertEquals(CommandStage.PREVIEW, f.latest().stage)
+        f.adapter.confirm(id, true)
+        f.port.reads[1].invoke()
+        assertEquals(listOf(24.0), f.port.sent)
+        f.now = 5_000
+        f.port.reads[2].invoke()
+        assertEquals(CommandStage.UNKNOWN, f.latest().stage)
+        assertEquals(24.0, f.latest().readback!!, 0.0)
     }
 
     @Test fun cancellationFromDispatchObserverCannotSendACommand() {

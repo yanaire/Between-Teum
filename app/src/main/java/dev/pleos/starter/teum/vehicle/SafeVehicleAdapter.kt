@@ -22,7 +22,8 @@ class SafeVehicleAdapter(
         val epoch: Long,
         val created: Long,
         val expectedCurrent: Double,
-        val revision: Long
+        val revision: Long,
+        var confirmedAt: Long? = null
     )
     private var safety = VehicleSafety()
     private var epoch = 0L
@@ -33,6 +34,11 @@ class SafeVehicleAdapter(
     private val pending = mutableMapOf<Long, Pending>()
     private val preparing = mutableMapOf<Long, Pair<VehicleCommand, Long>>()
     private val subscriptions = mutableMapOf<VehicleSetting, AutoCloseable>()
+
+    companion object {
+        /** Bounded human confirmation deadline, independent from the 3-second execution window. */
+        const val CONFIRM_WINDOW_MILLIS = 30_000L
+    }
 
     fun updateSafety(next: VehicleSafety) {
         val losesTrust = next.generation != safety.generation ||
@@ -119,10 +125,11 @@ class SafeVehicleAdapter(
             finish(operation, CommandStage.FAILED, "Explicit consent required")
             return
         }
-        if (!valid(operation)) {
+        if (!confirmationOpen(operation)) {
             finish(operation, CommandStage.FAILED, "Consent or safety expired")
             return
         }
+        operation.confirmedAt = nowMillis()
         report(operation, CommandStage.QUEUED, "Checking current capability and snapshot")
         port.inspect(operation.command.setting) { result ->
             if (!pending.containsKey(id)) return@inspect
@@ -188,8 +195,18 @@ class SafeVehicleAdapter(
         if (origin != ChangeOrigin.APP) entry.unknownOrigin = true
     }
 
-    private fun valid(operation: Pending): Boolean = !closed && operation.epoch == epoch &&
-        blockedReason() == null && VehicleSafety.fresh(operation.created, nowMillis())
+    private fun confirmationOpen(operation: Pending): Boolean {
+        val created = operation.created
+        val now = nowMillis()
+        return !closed && operation.epoch == epoch && operation.confirmedAt == null &&
+            blockedReason() == null && now >= created && now - created <= CONFIRM_WINDOW_MILLIS
+    }
+
+    private fun valid(operation: Pending): Boolean {
+        val confirmedAt = operation.confirmedAt ?: return false
+        return !closed && operation.epoch == epoch &&
+            blockedReason() == null && VehicleSafety.fresh(confirmedAt, nowMillis())
+    }
 
     /** Call from a foreground heartbeat. Timeouts never become success or retries. */
     fun tick() {
@@ -197,7 +214,7 @@ class SafeVehicleAdapter(
             invalidate("Safety observation expired", forgetSnapshots = true)
             return
         }
-        pending.values.toList().filter { !valid(it) }.forEach {
+        pending.values.toList().filter { !confirmationOpen(it) && !valid(it) }.forEach {
             finish(it, if (it.command.stage == CommandStage.REQUESTED) CommandStage.UNKNOWN else CommandStage.FAILED,
                 "Command timed out; no retry")
         }

@@ -889,6 +889,7 @@ class TeumUiController(
             VehicleFeature.HVAC_TEMPERATURE -> "hvac"
             VehicleFeature.AMBIENT_BRIGHTNESS -> "ambient"
             VehicleFeature.SEAT_POSITION -> "seat"
+            VehicleFeature.WINDOW_POSITION -> "window"
         }
         val status = featureStatus[feature] ?: FeatureUi.Checking
         val head = LinearLayout(activity).apply {
@@ -1419,12 +1420,14 @@ class TeumUiController(
         VehicleFeature.HVAC_TEMPERATURE -> "실내 온도"
         VehicleFeature.AMBIENT_BRIGHTNESS -> "실내 조명"
         VehicleFeature.SEAT_POSITION -> "좌석"
+        VehicleFeature.WINDOW_POSITION -> "창문"
     }
 
     private fun formatSetting(feature: VehicleFeature, value: Double): String = when (feature) {
         VehicleFeature.HVAC_TEMPERATURE -> String.format(java.util.Locale.KOREA, "%.1f°C", value)
         VehicleFeature.AMBIENT_BRIGHTNESS -> "${value.toInt()}%"
         VehicleFeature.SEAT_POSITION -> value.toInt().toString()
+        VehicleFeature.WINDOW_POSITION -> value.toInt().toString()
     }
 
     // ---------------------------------------------------------------- record
@@ -1746,11 +1749,13 @@ class TeumUiController(
                 VehicleFeature.HVAC_TEMPERATURE -> "pleos.car.permission.CAR_CLIMATE"
                 VehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CAR_LIGHTS"
                 VehicleFeature.SEAT_POSITION -> "pleos.car.permission.CAR_SEATS"
+                VehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CAR_WINDOWS"
             }
             val controlPermission = when (feature) {
                 VehicleFeature.HVAC_TEMPERATURE -> "pleos.car.permission.CONTROL_CAR_CLIMATE"
                 VehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CONTROL_CAR_LIGHTS"
                 VehicleFeature.SEAT_POSITION -> "pleos.car.permission.CONTROL_CAR_SEATS"
+                VehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CONTROL_CAR_WINDOWS"
             }
             val readGranted = activity.checkSelfPermission(readPermission) ==
                 android.content.pm.PackageManager.PERMISSION_GRANTED

@@ -34,6 +34,7 @@ import dev.pleos.starter.teum.vehicle.CabinPositionStatus
 import dev.pleos.starter.teum.vehicle.PleosCabinSource
 import dev.pleos.starter.teum.vehicle.VehicleSafety
 import dev.pleos.starter.teum.vehicle.PleosBrakeSource
+import dev.pleos.starter.teum.vehicle.PleosSettingsPort
 import java.time.Clock
 import java.time.Instant
 import java.time.LocalDate
@@ -113,6 +114,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         foregroundEpoch++
         brakeSource?.close()
         brakeSource = null
+        closeVehicleBridge()
         stopOutputs()
         submit {
             cancelArrival()
@@ -197,8 +199,9 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     @Volatile private var cabinGeneration = 0L
     private var cabin = mapOf("seat" to CabinObservation(), "windows" to CabinObservation())
     private var cabinCleanupErrors = emptyList<String>()
-    private var safety = VehicleSafety()
-    private var route = TeumWebRoute.ON_01
+    @Volatile private var safety = VehicleSafety()
+    @Volatile private var route = TeumWebRoute.ON_01
+    @Volatile private var vehicleBridge: TeumWebVehicleBridge? = null
     private var revision = 0L
     private var napMinutes = 20
     private var selectedDate = LocalDate.now()
@@ -234,6 +237,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
             location?.refresh()
             cabinSource?.refresh()
             brakeSource?.refresh()
+            vehicleBridge?.tick()
             submit {
                 if (runtime.state?.active == true) {
                     if (safety.blockedReason(reading.elapsedMillis) != null) {
@@ -288,6 +292,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         safetySource = AaosSafetySource(activity) { observed ->
             if (owner != foregroundEpoch) return@AaosSafetySource
             musicSafety = observed
+            vehicleBridge?.updateSafety(observed)
             brakeSource?.observeSafety(observed)
             if (observed.blockedReason(SystemClock.elapsedRealtime()) != null) stopOutputs()
             submit {
@@ -338,6 +343,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         brakeSource = null
         main.removeCallbacks(ticker)
         stopOutputs()
+        closeVehicleBridge()
         host.suspend()
         submit {
             cancelArrival()
@@ -362,6 +368,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         focusObserver = null
         destroyed = true
         main.removeCallbacks(ticker)
+        closeVehicleBridge()
         speech.close()
         sounds.close()
         music.close()
@@ -554,14 +561,64 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 is TeumWebAction.SoundEnabled -> {
                     preferences.setVoiceGuide(action.enabled); cachedData = null
                 }
-                is TeumWebAction.PreviewVehicle, is TeumWebAction.ConfirmVehicle ->
-                    notice = "이 화면의 차량 제어는 아직 연결되지 않았어요."
+                is TeumWebAction.InspectVehicle,
+                is TeumWebAction.PreviewVehicle,
+                is TeumWebAction.ConfirmVehicle -> requestVehicleAction(request, action)
                 is TeumWebAction.SaveRecord -> error("A legacy record cannot be created from an original journey")
                 else -> error("Preference intent was not handled by its native owner")
             }
             publish(true, committedPrevious)
             committedPrevious = null
         }
+    }
+
+    private fun requestVehicleAction(request: TeumWebRequest, action: TeumWebAction) {
+        if (route != TeumWebRoute.ST_07) {
+            notice = "차량 설정 화면에서 지원 상태를 먼저 확인해 주세요."
+            return
+        }
+        val feature = when (action) {
+            is TeumWebAction.InspectVehicle -> action.feature
+            is TeumWebAction.PreviewVehicle -> action.feature
+            is TeumWebAction.ConfirmVehicle -> null
+            else -> return
+        }
+        if (feature != null && feature !in setOf(
+                WebVehicleFeature.AMBIENT_BRIGHTNESS, WebVehicleFeature.WINDOW_POSITION
+            )) {
+            notice = "이 차량 제어는 현재 화면에서 사용할 수 없어요."
+            return
+        }
+        if (action !is TeumWebAction.InspectVehicle && vehicleBridge == null) {
+            notice = "변경 전에 차량의 밝기 범위와 현재 값을 확인해 주세요."
+            return
+        }
+        val requestEpoch = request.epoch
+        main.post {
+            if (!foreground || destroyed || requestEpoch != host.epoch || route != TeumWebRoute.ST_07) return@post
+            val bridge = vehicleBridge ?: if (action is TeumWebAction.InspectVehicle) {
+                TeumWebVehicleBridge(
+                    PleosSettingsPort(activity),
+                    { SystemClock.elapsedRealtime() },
+                    safety,
+                    { host.epoch },
+                    { foreground && !destroyed },
+                    { submit { publish(true) } }
+                ).also { vehicleBridge = it }
+            } else return@post
+            when (action) {
+                is TeumWebAction.InspectVehicle -> bridge.inspect(action.feature, requestEpoch)
+                is TeumWebAction.PreviewVehicle -> bridge.preview(action.feature, action.value, requestEpoch)
+                is TeumWebAction.ConfirmVehicle -> bridge.confirm(action.previewId, requestEpoch)
+                else -> Unit
+            }
+        }
+    }
+
+    private fun closeVehicleBridge() {
+        val closing = vehicleBridge ?: return
+        vehicleBridge = null
+        closing.close()
     }
 
     private fun start(action: TeumWebAction.OpenJourney) {
@@ -717,6 +774,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
             resolveArrival(it, SuggestionOutcome.DECLINED)
         }
         if (target != route) arrivalNonce = null
+        if (route == TeumWebRoute.ST_07 && target != route) main.post(::closeVehicleBridge)
         if (target != route) main.post(::stopOutputs)
         route = target
     }
@@ -994,6 +1052,8 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 else -> "활동이 끝났어요. 실제 진행한 내용을 저장해 주세요. 자동 변경한 차량 설정은 없어요."
             })
         }
+        val vehicleCapabilities = vehicleBridge?.capabilityFactsJson() ?: JsonObject()
+        val vehicleControls = vehicleBridge?.controlsJson() ?: JsonObject()
         val hardware = JsonObject().apply {
             add("capabilities", JsonObject().apply {
                 cabin.forEach { (key, observed) ->
@@ -1001,7 +1061,9 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                         addProperty("readPermission", if (key == "seat") PleosCabinSource.SEATS else PleosCabinSource.WINDOWS)
                     })
                 }
+                vehicleCapabilities.entrySet().forEach { (key, value) -> add(key, value) }
             })
+            add("vehicleControls", vehicleControls)
             add("cabin", JsonObject().apply {
                 add("armchair", cabin.getValue("seat").positionFact())
                 add("app-window", cabin.getValue("windows").positionFact())

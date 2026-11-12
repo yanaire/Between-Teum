@@ -3,7 +3,7 @@ package dev.pleos.starter.teum.vehicle
 import kotlin.math.abs
 import kotlin.math.round
 
-enum class VehicleFeature { HVAC_TEMPERATURE, AMBIENT_BRIGHTNESS, SEAT_POSITION }
+enum class VehicleFeature { HVAC_TEMPERATURE, AMBIENT_BRIGHTNESS, SEAT_POSITION, WINDOW_POSITION }
 data class VehicleSetting(val feature: VehicleFeature, val area: String)
 enum class ChangeOrigin { APP, MANUAL, UNKNOWN }
 enum class CommandStage { PREVIEW, QUEUED, REQUESTED, READBACK, FAILED, UNKNOWN, MANUAL }

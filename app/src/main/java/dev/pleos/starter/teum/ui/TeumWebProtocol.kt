@@ -21,7 +21,7 @@ import dev.pleos.starter.teum.session.ClockReading
 import dev.pleos.starter.teum.vehicle.VehicleSafety
 
 enum class WebJourney { MORNING, LUNCH, PREPARATION, EVENING, QUICK }
-enum class WebVehicleFeature { HVAC_TEMPERATURE, AMBIENT_BRIGHTNESS, SEAT_POSITION }
+enum class WebVehicleFeature { HVAC_TEMPERATURE, AMBIENT_BRIGHTNESS, SEAT_POSITION, WINDOW_POSITION }
 enum class WebPermission { MICROPHONE, LOCATION }
 enum class WebPreferenceFlag {
     VOICE_GUIDE, MORNING, NAP, PREPARATION, EVENING, ASK_BEFORE_HOME_ARRIVAL,
@@ -53,6 +53,7 @@ sealed interface TeumWebAction {
     data class SelectRecall(val recordId: String) : TeumWebAction
     data class HistoryConsent(val enabled: Boolean) : TeumWebAction
     data class SoundEnabled(val enabled: Boolean) : TeumWebAction
+    data class InspectVehicle(val feature: WebVehicleFeature) : TeumWebAction
     data class PreviewVehicle(val feature: WebVehicleFeature, val value: Double) : TeumWebAction
     data class ConfirmVehicle(val previewId: Long) : TeumWebAction
     data class SavePlaceLabel(val home: Boolean, val label: String) : TeumWebAction
@@ -260,6 +261,10 @@ object TeumWebProtocol {
             "soundEnabled" -> {
                 fields.keys("enabled")
                 TeumWebAction.SoundEnabled(fields.boolean("enabled"))
+            }
+            "inspectVehicle" -> {
+                fields.keys("feature")
+                TeumWebAction.InspectVehicle(WebVehicleFeature.valueOf(fields.text("feature", 40)))
             }
             "previewVehicle" -> {
                 fields.keys("feature", "value")
