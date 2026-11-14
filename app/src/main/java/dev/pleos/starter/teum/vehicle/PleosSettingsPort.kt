@@ -7,7 +7,6 @@ import ai.pleos.playground.vehicle.api.model.capability.AccessType
 import ai.pleos.playground.vehicle.constant.area.SeatValue
 import ai.pleos.playground.vehicle.constant.area.WindowValue
 import ai.pleos.playground.vehicle.constant.unit.TemperatureUnit
-import ai.pleos.playground.vehicle.listener.AmbientLightBrightnessListener
 import ai.pleos.playground.vehicle.listener.HvacTemperatureValueListener
 import ai.pleos.playground.vehicle.listener.WindowPositionListener
 import android.content.Context
@@ -97,10 +96,21 @@ internal class NativeGuard(private val lifecycle: PortLifecycle) {
 internal object NativeSetterExclusion {
     private val guards = java.util.concurrent.ConcurrentHashMap<VehicleSetting, NativeGuard>()
 
+    private fun domain(feature: VehicleFeature): String = when (feature) {
+        VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.AMBIENT_COLOR, VehicleFeature.AMBIENT_SWITCH -> "AMBIENT"
+        VehicleFeature.SMART_GLASS_STATE, VehicleFeature.SMART_GLASS_LEVEL -> "SMART_GLASS"
+        VehicleFeature.HVAC_TEMPERATURE, VehicleFeature.SEAT_POSITION,
+        VehicleFeature.WINDOW_POSITION, VehicleFeature.SEAT_VENTILATION -> feature.name
+    }
+
     @Synchronized fun tryBegin(setting: VehicleSetting, lifecycle: PortLifecycle): NativeGuard? {
         if (lifecycle.isClosed()) return null
-        val live = guards[setting]
-        if (live != null && !live.isSettled()) return null
+        val areas = setting.area.split("+")
+        if (guards.any { (other, live) ->
+                !live.isSettled() && domain(other.feature) == domain(setting.feature) &&
+                    (other.area == setting.area || other.area.endsWith("GLOBAL") ||
+                        setting.area.endsWith("GLOBAL") || other.area.split("+").any { it in areas })
+            }) return null
         val guard = lifecycle.beginNative()
         guards[setting] = guard
         return guard
@@ -184,11 +194,17 @@ internal object SettingsWriteAudit {
  * overlapping setter and a late first callback cannot land after a second
  * readback.
  */
-class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
+class PleosSettingsPort(private val context: Context) : VehicleSettingsPort, VehicleSettingsDiscovery {
     private val handler = Handler(Looper.getMainLooper())
     private val vehicle = Vehicle(context.applicationContext)
     private var closed = false
     private val lifecycle = PortLifecycle()
+    private val discovered = PleosSettingBindings(
+        { vehicle.getHVAC() }, { vehicle.getLight() }, { vehicle.getSeat() }, { vehicle.getWindow() },
+        { feature -> granted(writePermission(VehicleSetting(feature, ""))) },
+        { action -> handler.post { action() } }
+    )
+    private val pendingDiscovered = mutableSetOf<() -> Unit>()
     private val watchers = mutableMapOf<VehicleSetting, AutoCloseable>()
     private val watchErrors = mutableMapOf<VehicleSetting, String>()
     private val initializationError: Exception? = try {
@@ -216,16 +232,20 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
 
     private fun readPermission(setting: VehicleSetting) = when (setting.feature) {
         VehicleFeature.HVAC_TEMPERATURE -> "pleos.car.permission.CAR_CLIMATE"
-        VehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CAR_LIGHTS"
-        VehicleFeature.SEAT_POSITION -> "pleos.car.permission.CAR_SEATS"
-        VehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CAR_WINDOWS"
+        VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.AMBIENT_COLOR,
+        VehicleFeature.AMBIENT_SWITCH -> "pleos.car.permission.CAR_LIGHTS"
+        VehicleFeature.SEAT_POSITION, VehicleFeature.SEAT_VENTILATION -> "pleos.car.permission.CAR_SEATS"
+        VehicleFeature.WINDOW_POSITION, VehicleFeature.SMART_GLASS_LEVEL,
+        VehicleFeature.SMART_GLASS_STATE -> "pleos.car.permission.CAR_WINDOWS"
     }
 
     private fun writePermission(setting: VehicleSetting) = when (setting.feature) {
         VehicleFeature.HVAC_TEMPERATURE -> "pleos.car.permission.CONTROL_CAR_CLIMATE"
-        VehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CONTROL_CAR_LIGHTS"
-        VehicleFeature.SEAT_POSITION -> "pleos.car.permission.CONTROL_CAR_SEATS"
-        VehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CONTROL_CAR_WINDOWS"
+        VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.AMBIENT_COLOR,
+        VehicleFeature.AMBIENT_SWITCH -> "pleos.car.permission.CONTROL_CAR_LIGHTS"
+        VehicleFeature.SEAT_POSITION, VehicleFeature.SEAT_VENTILATION -> "pleos.car.permission.CONTROL_CAR_SEATS"
+        VehicleFeature.WINDOW_POSITION, VehicleFeature.SMART_GLASS_LEVEL,
+        VehicleFeature.SMART_GLASS_STATE -> "pleos.car.permission.CONTROL_CAR_WINDOWS"
     }
 
     private fun granted(permission: String) =
@@ -241,10 +261,202 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
 
     private fun seatArea(setting: VehicleSetting): SeatArea {
         check(setting.feature != VehicleFeature.SEAT_POSITION) { "Seat safe stop/OEM contract unverified" }
-        return SeatArea(SeatValue.valueOf(setting.area))
+        return discovered.seatAreas[setting] ?: SeatArea(SeatValue.valueOf(setting.area))
     }
 
-    private fun windowArea(setting: VehicleSetting) = WindowArea(WindowValue.valueOf(setting.area))
+    private fun windowArea(setting: VehicleSetting) =
+        discovered.windowAreas[setting] ?: WindowArea(WindowValue.valueOf(setting.area))
+
+    private fun usesDiscoveredBinding(feature: VehicleFeature) = when (feature) {
+        VehicleFeature.HVAC_TEMPERATURE, VehicleFeature.WINDOW_POSITION, VehicleFeature.SEAT_POSITION -> false
+        VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.AMBIENT_COLOR, VehicleFeature.AMBIENT_SWITCH,
+        VehicleFeature.SEAT_VENTILATION, VehicleFeature.SMART_GLASS_STATE, VehicleFeature.SMART_GLASS_LEVEL -> true
+    }
+
+    private inner class DiscoveredCall<T>(private val result: (Result<T>) -> Unit) {
+        var active = true
+            private set
+        private val cancel: () -> Unit = { finish(Result.failure(IllegalStateException("Vehicle port closed"))) }
+        private val timeout = Runnable { finish(Result.failure(VehicleCallbackTimeout())) }
+        init {
+            pendingDiscovered.add(cancel)
+            handler.postDelayed(timeout, 2_500)
+        }
+        fun finish(response: Result<T>) {
+            if (!active) return
+            active = false
+            handler.removeCallbacks(timeout)
+            pendingDiscovered.remove(cancel)
+            result(response)
+        }
+    }
+
+    override fun discover(feature: VehicleFeature, result: (Result<List<DiscoveredSetting>>) -> Unit) {
+        check(Looper.myLooper() == Looper.getMainLooper())
+        val call = DiscoveredCall(result)
+        var guard: NativeGuard? = null
+        try {
+            checkUsable(VehicleSetting(feature, ""))
+            guard = lifecycle.beginNative()
+            discovered.discover(feature, { items ->
+                handler.post {
+                    guard.settle()
+                    if (call.active) call.finish(
+                        if (closed) Result.failure(IllegalStateException("Vehicle port closed"))
+                        else Result.success(items))
+                }
+            }, { error -> handler.post { guard.settle(); call.finish(Result.failure(error)) } })
+        } catch (error: Exception) {
+            guard?.settle()
+            call.finish(Result.failure(error))
+        }
+    }
+
+    private fun inspectDiscovered(
+        setting: VehicleSetting, result: (Result<SettingInspection>) -> Unit,
+        allowFollowup: () -> Boolean = { true }
+    ) {
+        val call = DiscoveredCall(result)
+        discover(setting.feature) { response ->
+            if (!call.active) return@discover
+            if (!allowFollowup()) {
+                call.finish(Result.failure(IllegalStateException("Observation cancelled")))
+                return@discover
+            }
+            response.fold(onFailure = { call.finish(Result.failure(it)) }, onSuccess = { items ->
+                var guard: NativeGuard? = null
+                try {
+                    checkUsable(setting)
+                    val metadata = items.singleOrNull { it.setting == setting } ?: error("Unsupported exact area: $setting")
+                    check(metadata.capability.canRead) { "Setting is not readable" }
+                    val binding = discovered.bindings.getValue(setting)
+                    guard = lifecycle.beginNative()
+                    binding.read({ value ->
+                        handler.post {
+                            guard.settle()
+                            if (call.active) {
+                                val read = if (closed) Result.failure(IllegalStateException("Vehicle port closed"))
+                                else if (value == null) Result.failure(IllegalStateException("Setting unavailable"))
+                                else {
+                                    SettingsWriteAudit.record(SettingsWriteAudit.Event.INSPECTION)
+                                    Result.success(SettingInspection(metadata.capability, value))
+                                }
+                                call.finish(read)
+                            }
+                        }
+                    }, { error -> handler.post { guard.settle(); call.finish(Result.failure(error)) } })
+                } catch (error: Exception) { guard?.settle(); call.finish(Result.failure(error)) }
+            })
+        }
+    }
+
+    /** Explicit getter polling; no fabricated switch listener and no setter replay. */
+    private fun subscribeDiscovered(setting: VehicleSetting, changed: (Double?, ChangeOrigin) -> Unit): AutoCloseable {
+        watchers[setting]?.let { return it }
+        if (setting.feature != VehicleFeature.AMBIENT_SWITCH) return subscribeNativeDiscovered(setting, changed)
+        var active = true
+        var inFlight = false
+        val poll = object : Runnable {
+            override fun run() {
+                if (!active || closed || inFlight) return
+                inFlight = true
+                inspectDiscovered(setting, result = { response ->
+                    inFlight = false
+                    if (active && !closed) {
+                        changed(response.getOrNull()?.value, ChangeOrigin.UNKNOWN)
+                        // A logical timeout cannot authorize another native getter.
+                        if (active && !closed && response.exceptionOrNull() !is VehicleCallbackTimeout)
+                            handler.postDelayed(this, 1_000)
+                    }
+                }, allowFollowup = { active && !closed })
+            }
+        }
+        val subscription = AutoCloseable {
+            if (active) {
+                active = false
+                handler.removeCallbacks(poll)
+                watchers.remove(setting)
+            }
+        }
+        watchers[setting] = subscription
+        handler.postDelayed(poll, 1_000)
+        return subscription
+    }
+
+    private fun subscribeNativeDiscovered(
+        setting: VehicleSetting, changed: (Double?, ChangeOrigin) -> Unit
+    ): AutoCloseable {
+        var active = true
+        var native: AutoCloseable? = null
+        var guard: NativeGuard? = null
+        val subscription = GuardedSubscription(
+            unregister = { active = false; native?.close() },
+            onDetached = { guard?.settle(); watchers.remove(setting) },
+            onFailure = { error -> android.util.Log.w("TeumVehicle", "Settings unregister failed; handle retained", error) }
+        )
+        val failed: (Exception) -> Unit = { error ->
+            handler.post {
+                if (active && !closed) {
+                    watchErrors[setting] = "Observation failed: ${error.message}"
+                    changed(null, ChangeOrigin.UNKNOWN)
+                }
+            }
+        }
+        watchers[setting] = subscription
+        discover(setting.feature) { response ->
+            if (!active || closed) return@discover
+            response.fold(onFailure = { failed(it as? Exception ?: IllegalStateException(it)) }, onSuccess = { items ->
+                try {
+                    checkUsable(setting)
+                    check(items.any { it.setting == setting && it.capability.canRead }) { "Unsupported readable area" }
+                    guard = lifecycle.beginNative()
+                    native = discovered.observe(setting, { value ->
+                        handler.post { if (active && !closed) changed(value, ChangeOrigin.UNKNOWN) }
+                    }, failed)
+                } catch (error: Exception) {
+                    guard?.settle()
+                    failed(error)
+                }
+            })
+        }
+        return subscription
+    }
+
+    private fun writeDiscovered(
+        setting: VehicleSetting, value: Double, permit: () -> Boolean, result: (Result<Unit>) -> Unit
+    ) {
+        val call = DiscoveredCall(result)
+        var guard: NativeGuard? = null
+        try {
+            checkUsable(setting)
+            if (!granted(writePermission(setting))) throw SecurityException("Missing ${writePermission(setting)}")
+            val binding = discovered.bindings[setting] ?: error("Exact setting must be discovered before write")
+            check(binding.discovery.capability.canWrite && binding.discovery.capability.accepts(value)) {
+                "Value or access unsupported by discovered capability"
+            }
+            guard = NativeSetterExclusion.tryBegin(setting, lifecycle)
+            check(guard != null) { "Native setter already in flight" }
+            check(permit()) { "Send cancelled by safety/consent gate" }
+            check(!closed && call.active) { "Vehicle port closed" }
+            SettingsWriteAudit.record(SettingsWriteAudit.Event.NATIVE_SETTER)
+            binding.write(value, {
+                NativeSetterExclusion.settle(setting, guard)
+                handler.post {
+                    SettingsWriteAudit.record(SettingsWriteAudit.Event.ACK)
+                    call.finish(Result.success(Unit))
+                }
+            }, { error ->
+                NativeSetterExclusion.settle(setting, guard)
+                handler.post {
+                    SettingsWriteAudit.record(SettingsWriteAudit.Event.NATIVE_FAILURE)
+                    call.finish(Result.failure(error))
+                }
+            })
+        } catch (error: Exception) {
+            NativeSetterExclusion.settle(setting, guard)
+            call.finish(Result.failure(error))
+        }
+    }
 
     private fun <T> completion(result: (Result<T>) -> Unit): (Result<T>) -> Unit {
         var finished = false
@@ -269,6 +481,10 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
     }
 
     override fun inspect(setting: VehicleSetting, result: (Result<SettingInspection>) -> Unit) {
+        if (usesDiscoveredBinding(setting.feature)) {
+            inspectDiscovered(setting, result)
+            return
+        }
         val complete = completion(result)
         val failed: (Exception) -> Unit = { complete(Result.failure(it)) }
         var nativeGuard: NativeGuard? = null
@@ -315,42 +531,10 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
                         }
                     }, { e -> nativeGuard?.settle(); failed(e) })
                 }
-                VehicleFeature.AMBIENT_BRIGHTNESS -> {
-                    if (context.checkSelfPermission("pleos.car.permission.CAR_LIGHTS") != PackageManager.PERMISSION_GRANTED)
-                        throw SecurityException("Missing pleos.car.permission.CAR_LIGHTS")
-                    val area = seatArea(setting)
-                    nativeGuard = lifecycle.beginNative()
-                    vehicle.getLight().checkAmbientLightBrightnessCapabilities(
-                    { config, bounds ->
-                        handler.post {
-                            try {
-                                check(!closed) { "Vehicle port closed" }
-                                val range = bounds[area] ?: error("Ambient area unsupported: ${setting.area}")
-                                val canRead = config.accessType == AccessType.READ || config.accessType == AccessType.READ_WRITE
-                                check(canRead) { "Ambient brightness is not readable" }
-                                // The installed setter annotation says CAR_LIGHTS. We additionally
-                                // require the public control permission; that discrepancy is not a grant.
-                                val capability = SettingCapability(true,
-                                    config.accessType == AccessType.READ_WRITE && granted(writePermission(setting)),
-                                    range.minValue.toDouble(), range.maxValue.toDouble(), 1.0,
-                                    if (!granted(writePermission(setting))) "Missing ${writePermission(setting)}"
-                                    else "Access ${config.accessType}; ${setting.area}; integer brightness")
-                                if (context.checkSelfPermission("pleos.car.permission.CAR_LIGHTS") != PackageManager.PERMISSION_GRANTED)
-                                    throw SecurityException("Missing pleos.car.permission.CAR_LIGHTS")
-                                vehicle.getLight().getAmbientLightBrightness(area,
-                                    { value ->
-                                        nativeGuard?.settle()
-                                        if (value == null) failed(IllegalStateException("Brightness unavailable"))
-                                        else {
-                                            SettingsWriteAudit.record(SettingsWriteAudit.Event.INSPECTION)
-                                            complete(Result.success(SettingInspection(capability, value.toDouble())))
-                                        }
-                                    }, { e -> nativeGuard?.settle(); failed(e) })
-                            } catch (e: Exception) { nativeGuard?.settle(); failed(e) }
-                        }
-                    }, { e -> nativeGuard?.settle(); failed(e) })
-                }
                 VehicleFeature.SEAT_POSITION -> failed(IllegalStateException("Seat disabled"))
+                VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.SEAT_VENTILATION, VehicleFeature.SMART_GLASS_LEVEL,
+                VehicleFeature.SMART_GLASS_STATE, VehicleFeature.AMBIENT_COLOR,
+                VehicleFeature.AMBIENT_SWITCH -> error("Discovered setting routed above")
                 VehicleFeature.WINDOW_POSITION -> {
                     if (context.checkSelfPermission("pleos.car.permission.CAR_WINDOWS") != PackageManager.PERMISSION_GRANTED)
                         throw SecurityException("Missing pleos.car.permission.CAR_WINDOWS")
@@ -389,6 +573,7 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
     }
 
     override fun subscribe(setting: VehicleSetting, changed: (Double?, ChangeOrigin) -> Unit): AutoCloseable {
+        if (usesDiscoveredBinding(setting.feature)) return subscribeDiscovered(setting, changed)
         watchers[setting]?.let { return it }
         val failed: (Exception) -> Unit = { error ->
             handler.post {
@@ -420,25 +605,10 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
                         vehicle.getHVAC().unregisterHvacTemperature(area, listener)
                     }
                 }
-                VehicleFeature.AMBIENT_BRIGHTNESS -> {
-                    if (context.checkSelfPermission("pleos.car.permission.CAR_LIGHTS") != PackageManager.PERMISSION_GRANTED)
-                        throw SecurityException("Missing pleos.car.permission.CAR_LIGHTS")
-                    val area = seatArea(setting)
-                    nativeGuard = lifecycle.beginNative()
-                    val listener = object : AmbientLightBrightnessListener {
-                        override fun onBrightnessUpdated(brightness: Int?) {
-                            handler.post { if (!closed) changed(brightness?.toDouble(), ChangeOrigin.UNKNOWN) }
-                        }
-                        override fun onFailed(exception: Exception) = failed(exception)
-                    }
-                    vehicle.getLight().registerAmbientLightBrightnessListener(area, listener)
-                    AutoCloseable {
-                        if (context.checkSelfPermission("pleos.car.permission.CAR_LIGHTS") != PackageManager.PERMISSION_GRANTED)
-                            throw SecurityException("Missing pleos.car.permission.CAR_LIGHTS")
-                        vehicle.getLight().unregisterAmbientLightBrightnessListener(area, listener)
-                    }
-                }
                 VehicleFeature.SEAT_POSITION -> error("Seat disabled")
+                VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.SEAT_VENTILATION, VehicleFeature.SMART_GLASS_LEVEL,
+                VehicleFeature.SMART_GLASS_STATE, VehicleFeature.AMBIENT_COLOR,
+                VehicleFeature.AMBIENT_SWITCH -> error("Discovered setting routed above")
                 VehicleFeature.WINDOW_POSITION -> {
                     if (context.checkSelfPermission("pleos.car.permission.CAR_WINDOWS") != PackageManager.PERMISSION_GRANTED)
                         throw SecurityException("Missing pleos.car.permission.CAR_WINDOWS")
@@ -476,13 +646,18 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
     // The required control permission depends on setting.feature; the exact
     // permission is checked below before permit or a native setter is called.
     @RequiresPermission(
-        anyOf = ["pleos.car.permission.CONTROL_CAR_CLIMATE", "pleos.car.permission.CONTROL_CAR_LIGHTS", "pleos.car.permission.CONTROL_CAR_WINDOWS"],
+        anyOf = ["pleos.car.permission.CONTROL_CAR_CLIMATE", "pleos.car.permission.CONTROL_CAR_LIGHTS",
+            "pleos.car.permission.CONTROL_CAR_WINDOWS", "pleos.car.permission.CONTROL_CAR_SEATS"],
         conditional = true
     )
     override fun write(
         setting: VehicleSetting, value: Double, permit: () -> Boolean, result: (Result<Unit>) -> Unit
     ) {
         SettingsWriteAudit.record(SettingsWriteAudit.Event.ENTRY)
+        if (usesDiscoveredBinding(setting.feature)) {
+            writeDiscovered(setting, value, permit, result)
+            return
+        }
         var nativeAttempted = false
         val complete = completion(result)
         val failed: (Exception) -> Unit = {
@@ -519,20 +694,10 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
                         { _, _ -> NativeSetterExclusion.settle(setting, nativeGuard); acknowledged() },
                         { e -> NativeSetterExclusion.settle(setting, nativeGuard); failed(e) })
                 }
-                VehicleFeature.AMBIENT_BRIGHTNESS -> {
-                    if (context.checkSelfPermission("pleos.car.permission.CAR_LIGHTS") != PackageManager.PERMISSION_GRANTED)
-                        throw SecurityException("Missing pleos.car.permission.CAR_LIGHTS")
-                    val area = seatArea(setting)
-                    check(value == value.toInt().toDouble()) { "Brightness must be integer" }
-                    val light = vehicle.getLight()
-                    nativeAttempted = true
-                    SettingsWriteAudit.record(SettingsWriteAudit.Event.NATIVE_SETTER)
-                    light.setAmbientLightBrightness(
-                        area, value.toInt(),
-                        { _, _ -> NativeSetterExclusion.settle(setting, nativeGuard); acknowledged() },
-                        { e -> NativeSetterExclusion.settle(setting, nativeGuard); failed(e) })
-                }
-                VehicleFeature.SEAT_POSITION -> failed(IllegalStateException("Seat disabled"))
+                VehicleFeature.SEAT_POSITION -> error("Seat disabled")
+                VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.SEAT_VENTILATION, VehicleFeature.SMART_GLASS_LEVEL,
+                VehicleFeature.SMART_GLASS_STATE, VehicleFeature.AMBIENT_COLOR,
+                VehicleFeature.AMBIENT_SWITCH -> error("Discovered setting routed above")
                 VehicleFeature.WINDOW_POSITION -> {
                     if (context.checkSelfPermission("pleos.car.permission.CONTROL_CAR_WINDOWS") != PackageManager.PERMISSION_GRANTED)
                         throw SecurityException("Missing pleos.car.permission.CONTROL_CAR_WINDOWS")
@@ -554,6 +719,7 @@ class PleosSettingsPort(private val context: Context) : VehicleSettingsPort {
         if (closed) return
         SettingsWriteAudit.record(SettingsWriteAudit.Event.CLOSE)
         closed = true
+        pendingDiscovered.toList().forEach { it() }
         watchers.values.toList().forEach { it.close() }
         // No blind clear: detached subscriptions removed themselves, while a
         // failed unregister stays mapped with its guard live so the handle is

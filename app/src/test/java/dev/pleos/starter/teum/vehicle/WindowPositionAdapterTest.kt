@@ -65,6 +65,14 @@ class WindowPositionAdapterTest {
         f.port.applyWrite = false
         f.adapter.confirm(f.adapter.previewChange(window, 1.0), true)
         assertTrue(f.latest().requestAcknowledged)
+        assertEquals(CommandStage.REQUESTED, f.latest().stage)
+        while (f.now <= SafeVehicleAdapter.OBSERVATION_WINDOW_MILLIS) {
+            f.now += 1_000
+            f.adapter.updateSafety(VehicleSafety(true,
+                ParkingObservation(Parking.PARKED, f.now, "P"),
+                UxObservation(false, 0, f.now), 1))
+            f.adapter.tick()
+        }
         assertEquals(CommandStage.UNKNOWN, f.latest().stage)
         assertEquals(0.0, f.latest().readback!!, 0.0)
         assertEquals(listOf(1.0), f.port.sent)

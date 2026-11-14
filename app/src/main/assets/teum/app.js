@@ -2,6 +2,35 @@
 const $ = selector => document.querySelector(selector);
 const state = { screen: null, slide: 0 };
 const ACT = {};
+const springOf = (zeta, response, n = 48) => {
+  const w = 2 * Math.PI / response, critical = zeta >= 1;
+  const wd = critical ? 0 : w * Math.sqrt(1 - zeta * zeta);
+  const duration = critical ? 9.23 / w : Math.log(1000) / (zeta * w);
+  const x = t => critical ? 1 - (1 + w * t) * Math.exp(-w * t) :
+    1 - Math.exp(-zeta * w * t) * (Math.cos(wd * t) + zeta * w / wd * Math.sin(wd * t));
+  return {ease:`linear(${Array.from({length:n + 1}, (_, i) =>
+    i === n ? '1' : x(duration * i / n).toFixed(4)).join(', ')})`, ms:Math.round(duration * 1000)};
+};
+const SPRING = springOf(.86, .52), POP = springOf(.62, .38);
+const RISE = springOf(1, .4), SHEET = springOf(.8, .3);
+for (const [name, spring] of Object.entries({spring:SPRING, 'spring-pop':POP, rise:RISE, sheet:SHEET})) {
+  document.documentElement.style.setProperty(`--${name}`, spring.ease);
+  document.documentElement.style.setProperty(`--${name === 'spring-pop' ? 'pop' : name}-ms`, `${spring.ms}ms`);
+}
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const freeze = node => {
+  if (!node.getAnimations().length) return;
+  const computed = getComputedStyle(node);
+  node.style.opacity = computed.opacity;
+  node.style.transform = computed.transform;
+};
+const LENS = {c:[100,100,15,35,8,34],p:[300,100,13,37,7,26],b:[500,100,7,42,4,14]};
+document.body.insertAdjacentHTML('beforeend', `<svg width="0" height="0" style="position:absolute" aria-hidden="true">${Object.entries(LENS).map(([key,[width,height,inset,radius,blur,scale]]) => {
+  const map = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${width} ${height}' preserveAspectRatio='none'><defs><linearGradient id='x'><stop offset='0' stop-color='#000'/><stop offset='1' stop-color='#f00'/></linearGradient><linearGradient id='y' x2='0' y2='1'><stop offset='0' stop-color='#000'/><stop offset='1' stop-color='#0f0'/></linearGradient><filter id='b'><feGaussianBlur stdDeviation='${blur}'/></filter></defs><rect width='${width}' height='${height}' fill='url(#x)'/><rect width='${width}' height='${height}' fill='url(#y)' style='mix-blend-mode:screen'/><rect x='${inset}' y='${inset}' width='${width - 2 * inset}' height='${height - 2 * inset}' rx='${radius}' fill='rgb(128,128,128)' filter='url(#b)'/></svg>`;
+  return `<filter id="lens-${key}" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB"><feImage href="data:image/svg+xml,${encodeURIComponent(map)}" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="m"/><feDisplacementMap in="SourceGraphic" in2="m" scale="${scale}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+}).join('')}</svg>`);
+if (navigator.userAgentData?.brands?.some(brand => brand.brand === 'Chromium'))
+  document.documentElement.classList.add('refract');
 let epoch = window.__TEUM_EPOCH__;
 let requestSequence = 0;
 let renderGeneration = 0;
@@ -19,6 +48,10 @@ let pendingPresentationRefresh = false;
 const arrivalAdmissions = new Set();
 let arrivalDeferred = [];
 let graphicGesture = null;
+let seatGesture = null;
+let timePicker = null;
+let homeSelectionSequence = 0;
+let lastProgress = null;
 function releaseArrivalReservation(discard = false) {
   if (discard && arrivalEntryWait) {
     arrivalAdmissions.add(arrivalEntryWait.nonce);
@@ -32,9 +65,9 @@ function releaseArrivalReservation(discard = false) {
 function tryArrivalAdmission() {
   const nonce = state.arrival?.admissionNonce;
   if (typeof nonce !== 'string' || !/^[A-Za-z0-9_-]{1,64}$/.test(nonce) ||
-      arrivalAdmissions.has(nonce) || arrivalReservation || graphicGesture || state.screen !== 'H-01' ||
+      arrivalAdmissions.has(nonce) || arrivalReservation || graphicGesture || seatGesture || timePicker || state.screen !== 'H-01' ||
       state.journeyToken || document.visibilityState !== 'visible' || !document.hasFocus() ||
-      !$('#scr .scr.home') || $('#scr .scr.out') || activeOverlay || $('#ov').firstElementChild ||
+      !$('#scr .scr.home') || $('#scr .scr.leaving') || activeOverlay || $('#ov').firstElementChild ||
       state.permissions?.requestPending ||
       document.activeElement?.matches('input,textarea,select,[data-bind]')) return;
   arrivalAdmissions.add(nonce);
@@ -151,73 +184,153 @@ function go(id) {
   send('navigate', { route: id });
 }
 
-function paint(id, quiet = false) {
+function paint(id, quiet = false, old = null) {
   const screen = S[id];
   if (!screen) return;
   clearGraphicGesture();
+  clearSeatGesture();
   const app = $('#app');
-  app.dataset.theme = screen.dark ? 'dark' : state.theme;
+  const theme = screen.dark ? 'dark' : state.theme;
+  const flip = old && app.dataset.theme !== theme;
+  if (flip) old.dataset.theme = app.dataset.theme;
+  app.dataset.theme = theme;
   app.dataset.aura = typeof screen.aura === 'function' ? screen.aura(state) : (screen.aura || 'home');
   $('#aura').className = `aura ${screen.auraCls || ''}`;
   app.classList.toggle('driving', state.restricted === true);
   fitWindow();
-  $('#scr').innerHTML = screen.view(state);
-  document.querySelectorAll('[data-bind]').forEach(node => {
+  const box = $('#scr'), template = document.createElement('template');
+  template.innerHTML = screen.view(state);
+  const incoming = template.content.firstElementChild;
+  if (incoming) incoming.dataset.route = id;
+  const focused = document.activeElement;
+  const focusKey = box.contains(focused) ? focused.dataset.bind : null;
+  const selection = focusKey && ['text', 'search', 'tel', 'url', 'password'].includes(focused.type)
+    ? [focused.selectionStart, focused.selectionEnd] : null;
+  if (old) {
+    const before = old.querySelector(':scope > .top'), after = incoming?.querySelector(':scope > .top');
+    const bare = header => header && !header.matches('.home-top') && !header.querySelector('h1,h2');
+    const signature = node => node.matches('.track') ? 'track' : node.matches('button')
+      ? (node.getAttribute('aria-label') || node.textContent).replace(/이전|뒤로/, '<').replace(/끝내기|닫기/, 'x') : '';
+    if (bare(before) && bare(after)) {
+      before.classList.add('keep'); after.classList.add('keep');
+      [...after.children].forEach((node, index) => {
+        const previous = before.children[index];
+        const same = !flip && !!previous && signature(previous) === signature(node);
+        previous?.classList.toggle('same', same);
+        node.classList.toggle('fresh', !same);
+      });
+    }
+    if (old.classList.contains('entering')) {
+      [...old.children].forEach(freeze);
+      old.classList.remove('entering');
+    }
+    old.classList.add('leaving');
+    old.inert = true;
+    box.prepend(template.content);
+    setTimeout(() => { old.remove(); scheduleArrivalAdmission(); }, 220);
+  } else box.replaceChildren(template.content);
+  incoming?.querySelectorAll('[data-bind]').forEach(node => {
     if (drafts.has(node.dataset.bind)) node.value = drafts.get(node.dataset.bind);
   });
-  if (quiet) $('#scr .scr')?.classList.add('quiet');
+  if (quiet) incoming?.classList.add('quiet');
+  else incoming?.classList.add('entering');
+  if (focusKey && quiet) {
+    const replacement = [...incoming.querySelectorAll('[data-bind]')].find(node => node.dataset.bind === focusKey);
+    replacement?.focus({preventScroll:true});
+    if (replacement && selection) replacement.setSelectionRange(...selection);
+  }
   icons();
+  const dot = incoming?.querySelector('.track .dot');
+  if (dot) {
+    const progress = Number(dot.dataset.p);
+    if (!quiet && lastProgress !== null && lastProgress !== progress && !reducedMotion()) {
+      const width = dot.parentElement.offsetWidth;
+      dot.animate([{transform:`translateX(${lastProgress * width}px)`},
+        {transform:`translateX(${progress * width}px)`}], {duration:SPRING.ms, easing:SPRING.ease});
+    }
+    lastProgress = progress;
+  } else lastProgress = null;
   patchLive();
   scheduleArrivalAdmission();
+  return incoming;
 }
 
 function present(id, quiet, direction = 1) {
   clearGraphicGesture();
+  clearSeatGesture();
   clearTimers();
   if (!quiet) closeOverlay();
   const generation = ++renderGeneration;
   inFlightPresentation = null;
   pendingPresentationRefresh = false;
-  const old = $('#scr .scr');
+  $('#scr').querySelectorAll(':scope > .leaving').forEach(node => node.remove());
+  const old = $('#scr > .scr');
+  if (!quiet && old && S[id].group && S[id].group === S[old.dataset.route]?.group &&
+      $('#app').offsetWidth >= 1200 && old.querySelector('.md-detail')) {
+    const template = document.createElement('template');
+    template.innerHTML = S[id].view(state);
+    const next = template.content.firstElementChild, detail = next.querySelector('.md-detail');
+    old.className = next.className;
+    old.dataset.route = id;
+    old.querySelector('.top').replaceWith(next.querySelector('.top'));
+    const links = [...next.querySelectorAll('.md-nav button')];
+    old.querySelectorAll('.md-nav button').forEach((node,index) => { node.className = links[index].className; });
+    old.querySelector('.md-detail').replaceWith(detail);
+    detail.querySelectorAll('[data-bind]').forEach(node => {
+      if (drafts.has(node.dataset.bind)) node.value = drafts.get(node.dataset.bind);
+    });
+    detail.animate(reducedMotion() ? [{opacity:0},{opacity:1}] :
+      [{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],
+    {duration:240,easing:'cubic-bezier(.23,1,.32,1)'});
+    clearPresentationDirection();
+    icons();
+    patchLive();
+    return;
+  }
   const keep = old?.querySelector('[data-keep]');
   const from = keep && { key: keep.dataset.keep, rect: keep.getBoundingClientRect() };
-  if (!old || quiet || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!old || quiet) {
     clearPresentationDirection();
     paint(id, true);
     return;
   }
   $('#app').style.setProperty('--dir', String(direction));
   inFlightPresentation = {screen: id, generation};
-  old.classList.add('out');
-  later(200, () => {
+  const incoming = paint(id, false, old);
+  requestAnimationFrame(() => {
     if (generation !== renderGeneration) return;
-    paint(id);
-    // Direction belongs to this incoming generation only; clear it after its rise animations settle.
-    requestAnimationFrame(() => {
+    const entrances = [...incoming.children].flatMap(node => node.getAnimations())
+      .filter(animation => Number.isFinite(animation.effect?.getComputedTiming().endTime));
+    Promise.allSettled(entrances.map(animation => animation.finished)).then(() => {
       if (generation !== renderGeneration) return;
-      const directional = [...document.querySelectorAll(
-        '#scr .scr > .side > *, #scr .scr > .hgrid > *, #scr .scr > .pbody')]
-        .flatMap(node => node.getAnimations())
-        .filter(animation => animation.animationName === 'rise');
-      Promise.allSettled(directional.map(animation => animation.finished)).then(() => {
-        if (generation !== renderGeneration) return;
-        clearPresentationDirection();
-        if (inFlightPresentation?.generation === generation) inFlightPresentation = null;
-        if (pendingPresentationRefresh) {
-          pendingPresentationRefresh = false;
-          present(state.screen, true);
-        }
-      });
+      incoming.classList.remove('entering');
+      clearPresentationDirection();
+      inFlightPresentation = null;
+      if (pendingPresentationRefresh) {
+        pendingPresentationRefresh = false;
+        present(state.screen, true);
+      }
+      scheduleArrivalAdmission();
     });
-    const to = from && document.querySelector(`#scr [data-keep="${from.key}"]`);
-    if (!to) return;
+  });
+  const to = from && [...incoming.querySelectorAll('[data-keep]')].find(node => node.dataset.keep === from.key);
+  if (to && !reducedMotion()) {
+    const source = keep.getAnimations({subtree:true}), used = new Set();
+    to.getAnimations({subtree:true}).forEach(animation => {
+      const previous = source.find(candidate => !used.has(candidate) &&
+        animation.animationName && candidate.animationName === animation.animationName);
+      if (previous) { used.add(previous); animation.currentTime = previous.currentTime; }
+    });
+    keep.style.visibility = 'hidden';
     to.closest('.vis')?.style.setProperty('animation', 'none');
+    for (let node = to; node.parentElement && !node.matches('.vis'); node = node.parentElement)
+      [...node.parentElement.children].forEach(sibling => { if (sibling !== node) sibling.classList.add('x-fade'); });
     const rect = to.getBoundingClientRect(), scale = rect.width / to.offsetWidth || 1;
     to.animate([
       { transform: `translate(${(from.rect.x - rect.x) / scale}px, ${(from.rect.y - rect.y) / scale}px)` },
       { transform: 'none' }
-    ], { duration: 640, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' });
-  });
+    ], { duration: SPRING.ms, easing: SPRING.ease });
+  }
 }
 
 function clearPresentationDirection() {
@@ -227,20 +340,50 @@ function clearPresentationDirection() {
 const refresh = () => paint(state.screen, true);
 function overlay(html) {
   if (html === overlayMarkup) return;
+  if (activeOverlay === 'sleeptime' && $('#ov .time-pick')) {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    const next = template.content;
+    const number = $('#ov .time-pick .dotnum'), updated = next.querySelector('.time-pick .dotnum');
+    if (number && updated) {
+      overlayMarkup = html;
+      if (number.innerHTML !== updated.innerHTML) dissolve(number,updated.innerHTML);
+      const ruler = $('#ov .ruler b'), nextRuler = next.querySelector('.ruler b');
+      if (ruler && nextRuler) ruler.style.cssText = nextRuler.style.cssText;
+      for (const selector of ['.modal > .body','.modal > .acts']) {
+        const before = $('#ov').querySelector(selector), after = next.querySelector(selector);
+        if (before && after && before.innerHTML !== after.innerHTML) before.innerHTML = after.innerHTML;
+      }
+      const choices = [...next.querySelectorAll('.seg3 button')];
+      $('#ov').querySelectorAll('.seg3 button').forEach((node,index) => {
+        node.className = choices[index].className;
+        node.setAttribute('aria-pressed',String(node.classList.contains('on')));
+      });
+      icons();
+      patchLive();
+      return;
+    }
+  }
   clearGraphicGesture();
+  clearSeatGesture();
+  clearTimePicker();
   overlayMarkup = html;
   $('#ov').innerHTML = html;
+  $('#app').classList.toggle('focus', !!$('#ov .modal-bg'));
   icons();
-  patchEntryControls();
+  patchLive();
 }
 function closeOverlay(animated = false) {
   activeOverlay = null;
   overlayMarkup = null;
+  clearTimePicker();
+  $('#app').classList.remove('focus');
   const node = $('#ov');
   if (!node.firstElementChild) return;
   if (!animated) { node.replaceChildren(); scheduleArrivalAdmission(); return; }
   node.firstElementChild.classList.add('leaving');
-  later(200, () => { node.querySelector('.leaving')?.remove(); scheduleArrivalAdmission(); });
+  const leaving = node.firstElementChild;
+  setTimeout(() => { leaving.remove(); scheduleArrivalAdmission(); }, 200);
 }
 function toast(text, ms = 3000) {
   const node = document.createElement('div');
@@ -252,6 +395,24 @@ function toast(text, ms = 3000) {
 
 function patchLive() {
   patchEntryControls();
+  document.querySelectorAll('[data-live-dots]').forEach(node => {
+    const value = node.dataset.liveDots.split('.').reduce((current, key) => current?.[key], state);
+    const text = typeof value === 'string' || typeof value === 'number' ? String(value) : '—';
+    if (node.dataset.shownValue === text) return;
+    node.dataset.shownValue = text;
+    dissolve(node, text === '—' ? text : DOTS(text, Number(node.dataset.dotsHeight) || 104));
+  });
+  document.querySelectorAll('[data-schedule-minute]').forEach(node => {
+    const minute = state.preferences?.schedule?.[node.dataset.scheduleMinute];
+    const text = Number.isInteger(minute) && minute >= 0 && minute <= 1439 ? clock(minute) : '—';
+    if (node.dataset.shownValue === text) return;
+    node.dataset.shownValue = text;
+    dissolve(node, text === '—' ? text : DOTS(text, 60));
+    node.closest('.tcard')?.setAttribute('aria-label',
+      `${node.closest('.tcard').querySelector('.cap')?.textContent || '시간'} 시간 바꾸기, 현재 ${text}`);
+  });
+  const walk = $('#walkV'), walking = state.preferences?.schedule?.walkingReserveMinutes;
+  if (walk && walk.textContent !== `${walking ?? '—'}분`) dissolve(walk, `${walking ?? '—'}분`);
   document.querySelectorAll('[data-music-progress]').forEach(node => {
     const ratio = state.music?.durationMs > 0
       ? Math.max(0, Math.min(1, (state.music.positionMs || 0) / state.music.durationMs)) : 0;
@@ -263,7 +424,8 @@ function patchLive() {
   document.querySelectorAll('[data-live]').forEach(node => {
     const path = node.dataset.live.split('.');
     const value = path.reduce((current, key) => current?.[key], state);
-    if (typeof value === 'string' || typeof value === 'number') node.textContent = String(value);
+    if ((typeof value === 'string' || typeof value === 'number') && node.textContent !== String(value))
+      node.textContent = String(value);
   });
   const breathing = state.breathing;
   document.querySelectorAll('[data-live-breath-phase]').forEach(node => {
@@ -330,11 +492,15 @@ window.teumReceive = message => {
     pendingPrevious.delete(receipt.requestId);
   // Same-owner/same-revision/same-screen ticks keep every correlation for that before state.
   retirePreviousExpectations(message.state);
-  const selection = { pick: state.pick, tune: state.tune, slide: state.slide };
+  const selection = { pick: state.pick, tune: state.tune, slide: state.slide, homePick: state.homePick };
   epoch = message.epoch;
   Object.assign(state, message.state);
   if (graphicGesture && !graphicGesture.valid()) clearGraphicGesture();
+  if (seatGesture && !seatGesture.valid()) clearSeatGesture();
   if (previous === state.screen) Object.assign(state, selection);
+  if (epochChanged || state.screen !== 'H-01') state.homePick = null;
+  if (timePicker && (timePicker.epoch !== epoch || timePicker.screen !== state.screen ||
+      state.restricted || state.permissions?.requestPending)) closeOverlay();
   // These read-only screens also depend on native metadata published between route revisions.
   // Keep second-by-second journey fields out so forms and breathing retain their DOM identity.
   let metadata = null;
@@ -431,12 +597,217 @@ function clockMinute(value) {
   const [hour, minute] = value.split(':').map(Number);
   return hour < 24 && minute < 60 ? hour * 60 + minute : null;
 }
-function schedule(walking = state.preferences.schedule.walkingReserveMinutes ?? -1) {
+function schedule(walking = state.preferences.schedule.walkingReserveMinutes ?? -1, override = {}) {
   const current = state.preferences.schedule;
-  const work = clockMinute(binding('schedule:workStartMinute') ?? clock(current.workStartMinute));
-  const lunch = clockMinute(binding('schedule:lunchReturnMinute') ?? clock(current.lunchReturnMinute));
+  const work = clockMinute(override.workStartMinute ?? clock(current.workStartMinute));
+  const lunch = clockMinute(override.lunchReturnMinute ?? clock(current.lunchReturnMinute));
   if (work === null || lunch === null) { toast('시간을 확인해 주세요'); return; }
   send('saveSchedule', { workStartMinute: work, lunchReturnMinute: lunch, walkingReserveMinutes: walking });
+}
+function slideTo(direction) {
+  const visual = $('#scr .slide-vis'), copyBox = $('#scr .slide-copy');
+  if (!visual || !copyBox) { refresh(); return; }
+  $('#app').dataset.aura = SLIDE[state.slide][2];
+  $('#app').style.setProperty('--dir', String(direction));
+  const swap = (box, html) => {
+    box.querySelectorAll(':scope > .x-out').forEach(node => node.remove());
+    box.querySelectorAll(':scope > :not(.ghost)').forEach(node => {
+      freeze(node);
+      node.classList.remove('x-in');
+      node.classList.add('x-out');
+      node.inert = true;
+      setTimeout(() => node.remove(), 200);
+    });
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    [...template.content.children].forEach(node => node.classList.add('x-in'));
+    box.append(template.content);
+  };
+  swap(visual, SLIDEVIS[state.slide](state));
+  swap(copyBox, SCOPY(state.slide));
+  const track = $('#scr .track'), template = document.createElement('template');
+  template.innerHTML = bar('x', state.slide + 1, 8);
+  const nextTrack = template.content.querySelector('.track');
+  if (track && nextTrack) {
+    track.replaceWith(nextTrack);
+    const dot = nextTrack.querySelector('.dot'), progress = Number(dot.dataset.p);
+    if (lastProgress !== null && !reducedMotion()) {
+      const width = nextTrack.offsetWidth;
+      dot.animate([{transform:`translateX(${lastProgress * width}px)`},
+        {transform:`translateX(${progress * width}px)`}], {duration:SPRING.ms, easing:SPRING.ease});
+    }
+    lastProgress = progress;
+  }
+  icons();
+  patchLive();
+}
+function setSeat(degrees) {
+  const box = $('#scr .seatctl');
+  if (!box || state.restricted || !Number.isFinite(degrees)) return;
+  const nap = box.dataset.seatKind === 'nap', field = nap ? 'napDegrees' : 'restDegrees';
+  if (!Number.isFinite(state.preferences?.backrest?.[field])) return;
+  const value = Math.max(106, Math.min(nap ? 160 : 146, Math.round(degrees)));
+  drafts.set(`backrest:${field}`, String(value));
+  box.querySelector('.rot')?.style.setProperty('transform', `rotate(${value - 118}deg)`);
+  box.querySelector('.sil')?.setAttribute('d', SEATPATH(value));
+  box.querySelectorAll('.echo path').forEach((node, index) => {
+    node.setAttribute('d', SEATPATH(106 + (value - 106) * [.2,.4,.6,.8][index]));
+  });
+  box.querySelector('.arc-on')?.style.setProperty('stroke-dasharray', `${value - 106} 54`);
+  const label = box.querySelector('#seatDeg');
+  if (label) label.textContent = `${value}°`;
+}
+const scheduleField = key => ({workAt:'workStartMinute', lunchAt:'lunchReturnMinute',
+  workStartMinute:'workStartMinute', lunchReturnMinute:'lunchReturnMinute'})[key];
+function clearTimePicker() {
+  if (!timePicker) return;
+  timePicker.events.abort();
+  timePicker = null;
+}
+function pickTime(key) {
+  const field = scheduleField(key);
+  if (!field || state.restricted) return;
+  const saved = clockMinute(clock(state.preferences?.schedule?.[field]));
+  const selected = Number.isInteger(saved) && saved >= 0 ? saved : 0;
+  const label = field === 'workStartMinute' ? '출근' : '점심 복귀';
+  const wheel = (length, kind) => `<div class="wheel" data-k="${kind}" role="group" aria-label="${kind === 'h' ? '시' : '분'}"><div class="wheel-in">${Array.from({length}, (_, i) => {
+    const value = String(i).padStart(2, '0');
+    return `<button class="wv" data-v="${value}" aria-label="${i}${kind === 'h' ? '시' : '분'}">${DOTS(value,52)}</button>`;
+  }).join('')}</div></div>`;
+  overlay(`<div class="modal-bg"><div class="modal glass picker" role="dialog" aria-modal="true" aria-label="${label} 시간"><h2 class="h2">${label} 시간</h2>
+    <div class="wheels"><i class="band"></i>${wheel(24,'h')}<span class="wcolon">${DOTS(':',52)}</span>${wheel(60,'m')}</div>
+    <div class="acts">${two(sec('취소',null,'resume'),`<button class="btn m pri-m" data-do="saveTime:${field}">저장</button>`)}</div></div></div>`);
+  const owner = {field, epoch, screen:state.screen, root:$('#ov .picker'), events:new AbortController()};
+  timePicker = owner;
+  owner.root.querySelectorAll('.wheel').forEach(wheelNode =>
+    spin(wheelNode, wheelNode.dataset.k === 'h' ? Math.floor(selected / 60) : selected % 60, owner));
+}
+function spin(wheel, selected, owner) {
+  const items = [...wheel.querySelectorAll('.wv')], height = 96, signal = owner.events.signal;
+  const valid = () => timePicker === owner && owner.root.isConnected && owner.epoch === epoch &&
+    owner.screen === state.screen && !state.restricted;
+  const paintWheel = () => {
+    const center = wheel.scrollTop / height;
+    items.forEach((item, index) => {
+      const distance = index - center, magnitude = Math.min(Math.abs(distance), 2.6);
+      item.style.transform = reducedMotion() ? 'none' :
+        `perspective(700px) rotateX(${-distance * 16}deg) scale(${1 - magnitude * .12})`;
+      item.style.opacity = String(1 - magnitude * .3);
+      item.classList.toggle('sel', Math.abs(distance) < .5);
+      item.setAttribute('aria-pressed', String(Math.abs(distance) < .5));
+      item.tabIndex = Math.abs(distance) < .5 ? 0 : -1;
+    });
+  };
+  const select = index => {
+    if (!valid()) return;
+    wheel.scrollTo({top:Math.max(0,Math.min(items.length - 1,index)) * height,
+      behavior:reducedMotion() ? 'instant' : 'smooth'});
+  };
+  wheel.scrollTop = selected * height;
+  paintWheel();
+  wheel.addEventListener('scroll', paintWheel, {signal});
+  let moved = false;
+  wheel.addEventListener('click', event => {
+    const item = event.target.closest('.wv');
+    if (item && !moved) select(items.indexOf(item));
+  }, {signal});
+  wheel.addEventListener('keydown', event => {
+    const delta = {ArrowUp:-1,ArrowDown:1,PageUp:-5,PageDown:5}[event.key];
+    if (delta === undefined) return;
+    event.preventDefault();
+    select(Math.round(wheel.scrollTop / height) + delta);
+  }, {signal});
+  wheel.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'mouse' || !event.isPrimary || event.button !== 0 || !valid()) return;
+    const y = event.clientY, start = wheel.scrollTop;
+    const scale = wheel.getBoundingClientRect().height / wheel.offsetHeight || 1;
+    const history = [[event.timeStamp,event.clientY]], drag = new AbortController();
+    signal.addEventListener('abort', () => {
+      drag.abort();
+      if (wheel.hasPointerCapture(event.pointerId)) wheel.releasePointerCapture(event.pointerId);
+    }, {once:true});
+    moved = false;
+    wheel.setPointerCapture(event.pointerId);
+    wheel.classList.add('drag');
+    wheel.addEventListener('pointermove', move => {
+      if (move.pointerId !== event.pointerId || !valid()) return;
+      if (Math.abs(move.clientY - y) > 6) moved = true;
+      wheel.scrollTop = start - (move.clientY - y) / scale;
+      history.push([move.timeStamp,move.clientY]);
+      if (history.length > 5) history.shift();
+    }, {signal:drag.signal});
+    const finish = up => {
+      if (up.pointerId !== event.pointerId) return;
+      drag.abort();
+      if (wheel.hasPointerCapture(event.pointerId)) wheel.releasePointerCapture(event.pointerId);
+      wheel.classList.remove('drag');
+      const clicked = event.target.closest('.wv');
+      if (!moved && up.type !== 'pointercancel' && clicked) {
+        select(items.indexOf(clicked));
+        return;
+      }
+      const [time, position] = history[0];
+      const velocity = up.type === 'pointercancel' ? 0 :
+        (up.clientY - position) / scale / Math.max(up.timeStamp - time,1);
+      select(Math.round((wheel.scrollTop - velocity * 99) / height));
+    };
+    wheel.addEventListener('pointerup', finish, {signal:drag.signal});
+    wheel.addEventListener('pointercancel', finish, {signal:drag.signal});
+  }, {signal});
+}
+function saveTime(key) {
+  const field = scheduleField(key), owner = timePicker;
+  if (!owner || owner.field !== field || owner.epoch !== epoch || owner.screen !== state.screen ||
+      state.restricted || !owner.root.isConnected) return;
+  const values = [...owner.root.querySelectorAll('.wheel')].map(wheel => {
+    const items = wheel.querySelectorAll('.wv');
+    const index = Math.max(0,Math.min(items.length - 1,Math.round(wheel.scrollTop / 96)));
+    return Number(items[index].dataset.v);
+  });
+  const minute = values[0] * 60 + values[1];
+  // The card continues to display native saved facts until the SaveSchedule response arrives.
+  schedule(undefined,{[field]:clock(minute)});
+  closeOverlay(true);
+}
+function selectHome(key) {
+  if (!['am','noon','meet','pm'].includes(key) || state.screen !== 'H-01' || state.restricted) return;
+  state.homePick = key;
+  const current = $('#scr > .home:not(.leaving)');
+  if (!current) return;
+  const template = document.createElement('template');
+  template.innerHTML = S['H-01'].view(state);
+  const next = template.content.firstElementChild;
+  const slots = [...next.querySelectorAll('.slot')];
+  current.querySelectorAll('.slot').forEach((node,index) => {
+    const replacement = slots[index];
+    node.className = replacement.className;
+    node.setAttribute('aria-pressed', replacement.getAttribute('aria-pressed'));
+    const shape = node.querySelector('.sg .shape'), nextShape = replacement.querySelector('.sg .shape');
+    if (shape && nextShape) shape.classList.toggle('dim',nextShape.classList.contains('dim'));
+  });
+  const hero = current.querySelector('.hero'), replacement = next.querySelector('.hero');
+  if (!hero || !replacement) return;
+  const sequence = ++homeSelectionSequence, generation = renderGeneration;
+  hero.style.cssText = replacement.style.cssText;
+  [...hero.children].forEach(node => {
+    if (node.matches('.mood-line')) return;
+    freeze(node);
+    node.classList.remove('dz-in');
+    node.classList.add('dz-out');
+    node.inert = true;
+  });
+  const swap = () => {
+    if (sequence !== homeSelectionSequence || generation !== renderGeneration || !hero.isConnected) return;
+    hero.querySelectorAll(':scope > .dz-out').forEach(node => node.remove());
+    [...replacement.children].forEach(node => {
+      if (node.matches('.mood-line')) return;
+      node.classList.add('dz-in');
+      hero.append(node);
+    });
+    icons();
+    patchLive();
+  };
+  if (reducedMotion()) swap(); else later(170,swap);
 }
 function saveBackrest(defaultRest = null) {
   const current = state.preferences.backrest;
@@ -467,13 +838,73 @@ function visualPick(key) {
     box.innerHTML = G(MOODSHAPE[key], key, 380, {wrap:'float',rings:.25});
     $('.pick-name').textContent = MOODS[key][0];
     $('.pick-desc').textContent = MOODS[key][1];
-    box.animate([{opacity:0,filter:'blur(6px)'},{opacity:1,filter:'blur(0)'}],
+    box.animate(reducedMotion() ? [{opacity:0},{opacity:1}] :
+      [{opacity:0,filter:'blur(6px)'},{opacity:1,filter:'blur(0)'}],
       {duration:320,easing:'cubic-bezier(0.23,1,0.32,1)'});
   }
 }
+function vehicleControl(feature) {
+  return state.hardware?.vehicleControls?.[feature] || {};
+}
+// Native rejects every preview and area change while a command is queued or requested.
+function vehicleMutationsBlocked() {
+  return state.hardware?.backrestControl?.busy === true ||
+    Object.values(state.hardware?.vehicleControls || {}).some(control =>
+    control?.command?.stage === 'QUEUED' || control?.command?.stage === 'REQUESTED');
+}
+function vehicleAccepts(capability, value) {
+  return !!capability && Number.isFinite(value) && Number.isFinite(capability.min) &&
+    Number.isFinite(capability.max) && Number.isFinite(capability.step) && capability.step > 0 &&
+    value >= capability.min && value <= capability.max &&
+    Math.abs((value - capability.min) / capability.step -
+      Math.round((value - capability.min) / capability.step)) < 0.001 &&
+    (!Array.isArray(capability.allowedValues) ||
+      capability.allowedValues.some(allowed => Math.abs(allowed - value) < 1e-6));
+}
+// Change RGB without inventing or normalizing the SDK's observed alpha byte.
+function argbFromHex(text, observed) {
+  const match = /^#([0-9a-fA-F]{6})$/.exec(String(text ?? '').trim());
+  if (!match || !Number.isInteger(observed) || observed < -2147483648 || observed > 2147483647) return null;
+  return ((observed & 0xFF000000) | Number.parseInt(match[1], 16)) | 0;
+}
+function argbHex(value) {
+  if (!Number.isInteger(value) || value < -2147483648 || value > 2147483647) return null;
+  return '#' + ((value >>> 0) & 0xFFFFFF).toString(16).padStart(6, '0').toUpperCase();
+}
+function vehicleLabel(capability, value) {
+  for (const [key, label] of Object.entries(capability?.valueLabels || {}))
+    if (Number(key) === value) return label;
+  return null;
+}
+function vehicleDraftValue(feature) {
+  const control = vehicleControl(feature);
+  const capability = control.capability;
+  if (vehicleMutationsBlocked())
+    return {ok:false, message:'차량 응답을 확인하는 중이에요. 끝난 뒤 다시 시도해 주세요.'};
+  if (!capability || control.safetyReason || !Number.isFinite(control.currentValue))
+    return {ok:false, message:'차량의 현재 값과 지원 범위를 먼저 확인해 주세요'};
+  if (!capability.canWrite) return {ok:false, message:capability.reason || '이 설정은 제어할 수 없어요'};
+  const key = `vehicle:${feature}`;
+  const input = document.querySelector(`[data-bind="${key}"]`);
+  const raw = drafts.has(key) ? drafts.get(key) : (input?.value ?? control.currentValue);
+  if (feature === 'AMBIENT_COLOR') {
+    const value = argbFromHex(raw, control.currentValue);
+    if (value === null) return {ok:false, message:'#RRGGBB 형식의 색을 입력해 주세요'};
+    if (!vehicleAccepts(capability, value)) return {ok:false, message:'차량이 허용하는 색 범위를 확인해 주세요'};
+    return {ok:true, value};
+  }
+  const value = Number(raw);
+  if (!Number.isFinite(value)) return {ok:false, message:'차량 값을 확인해 주세요'};
+  if (!vehicleAccepts(capability, value)) return {ok:false, message:'차량이 허용하는 범위와 단위를 확인해 주세요'};
+  return {ok:true, value};
+}
+
 Object.assign(ACT, {
-  slide: () => { if (state.slide === 2) go('ON-03'); else { state.slide++; refresh(); } },
-  slideBack: () => { if (state.slide === 0) go('ON-01'); else { state.slide--; refresh(); } },
+  slide: () => { if (state.slide === 2) go('ON-03'); else { state.slide++; slideTo(1); } },
+  slideBack: () => { if (state.slide === 0) go('ON-01'); else { state.slide--; slideTo(-1); } },
+  slotPick: selectHome,
+  pickTime,
+  saveTime,
   permissions: () => overlay(`<div class="modal-bg"><div class="modal glass">
     <h2 class="h2">필요할 때 권한을 확인해요</h2>
     <p class="body" style="margin-top:12px">말로 기록할 때 마이크를, 현재 장소를 등록할 때 위치를 요청해요.</p>
@@ -481,18 +912,41 @@ Object.assign(ACT, {
       sec('위치 권한',null,'permission:LOCATION'))}${pri('계속하기','ON-04')}</div>
     </div></div>`),
   permission: permission => send('requestPermission', {permission}),
-  inspectVehicle: feature => send('inspectVehicle', {feature}),
+  inspectVehicle: (feature, node) => {
+    if (vehicleMutationsBlocked()) { toast('차량 응답을 확인하는 중이에요. 끝난 뒤 다시 시도해 주세요.'); return; }
+    const area = node?.dataset.area;
+    if (area && area !== vehicleControl(feature).area) drafts.delete(`vehicle:${feature}`);
+    send('inspectVehicle', area ? {feature, area} : {feature});
+  },
+  vehicleChoice: payload => {
+    const index = payload.lastIndexOf(':');
+    if (index < 0 || vehicleMutationsBlocked()) return;
+    const feature = payload.slice(0, index), value = Number(payload.slice(index + 1));
+    if (!feature || !Number.isFinite(value)) return;
+    drafts.set(`vehicle:${feature}`, String(value));
+    refresh();
+  },
   previewVehicle: feature => {
-    const input = document.querySelector(`[data-bind="vehicle:${feature}"]`);
-    const value = Number(input?.value);
-    if (!Number.isFinite(value)) { toast('차량 값을 확인해 주세요'); return; }
-    send('previewVehicle', {feature, value});
+    const draft = vehicleDraftValue(feature);
+    if (!draft.ok) { toast(draft.message); return; }
+    send('previewVehicle', {feature, value:draft.value});
   },
   confirmVehicle: previewId => {
     const id = Number(previewId);
     if (!Number.isSafeInteger(id) || id <= 0) return;
     send('confirmVehicle', {previewId:id});
   },
+  inspectBackrest: () => {
+    if (!vehicleMutationsBlocked()) send('inspectBackrest');
+  },
+  pulseBackrest: (direction, node) => {
+    if (vehicleMutationsBlocked()) return;
+    const area = node?.dataset.area;
+    if (area && (direction === 'FORWARD' || direction === 'BACKWARD')) {
+      send('pulseBackrest', {area, direction});
+    }
+  },
+  stopBackrest: () => send('stopBackrest'),
   completeOnboarding: () => send('completeOnboarding'),
   captureLocation: place => send('captureLocation', {home:place === 'home'}),
   savePlace: place => send('savePlaceLabel', {home:place === 'home',label:binding(`place:${place}`) ?? ''}),
@@ -505,11 +959,7 @@ Object.assign(ACT, {
     const nap = $('.seatctl')?.dataset.seatKind === 'nap';
     const key = `backrest:${nap ? 'napDegrees' : 'restDegrees'}`;
     const current = Number(drafts.get(key) ?? state.preferences.backrest[nap ? 'napDegrees' : 'restDegrees']);
-    const value = Math.max(106,Math.min(nap ? 160 : 146,current + Number(delta)));
-    drafts.set(key,String(value));
-    $('.seatctl .rot')?.style.setProperty('transform',`rotate(${value - 118}deg)`);
-    $('.seatctl .sil')?.setAttribute('d',SEATPATH(value));
-    $('#seatDeg').textContent = `${value}°`;
+    setSeat(current + Number(delta));
   },
   sound: sound => send('selectSound',{sound}),
   flag: flag => {
@@ -587,7 +1037,22 @@ Object.assign(ACT, {
   tune: value => {
     const index = Number(value);
     if (!state.music?.choices?.[index]?.available) return;
-    state.tune = index; refresh();
+    state.tune = index;
+    document.querySelectorAll('#scr .tune').forEach(node => {
+      const selected = node.dataset.do === `tune:${index}`;
+      node.classList.toggle('on',selected);
+      node.setAttribute('aria-pressed',String(selected));
+    });
+    const visual = $('#scr .tune-big');
+    if (visual) dissolve(visual,TUNEBIG(index,state));
+    $('#app').dataset.aura = TUNES[index][3];
+    const play = $('#scr [data-do="playMusic"]');
+    if (play) {
+      play.disabled = false;
+      play.removeAttribute('aria-disabled');
+      play.firstChild.textContent = '이 음악 듣기';
+    }
+    icons();
   },
   playMusic: () => {
     journeyInput('MUSIC_CHOICE',['SUPPORT_SONG','RECENT','RECOMMENDATION'][state.tune]);
@@ -597,7 +1062,7 @@ Object.assign(ACT, {
 
 const rubber = (d, lim = 150) => d * lim * .55 / (lim + .55 * Math.abs(d));
 function graphicEligible(g) {
-  return g.isConnected && $('#scr').contains(g) && !g.closest('.scr.out') &&
+  return g.isConnected && $('#scr').contains(g) && !g.closest('.scr.leaving') &&
     state.hardware?.checks?.parking?.status === 'confirmed' && state.restricted !== true &&
     !state.permissions?.requestPending && !activeOverlay && !$('#ov').firstElementChild &&
     document.visibilityState === 'visible' && document.hasFocus();
@@ -615,6 +1080,50 @@ function clearGraphicGesture() {
   owner.g.style.transform = owner.transform;
   owner.g.style.transition = owner.transition;
 }
+function clearSeatGesture() {
+  const owner = seatGesture;
+  if (!owner) return;
+  seatGesture = null;
+  owner.events.abort();
+  owner.observer.disconnect();
+  owner.svg.classList.remove('drag');
+  if (owner.svg.hasPointerCapture(owner.pointerId)) owner.svg.releasePointerCapture(owner.pointerId);
+}
+document.addEventListener('pointerdown', event => {
+  const svg = event.target.closest('.seatctl .seat');
+  if (!event.isTrusted || !event.isPrimary || event.button !== 0 || !svg || !graphicEligible(svg)) return;
+  const matrix = svg.getScreenCTM();
+  if (!matrix) return;
+  const point = input => new DOMPoint(input.clientX,input.clientY).matrixTransform(matrix.inverse());
+  if (point(event).y > 380) return;
+  event.preventDefault();
+  clearSeatGesture();
+  const owner = {svg, epoch, generation:renderGeneration, pointerId:event.pointerId,
+    events:new AbortController(), root:svg.closest('.scr')};
+  owner.valid = () => seatGesture === owner && epoch === owner.epoch &&
+    renderGeneration === owner.generation && svg.closest('.scr') === owner.root && graphicEligible(svg);
+  owner.observer = new MutationObserver(() => { if (!owner.valid()) clearSeatGesture(); });
+  owner.observer.observe($('#scr'),{childList:true,subtree:true});
+  seatGesture = owner;
+  const move = input => {
+    if (input.pointerId !== owner.pointerId) return;
+    if (!owner.valid()) { clearSeatGesture(); return; }
+    const position = point(input);
+    setSeat(118 + Math.atan2(position.x - SP[0],SP[1] - position.y) * 180 / Math.PI - 10.26);
+  };
+  const finish = input => {
+    if (input.pointerId !== owner.pointerId) return;
+    clearSeatGesture();
+    scheduleArrivalAdmission();
+  };
+  svg.classList.add('drag');
+  svg.addEventListener('pointermove',move,{signal:owner.events.signal});
+  svg.addEventListener('pointerup',finish,{signal:owner.events.signal});
+  svg.addEventListener('pointercancel',finish,{signal:owner.events.signal});
+  svg.addEventListener('lostpointercapture',finish,{signal:owner.events.signal});
+  svg.setPointerCapture(event.pointerId);
+  move(event);
+});
 document.addEventListener('pointerdown', event => {
   const g = event.target.closest('.gfx, .hero-gfx');
   if (!event.isTrusted || !event.isPrimary || event.button !== 0 || !g ||
@@ -664,7 +1173,7 @@ document.addEventListener('pointerdown', event => {
     g.style.transition = owner.transition;
     if (owner.media.matches) { idle(); return; }
     owner.snap = g.animate([{transform:from},{transform:'none'}],
-      {duration:640,easing:'cubic-bezier(.34, 1.56, .64, 1)'});
+      {duration:POP.ms,easing:POP.ease});
     owner.snap.id = 'snap';
     owner.snap.finished.then(idle, error => {
       if (error instanceof DOMException && error.name === 'AbortError') { idle(); return; }
@@ -680,6 +1189,23 @@ document.addEventListener('pointerdown', event => {
   set(0, 0);
 });
 
+const RIPPLE = '.btn,.iconbtn,.chip,.slot,.sound,.mood,.stone,.seg3 button,button.li,.dy,.place.empty,.tcard,.tune,.choice';
+document.addEventListener('pointerdown', event => {
+  const button = event.target.closest(RIPPLE);
+  if (!event.isPrimary || event.button !== 0 || !button || button.disabled ||
+      button.closest('[inert]') || state.restricted || reducedMotion()) return;
+  const rect = button.getBoundingClientRect(), scale = rect.width / button.offsetWidth || 1;
+  const x = (event.clientX - rect.left) / scale, y = (event.clientY - rect.top) / scale;
+  const diameter = 2 * Math.hypot(Math.max(x,button.offsetWidth - x),Math.max(y,button.offsetHeight - y));
+  const ripple = document.createElement('span'), wave = document.createElement('i');
+  ripple.className = 'rip';
+  ripple.setAttribute('aria-hidden','true');
+  Object.assign(wave.style,{left:`${x}px`,top:`${y}px`,width:`${diameter}px`,height:`${diameter}px`});
+  ripple.append(wave);
+  button.append(ripple);
+  setTimeout(() => ripple.remove(),900);
+});
+
 document.addEventListener('input',event => {
   const key = event.target.dataset.bind;
   if (key) drafts.set(key,event.target.value);
@@ -688,13 +1214,14 @@ document.addEventListener('change',event => {
   if (event.target.dataset.bind === 'restSound') send('selectSound',{sound:event.target.value});
 });
 document.addEventListener('keydown',event => {
+  if (event.key === 'Escape' && timePicker) { event.preventDefault(); closeOverlay(true); return; }
   if (!['Enter',' '].includes(event.key) || !event.target.matches('[role="button"][data-do]')) return;
   event.preventDefault(); event.target.click();
 });
 
 document.addEventListener('click', event => {
   const target = event.target.closest('[data-go],[data-do]');
-  if (!target || target.disabled) return;
+  if (!target || target.disabled || target.closest('[inert],.scr.leaving,.dz-out,.x-out')) return;
   if (target.dataset.do) {
     const [action, ...parts] = target.dataset.do.split(':');
     const handler = ACT[action];
@@ -718,12 +1245,22 @@ document.addEventListener('click', event => {
 });
 
 window.addEventListener('resize', fitWindow);
-window.addEventListener('pagehide', () => { clearGraphicGesture(); releaseArrivalReservation(true); pendingPrevious.clear(); });
+window.addEventListener('pagehide', () => {
+  clearGraphicGesture(); clearSeatGesture(); clearTimePicker();
+  releaseArrivalReservation(true); pendingPrevious.clear();
+});
 window.addEventListener('focus', scheduleArrivalAdmission);
-window.addEventListener('blur', () => { clearGraphicGesture(); releaseArrivalReservation(true); });
+window.addEventListener('blur', () => {
+  clearGraphicGesture(); clearSeatGesture();
+  if (timePicker) closeOverlay();
+  releaseArrivalReservation(true);
+});
 document.addEventListener('focusout', scheduleArrivalAdmission);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState !== 'visible') { clearGraphicGesture(); releaseArrivalReservation(true); }
+  if (document.visibilityState !== 'visible') {
+    clearGraphicGesture(); clearSeatGesture(); releaseArrivalReservation(true);
+    if (timePicker) closeOverlay();
+  }
   else scheduleArrivalAdmission();
 });
 fitWindow();

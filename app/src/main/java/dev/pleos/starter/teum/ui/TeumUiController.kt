@@ -890,6 +890,11 @@ class TeumUiController(
             VehicleFeature.AMBIENT_BRIGHTNESS -> "ambient"
             VehicleFeature.SEAT_POSITION -> "seat"
             VehicleFeature.WINDOW_POSITION -> "window"
+            VehicleFeature.SEAT_VENTILATION -> "seat_ventilation"
+            VehicleFeature.SMART_GLASS_STATE -> "smart_glass_state"
+            VehicleFeature.SMART_GLASS_LEVEL -> "smart_glass_level"
+            VehicleFeature.AMBIENT_COLOR -> "ambient_color"
+            VehicleFeature.AMBIENT_SWITCH -> "ambient_switch"
         }
         val status = featureStatus[feature] ?: FeatureUi.Checking
         val head = LinearLayout(activity).apply {
@@ -1421,6 +1426,11 @@ class TeumUiController(
         VehicleFeature.AMBIENT_BRIGHTNESS -> "실내 조명"
         VehicleFeature.SEAT_POSITION -> "좌석"
         VehicleFeature.WINDOW_POSITION -> "창문"
+        VehicleFeature.SEAT_VENTILATION -> "좌석 통풍"
+        VehicleFeature.SMART_GLASS_STATE -> "스마트 글라스"
+        VehicleFeature.SMART_GLASS_LEVEL -> "스마트 글라스 단계"
+        VehicleFeature.AMBIENT_COLOR -> "실내 조명 색상"
+        VehicleFeature.AMBIENT_SWITCH -> "실내 조명 스위치"
     }
 
     private fun formatSetting(feature: VehicleFeature, value: Double): String = when (feature) {
@@ -1428,6 +1438,9 @@ class TeumUiController(
         VehicleFeature.AMBIENT_BRIGHTNESS -> "${value.toInt()}%"
         VehicleFeature.SEAT_POSITION -> value.toInt().toString()
         VehicleFeature.WINDOW_POSITION -> value.toInt().toString()
+        VehicleFeature.SEAT_VENTILATION, VehicleFeature.SMART_GLASS_STATE,
+        VehicleFeature.SMART_GLASS_LEVEL, VehicleFeature.AMBIENT_COLOR,
+        VehicleFeature.AMBIENT_SWITCH -> value.toInt().toString()
     }
 
     // ---------------------------------------------------------------- record
@@ -1747,15 +1760,19 @@ class TeumUiController(
             }
             val readPermission = when (feature) {
                 VehicleFeature.HVAC_TEMPERATURE -> "pleos.car.permission.CAR_CLIMATE"
-                VehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CAR_LIGHTS"
-                VehicleFeature.SEAT_POSITION -> "pleos.car.permission.CAR_SEATS"
-                VehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CAR_WINDOWS"
+                VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.AMBIENT_COLOR,
+                VehicleFeature.AMBIENT_SWITCH -> "pleos.car.permission.CAR_LIGHTS"
+                VehicleFeature.SEAT_POSITION, VehicleFeature.SEAT_VENTILATION -> "pleos.car.permission.CAR_SEATS"
+                VehicleFeature.WINDOW_POSITION, VehicleFeature.SMART_GLASS_LEVEL,
+                VehicleFeature.SMART_GLASS_STATE -> "pleos.car.permission.CAR_WINDOWS"
             }
             val controlPermission = when (feature) {
                 VehicleFeature.HVAC_TEMPERATURE -> "pleos.car.permission.CONTROL_CAR_CLIMATE"
-                VehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CONTROL_CAR_LIGHTS"
-                VehicleFeature.SEAT_POSITION -> "pleos.car.permission.CONTROL_CAR_SEATS"
-                VehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CONTROL_CAR_WINDOWS"
+                VehicleFeature.AMBIENT_BRIGHTNESS, VehicleFeature.AMBIENT_COLOR,
+                VehicleFeature.AMBIENT_SWITCH -> "pleos.car.permission.CONTROL_CAR_LIGHTS"
+                VehicleFeature.SEAT_POSITION, VehicleFeature.SEAT_VENTILATION -> "pleos.car.permission.CONTROL_CAR_SEATS"
+                VehicleFeature.WINDOW_POSITION, VehicleFeature.SMART_GLASS_LEVEL,
+                VehicleFeature.SMART_GLASS_STATE -> "pleos.car.permission.CONTROL_CAR_WINDOWS"
             }
             val readGranted = activity.checkSelfPermission(readPermission) ==
                 android.content.pm.PackageManager.PERMISSION_GRANTED

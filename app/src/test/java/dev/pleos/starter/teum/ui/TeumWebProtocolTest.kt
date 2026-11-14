@@ -20,6 +20,25 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class TeumWebProtocolTest {
+    @Test fun backrestRequestsAcceptOnlyExplicitDirectionAndNativeTiming() {
+        assertEquals(TeumWebAction.InspectBackrest,
+            TeumWebProtocol.decode("""{"requestId":"s1","epoch":2,"action":"inspectBackrest"}""")?.action)
+        assertEquals(TeumWebAction.StopBackrest,
+            TeumWebProtocol.decode("""{"requestId":"s2","epoch":2,"action":"stopBackrest"}""")?.action)
+        for (direction in BackrestDirection.entries) {
+            assertEquals(TeumWebAction.PulseBackrest("0:ROW_1_LEFT", direction),
+                TeumWebProtocol.decode("""{"requestId":"s3","epoch":2,"action":"pulseBackrest","area":"0:ROW_1_LEFT","direction":"${direction.name}"}""")?.action)
+        }
+        for (payload in listOf(
+            """"area":"0:ROW_1_LEFT","direction":"STOP"""",
+            """"area":"","direction":"FORWARD"""",
+            """"area":"0:ROW_1_LEFT","direction":"FORWARD","pulseMillis":10000""",
+            """"area":"0:ROW_1_LEFT","direction":"FORWARD","parked":true"""
+        )) {
+            assertNull(TeumWebProtocol.decode("""{"requestId":"s4","epoch":2,"action":"pulseBackrest",$payload}"""))
+        }
+    }
+
     @Test fun committedPreviousReceiptNeverSurvivesStateReplayOrMutation() {
         val f = JourneyFixture().apply {
             intention()
@@ -292,6 +311,57 @@ class TeumWebProtocolTest {
         assertNull(
             TeumWebProtocol.decode("""{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"WINDOW"}""")
         )
+    }
+
+    @Test
+    fun vehicleFeatureNamesStayAlignedWithTheNativeContract() {
+        assertEquals(VehicleFeature.entries.map { it.name }.sorted(),
+            WebVehicleFeature.entries.map { it.name }.sorted())
+    }
+
+    @Test
+    fun vehicleInspectDecodesEverySupportedFeatureAndItsOptionalArea() {
+        for (feature in WebVehicleFeature.entries) {
+            assertEquals(
+                TeumWebAction.InspectVehicle(feature),
+                TeumWebProtocol.decode(
+                    """{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"${feature.name}"}""")?.action
+            )
+            assertEquals(
+                TeumWebAction.InspectVehicle(feature, "ROW_1_LEFT"),
+                TeumWebProtocol.decode(
+                    """{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"${feature.name}","area":"ROW_1_LEFT"}""")?.action
+            )
+        }
+        assertEquals(
+            TeumWebAction.PreviewVehicle(WebVehicleFeature.AMBIENT_COLOR, -16_201_420.0),
+            TeumWebProtocol.decode(
+                """{"requestId":"v","epoch":2,"action":"previewVehicle","feature":"AMBIENT_COLOR","value":-16201420}""")?.action
+        )
+        for (unknown in listOf("AMBIENT", "SEAT_MOVEMENT", "GLASS", "SMART_GLASS", "WINDOW", "")) {
+            assertNull(unknown, TeumWebProtocol.decode(
+                """{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"$unknown"}"""))
+        }
+    }
+
+    @Test
+    fun vehicleAreaIsBoundedPrintableAndOnlyUsedForInspection() {
+        val maximum = "A".repeat(256)
+        assertEquals(
+            TeumWebAction.InspectVehicle(WebVehicleFeature.SMART_GLASS_LEVEL, maximum),
+            TeumWebProtocol.decode(
+                """{"requestId":"v","epoch":2,"action":"inspectVehicle","feature":"SMART_GLASS_LEVEL","area":"$maximum"}""")?.action
+        )
+        fun inspect(area: String) =
+            "{\"requestId\":\"v\",\"epoch\":2,\"action\":\"inspectVehicle\",\"feature\":\"WINDOW_POSITION\",\"area\":$area}"
+        for (area in listOf("\"\"", "\"" + "A".repeat(257) + "\"",
+            "\"ROW\\u0000LEFT\"", "\"ROW\\nLEFT\"", "7", "null")) {
+            assertNull(area, TeumWebProtocol.decode(inspect(area)))
+        }
+        assertNull(TeumWebProtocol.decode(
+            """{"requestId":"v","epoch":2,"action":"previewVehicle","feature":"WINDOW_POSITION","value":50,"area":"ROW_1_LEFT"}"""))
+        assertNull(TeumWebProtocol.decode(
+            """{"requestId":"v","epoch":2,"action":"confirmVehicle","previewId":4,"area":"ROW_1_LEFT"}"""))
     }
 
     @Test

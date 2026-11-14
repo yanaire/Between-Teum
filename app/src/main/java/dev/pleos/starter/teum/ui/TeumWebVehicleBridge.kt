@@ -1,89 +1,15 @@
 package dev.pleos.starter.teum.ui
 
 import com.google.gson.JsonObject
+import dev.pleos.starter.teum.vehicle.VehicleSettingsDiscovery
 import dev.pleos.starter.teum.vehicle.CommandStage
 import dev.pleos.starter.teum.vehicle.SafeVehicleAdapter
-import dev.pleos.starter.teum.vehicle.SettingCapability
 import dev.pleos.starter.teum.vehicle.SettingInspection
 import dev.pleos.starter.teum.vehicle.VehicleCommand
 import dev.pleos.starter.teum.vehicle.VehicleFeature
 import dev.pleos.starter.teum.vehicle.VehicleSafety
 import dev.pleos.starter.teum.vehicle.VehicleSetting
 import dev.pleos.starter.teum.vehicle.VehicleSettingsPort
-
-internal data class WebVehicleControlSnapshot(
-    val status: String = "idle",
-    val area: String = "ROW_1_LEFT",
-    val capability: SettingCapability? = null,
-    val currentValue: Double? = null,
-    val command: VehicleCommand? = null,
-    val error: String? = null,
-    val safetyReason: String? = null
-) {
-    fun toJson(): JsonObject = JsonObject().apply {
-        addProperty("status", status)
-        addProperty("area", area)
-        addProperty("currentValue", currentValue)
-        addProperty("error", error)
-        addProperty("safetyReason", safetyReason)
-        add("capability", capability?.let {
-            JsonObject().apply {
-                addProperty("canRead", it.canRead)
-                addProperty("canWrite", it.canWrite)
-                addProperty("min", it.min)
-                addProperty("max", it.max)
-                addProperty("step", it.step)
-                addProperty("reason", it.reason)
-            }
-        })
-        add("command", command?.let {
-            JsonObject().apply {
-                addProperty("id", it.id)
-                addProperty("feature", it.setting.feature.name)
-                addProperty("target", it.target)
-                addProperty("initial", it.initial)
-                addProperty("stage", it.stage.name)
-                addProperty("reason", it.reason)
-                addProperty("requestAcknowledged", it.requestAcknowledged)
-                addProperty("readback", it.readback)
-            }
-        })
-    }
-
-    fun capabilityFact(feature: WebVehicleFeature): JsonObject = JsonObject().apply {
-        val readable = capability?.canRead == true && currentValue?.isFinite() == true
-        val readPermission = when (feature) {
-            WebVehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CAR_LIGHTS"
-            WebVehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CAR_WINDOWS"
-            else -> null
-        }
-        val writePermission = when (feature) {
-            WebVehicleFeature.AMBIENT_BRIGHTNESS -> "pleos.car.permission.CONTROL_CAR_LIGHTS"
-            WebVehicleFeature.WINDOW_POSITION -> "pleos.car.permission.CONTROL_CAR_WINDOWS"
-            else -> null
-        }
-        addProperty("status", when {
-            safetyReason != null -> "unknown"
-            readable -> "confirmed"
-            status == "checking" -> "pending"
-            status == "failed" -> "failed"
-            else -> "unknown"
-        })
-        addProperty("label", when {
-            safetyReason != null -> "주차·주행 제한 확인 필요"
-            readable && capability?.canWrite == true -> "읽기·제어 지원 확인됨"
-            readable -> "조회 지원 · 제어 권한 없음"
-            status == "checking" -> "지원 확인 중"
-            status == "failed" -> "지원 확인 실패"
-            else -> "확인 전"
-        })
-        addProperty("writeReady", readable && capability?.canWrite == true && safetyReason == null)
-        addProperty("readPermission", readPermission)
-        addProperty("writePermission", writePermission)
-        addProperty("area", area)
-        addProperty("error", error)
-    }
-}
 
 /** Main-thread owner for explicit WebView vehicle previews and confirmed writes. */
 internal class TeumWebVehicleBridge(
@@ -94,18 +20,22 @@ internal class TeumWebVehicleBridge(
     private val isForeground: () -> Boolean,
     private val onChange: () -> Unit
 ) : AutoCloseable {
-    private val settings = mapOf(
-        WebVehicleFeature.AMBIENT_BRIGHTNESS to
-            VehicleSetting(VehicleFeature.AMBIENT_BRIGHTNESS, DRIVER_AREA),
-        WebVehicleFeature.WINDOW_POSITION to
-            VehicleSetting(VehicleFeature.WINDOW_POSITION, DRIVER_AREA)
+    private val features = mapOf(
+        WebVehicleFeature.AMBIENT_BRIGHTNESS to VehicleFeature.AMBIENT_BRIGHTNESS,
+        WebVehicleFeature.AMBIENT_COLOR to VehicleFeature.AMBIENT_COLOR,
+        WebVehicleFeature.AMBIENT_SWITCH to VehicleFeature.AMBIENT_SWITCH,
+        WebVehicleFeature.WINDOW_POSITION to VehicleFeature.WINDOW_POSITION,
+        WebVehicleFeature.SEAT_VENTILATION to VehicleFeature.SEAT_VENTILATION,
+        WebVehicleFeature.SMART_GLASS_STATE to VehicleFeature.SMART_GLASS_STATE,
+        WebVehicleFeature.SMART_GLASS_LEVEL to VehicleFeature.SMART_GLASS_LEVEL
     )
+    private val discovery = requireNotNull(port as? VehicleSettingsDiscovery)
+    private val settings = mutableMapOf<WebVehicleFeature, VehicleSetting>()
+    private val inspections = mutableMapOf<WebVehicleFeature, Long>()
     private val owners = mutableMapOf<WebVehicleFeature, Long>()
     private val adapter = SafeVehicleAdapter(port, nowMillis, ::onCommand)
     @Volatile
-    private var states = settings.mapValues { (_, setting) ->
-        WebVehicleControlSnapshot(area = setting.area)
-    }
+    private var states = features.mapValues { WebVehicleControlSnapshot() }
     private var closed = false
 
     init {
@@ -129,21 +59,50 @@ internal class TeumWebVehicleBridge(
         }
     }
 
-    fun inspect(feature: WebVehicleFeature, requestEpoch: Long) {
-        val setting = settings[feature] ?: return
-        if (!current(requestEpoch)) return
+    fun inspect(feature: WebVehicleFeature, requestEpoch: Long, area: String? = null) {
+        val nativeFeature = features[feature] ?: return
+        if (!current(requestEpoch) || commandInFlight()) return
+        adapter.cancelPending()
         owners[feature] = requestEpoch
+        val request = (inspections[feature] ?: 0L) + 1
+        inspections[feature] = request
         val blocked = adapter.blockedReason()
         if (blocked != null) {
-            update(feature, WebVehicleControlSnapshot(status = "blocked", area = setting.area,
+            update(feature, state(feature).copy(status = "blocked",
                 error = blocked, safetyReason = blocked))
             return
         }
-        update(feature, WebVehicleControlSnapshot(status = "checking", area = setting.area))
+        val requestedArea = area ?: settings[feature]?.area
+        update(feature, state(feature).copy(status = "checking", command = null, error = null))
+        discovery.discover(nativeFeature) discovered@{ result ->
+            if (!current(requestEpoch) || inspections[feature] != request) return@discovered
+            val found = result.getOrElse {
+                update(feature, WebVehicleControlSnapshot(status = "failed", error = it.message))
+                return@discovered
+            }
+            val chosen = if (requestedArea == null) found.firstOrNull()
+                else found.firstOrNull { it.setting.area == requestedArea }
+            if (chosen == null) {
+                settings.remove(feature)
+                update(feature, WebVehicleControlSnapshot(status = "unavailable", areas = found,
+                    error = "The requested area is not supported"))
+                return@discovered
+            }
+            settings[feature] = chosen.setting
+            update(feature, WebVehicleControlSnapshot(status = "checking",
+                area = chosen.setting.area, areas = found))
+            inspectSelected(feature, chosen.setting, requestEpoch, request)
+        }
+    }
+
+    private fun inspectSelected(
+        feature: WebVehicleFeature, setting: VehicleSetting, requestEpoch: Long, request: Long
+    ) {
         val callback: (Result<SettingInspection>) -> Unit = callback@{ result ->
-            if (!current(requestEpoch) || owners[feature] != requestEpoch) return@callback
+            if (!current(requestEpoch) || owners[feature] != requestEpoch ||
+                inspections[feature] != request) return@callback
             adapter.blockedReason()?.let { blocked ->
-                update(feature, WebVehicleControlSnapshot(
+                update(feature, state(feature).copy(
                     status = "blocked", area = setting.area, error = blocked, safetyReason = blocked
                 ))
                 return@callback
@@ -152,13 +111,14 @@ internal class TeumWebVehicleBridge(
                 onSuccess = { inspected ->
                     val capability = inspected.capability
                     if (!capability.canRead || !capability.accepts(inspected.value)) {
-                        update(feature, WebVehicleControlSnapshot(
+                        update(feature, state(feature).copy(
                             status = "failed", area = setting.area, capability = capability,
-                            error = if (!capability.canRead) "Ambient brightness is not readable"
-                                else "Current brightness is outside the reported capability range"
+                            currentValue = inspected.value,
+                            error = if (!capability.canRead) "Setting is not readable"
+                                else "Current value ${inspected.value} is outside the reported capability range"
                         ))
                     } else {
-                        update(feature, WebVehicleControlSnapshot(
+                        update(feature, state(feature).copy(
                             status = if (capability.canWrite) "ready" else "read_only",
                             area = setting.area, capability = capability, currentValue = inspected.value,
                             error = capability.reason.takeUnless { capability.canWrite }
@@ -166,7 +126,7 @@ internal class TeumWebVehicleBridge(
                     }
                 },
                 onFailure = { error ->
-                    update(feature, WebVehicleControlSnapshot(
+                    update(feature, state(feature).copy(
                         status = "failed", area = setting.area, error = error.message ?: error.javaClass.simpleName
                     ))
                 }
@@ -175,8 +135,9 @@ internal class TeumWebVehicleBridge(
         try {
             port.inspect(setting, callback)
         } catch (error: Exception) {
-            if (current(requestEpoch) && owners[feature] == requestEpoch) {
-                update(feature, WebVehicleControlSnapshot(
+            if (current(requestEpoch) && owners[feature] == requestEpoch &&
+                inspections[feature] == request) {
+                update(feature, state(feature).copy(
                     status = "failed", area = setting.area, error = error.message ?: error.javaClass.simpleName
                 ))
             }
@@ -185,7 +146,7 @@ internal class TeumWebVehicleBridge(
 
     fun preview(feature: WebVehicleFeature, value: Double, requestEpoch: Long) {
         val setting = settings[feature] ?: return
-        if (!current(requestEpoch) || owners[feature] != requestEpoch) return
+        if (!current(requestEpoch) || owners[feature] != requestEpoch || commandInFlight()) return
         val previous = state(feature)
         val blocked = adapter.blockedReason()
         if (blocked != null) {
@@ -217,13 +178,14 @@ internal class TeumWebVehicleBridge(
             snapshot.command?.let { it.id == previewId && it.stage == CommandStage.PREVIEW } == true
         }?.key ?: return
         if (owners[feature] != requestEpoch) return
-        adapter.confirm(previewId, consent = true)
+        adapter.confirm(previewId, consent = true,
+            executionAllowed = { current(requestEpoch) && owners[feature] == requestEpoch })
     }
 
     fun updateSafety(safety: VehicleSafety) {
         adapter.updateSafety(safety)
         val blocked = adapter.blockedReason()
-        settings.forEach { (feature, _) ->
+        features.forEach { (feature, _) ->
             val snapshot = state(feature)
             if (blocked != null) {
                 update(feature, snapshot.copy(status = "blocked", error = blocked, safetyReason = blocked))
@@ -240,7 +202,7 @@ internal class TeumWebVehicleBridge(
     fun tick() {
         adapter.tick()
         val blocked = adapter.blockedReason()
-        if (blocked != null) settings.forEach { (feature, _) ->
+        if (blocked != null) features.forEach { (feature, _) ->
             val snapshot = state(feature)
             if (snapshot.safetyReason != blocked)
                 update(feature, snapshot.copy(status = "blocked", error = blocked, safetyReason = blocked))
@@ -249,6 +211,10 @@ internal class TeumWebVehicleBridge(
 
     fun cancelPending() {
         if (!closed) adapter.cancelPending()
+    }
+
+    fun commandInFlight(): Boolean = states.values.any {
+        it.command?.stage in setOf(CommandStage.QUEUED, CommandStage.REQUESTED)
     }
 
     private fun onCommand(command: VehicleCommand) {
@@ -295,7 +261,4 @@ internal class TeumWebVehicleBridge(
         adapter.close()
     }
 
-    companion object {
-        const val DRIVER_AREA = "ROW_1_LEFT"
-    }
 }

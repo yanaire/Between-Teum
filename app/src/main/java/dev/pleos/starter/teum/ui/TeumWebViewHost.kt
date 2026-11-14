@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong
 class TeumWebViewHost(
     context: Context,
     private val onRequest: (TeumWebRequest) -> Unit,
+    private val onDocumentChanged: () -> Unit = {},
     private val onRendererGone: () -> Unit
 ) {
     val view = WebView(context)
@@ -83,6 +84,7 @@ class TeumWebViewHost(
                 loaded = false
                 epoch = nextEpoch()
                 seenRequests.clear()
+                onDocumentChanged()
             }
 
             override fun onPageFinished(view: WebView, url: String) {
@@ -134,6 +136,7 @@ class TeumWebViewHost(
         foreground = false
         epoch = nextEpoch()
         seenRequests.clear()
+        onDocumentChanged()
         view.onPause()
     }
 
@@ -152,6 +155,7 @@ class TeumWebViewHost(
         closed = true
         epoch = nextEpoch()
         seenRequests.clear()
+        onDocumentChanged()
         latestState = null
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
             WebViewCompat.removeWebMessageListener(view, "teum")

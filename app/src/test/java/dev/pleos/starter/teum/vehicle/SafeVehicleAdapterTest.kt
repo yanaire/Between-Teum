@@ -221,10 +221,47 @@ class SafeVehicleAdapterTest {
         f.port.applyWrite = false
         f.apply(hvac, 24.0)
         assertTrue(f.latest().requestAcknowledged)
+        assertEquals(CommandStage.REQUESTED, f.latest().stage)
+        f.advanceTo(SafeVehicleAdapter.OBSERVATION_WINDOW_MILLIS + 1)
+        f.adapter.tick()
         assertEquals(CommandStage.UNKNOWN, f.latest().stage)
         assertEquals(22.0, f.latest().readback!!, 0.0)
         f.adapter.previewRestore(hvac)
         assertEquals(CommandStage.MANUAL, f.latest().stage)
+    }
+
+    @Test fun delayedStateIsObservedWithoutSendingTheSetterAgain() {
+        val f = Fixture()
+        f.port.applyWrite = false
+        f.apply(hvac, 24.0)
+        assertEquals(CommandStage.REQUESTED, f.latest().stage)
+
+        f.advanceTo(1_000)
+        f.port.external(hvac, 23.0, ChangeOrigin.UNKNOWN)
+        f.adapter.tick()
+        assertEquals(CommandStage.REQUESTED, f.latest().stage)
+        f.advanceTo(2_000)
+        f.port.external(hvac, 24.0, ChangeOrigin.UNKNOWN)
+        f.adapter.tick()
+
+        assertEquals(CommandStage.READBACK, f.latest().stage)
+        assertEquals(24.0, f.latest().readback!!, 0.0)
+        assertEquals(listOf(24.0), f.port.sent)
+    }
+
+    @Test fun safetyLossStopsObservationWithoutRepeatingSetter() {
+        val f = Fixture()
+        f.port.applyWrite = false
+        f.apply(hvac, 24.0)
+        f.port.delayRead = true
+        f.advanceTo(1_000)
+        f.adapter.tick()
+        f.adapter.updateSafety(f.parked().copy(parking = ParkingObservation(Parking.NOT_PARKED, f.now, "D")))
+        f.port.value = 24.0
+        f.port.reads.single().invoke()
+
+        assertEquals(CommandStage.UNKNOWN, f.latest().stage)
+        assertEquals(listOf(24.0), f.port.sent)
     }
 
     @Test fun setterDenialIsFailedAndNoRestoreIsAvailable() {
@@ -462,6 +499,21 @@ class SafeVehicleAdapterTest {
         f.port.reads[2].invoke()
         assertEquals(CommandStage.UNKNOWN, f.latest().stage)
         assertEquals(24.0, f.latest().readback!!, 0.0)
+    }
+
+    @Test fun unknownChangeBeforeFinalPermitPreventsDispatch() {
+        val port = Port()
+        val adapter = SafeVehicleAdapter(port, { 0 }) { command ->
+            if (command.stage == CommandStage.REQUESTED) {
+                port.external(hvac, 23.0, ChangeOrigin.UNKNOWN)
+            }
+        }
+        adapter.updateSafety(VehicleSafety(true, ParkingObservation(Parking.PARKED, 0),
+            UxObservation(false, 0, 0), 1))
+
+        adapter.confirm(adapter.previewChange(hvac, 24.0), true)
+
+        assertTrue(port.sent.isEmpty())
     }
 
     @Test fun cancellationFromDispatchObserverCannotSendACommand() {

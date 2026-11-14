@@ -23,7 +23,12 @@ class SafeVehicleAdapter(
         val created: Long,
         val expectedCurrent: Double,
         val revision: Long,
-        var confirmedAt: Long? = null
+        var confirmedAt: Long? = null,
+        var executionAllowed: () -> Boolean = { true },
+        var observingSince: Long? = null,
+        var dispatchPermitted: Boolean = false,
+        var readingBack: Boolean = false,
+        var nextReadAt: Long = 0
     )
     private var safety = VehicleSafety()
     private var epoch = 0L
@@ -38,6 +43,8 @@ class SafeVehicleAdapter(
     companion object {
         /** Bounded human confirmation deadline, independent from the 3-second execution window. */
         const val CONFIRM_WINDOW_MILLIS = 30_000L
+        const val OBSERVATION_WINDOW_MILLIS = 5_000L
+        private const val READBACK_INTERVAL_MILLIS = 500L
     }
 
     fun updateSafety(next: VehicleSafety) {
@@ -109,6 +116,7 @@ class SafeVehicleAdapter(
                 return@inspect
             }
             val command = base.copy(target = target, initial = entry.initial, stage = CommandStage.PREVIEW,
+                previewValue = inspected.value,
                 reason = "Confirm ${if (restore) "restoration" else "change"}",
                 requiresOriginConfirmation = restore && entry.unknownOrigin)
             preparing.remove(id)
@@ -118,18 +126,24 @@ class SafeVehicleAdapter(
         return id
     }
 
-    fun confirm(id: Long, consent: Boolean, confirmUnknownOrigin: Boolean = false) {
+    fun confirm(
+        id: Long,
+        consent: Boolean,
+        confirmUnknownOrigin: Boolean = false,
+        executionAllowed: () -> Boolean = { true }
+    ) {
         val operation = pending[id] ?: return
         if (operation.command.stage != CommandStage.PREVIEW) return
         if (!consent || (operation.command.requiresOriginConfirmation && !confirmUnknownOrigin)) {
             finish(operation, CommandStage.FAILED, "Explicit consent required")
             return
         }
-        if (!confirmationOpen(operation)) {
+        if (!confirmationOpen(operation) || !executionAllowed()) {
             finish(operation, CommandStage.FAILED, "Consent or safety expired")
             return
         }
         operation.confirmedAt = nowMillis()
+        operation.executionAllowed = executionAllowed
         report(operation, CommandStage.QUEUED, "Checking current capability and snapshot")
         port.inspect(operation.command.setting) { result ->
             if (!pending.containsKey(id)) return@inspect
@@ -151,29 +165,20 @@ class SafeVehicleAdapter(
                     entries[operation.command.setting]?.revision == operation.revision
                 if (allowed) report(operation, CommandStage.REQUESTED, "Dispatch requested; application not yet verified")
                 // onCommand may synchronously cancel, close, or report a manual/safety change.
-                allowed && pending[id] === operation && valid(operation) &&
+                val finalPermit = allowed && pending[id] === operation && valid(operation) &&
                     entries[operation.command.setting]?.revision == operation.revision
+                operation.dispatchPermitted = finalPermit
+                finalPermit
             }) { result ->
                 if (!pending.containsKey(id)) return@write
                 result.fold(onSuccess = {
                     operation.command = operation.command.copy(requestAcknowledged = true)
-                    report(operation, CommandStage.REQUESTED, "Request acknowledged; reading actual setting")
-                    port.inspect(operation.command.setting) readback@{ read ->
-                        if (!pending.containsKey(id)) return@readback
-                        val actual = read.getOrNull()?.value
-                        if (!valid(operation) || actual == null || actual != operation.command.target ||
-                            entries[operation.command.setting]?.revision != operation.revision) {
-                            operation.command = operation.command.copy(readback = actual)
-                            finish(operation, CommandStage.UNKNOWN, "No matching fresh readback")
-                        } else {
-                            operation.command = operation.command.copy(readback = actual)
-                            entries[operation.command.setting]?.let {
-                                it.lastApplied = actual
-                                // Matching values alone cannot attribute the writer.
-                                it.unknownOrigin = true
-                            }
-                            finish(operation, CommandStage.READBACK, "Setting readback matches request")
-                        }
+                    if (!valid(operation)) {
+                        finish(operation, CommandStage.UNKNOWN, "Acknowledgement arrived after execution expired")
+                    } else {
+                        operation.observingSince = nowMillis()
+                        report(operation, CommandStage.REQUESTED, "Request acknowledged; reading actual setting")
+                        readBack(operation)
                     }
                 }, onFailure = {
                     finish(operation, if (it is VehicleCallbackTimeout) CommandStage.UNKNOWN else CommandStage.FAILED,
@@ -183,12 +188,45 @@ class SafeVehicleAdapter(
         }
     }
 
+    private fun readBack(operation: Pending) {
+        if (pending[operation.command.id] !== operation || operation.readingBack) return
+        if (!valid(operation)) {
+            finish(operation, CommandStage.UNKNOWN, "Observation expired or consent revoked")
+            return
+        }
+        operation.readingBack = true
+        port.inspect(operation.command.setting) readback@{ read ->
+            if (pending[operation.command.id] !== operation) return@readback
+            operation.readingBack = false
+            val inspected = read.getOrNull()
+            val actual = inspected?.value
+            operation.command = operation.command.copy(readback = actual)
+            if (!valid(operation) || inspected == null || !inspected.capability.canRead ||
+                !inspected.capability.accepts(inspected.value) ||
+                entries[operation.command.setting]?.revision != operation.revision) {
+                finish(operation, CommandStage.UNKNOWN, "No matching fresh readback")
+            } else if (actual == operation.command.target) {
+                entries[operation.command.setting]?.let {
+                    it.lastApplied = actual
+                    // A matching independent read proves state, not who changed it.
+                    it.unknownOrigin = true
+                }
+                finish(operation, CommandStage.READBACK, "Setting readback matches request")
+            } else {
+                operation.nextReadAt = nowMillis() + READBACK_INTERVAL_MILLIS
+                report(operation, CommandStage.REQUESTED, "Waiting for observed value; no setter retry")
+            }
+        }
+    }
+
     private fun observe(setting: VehicleSetting, value: Double?, origin: ChangeOrigin) {
         val entry = entries[setting] ?: return
-        val expected = pending.values.firstOrNull {
+        val requested = pending.values.firstOrNull {
             it.command.setting == setting && it.command.stage == CommandStage.REQUESTED
-        }?.command?.target ?: entry.lastApplied ?: entry.initial
-        if (origin == ChangeOrigin.MANUAL || value == null || value != expected) {
+        }
+        val expected = requested?.command?.target ?: entry.lastApplied ?: entry.initial
+        if (origin == ChangeOrigin.MANUAL || value == null ||
+            (requested?.dispatchPermitted != true && value != expected)) {
             entry.overridden = true
             entry.revision++
         }
@@ -204,8 +242,12 @@ class SafeVehicleAdapter(
 
     private fun valid(operation: Pending): Boolean {
         val confirmedAt = operation.confirmedAt ?: return false
-        return !closed && operation.epoch == epoch &&
-            blockedReason() == null && VehicleSafety.fresh(confirmedAt, nowMillis())
+        val now = nowMillis()
+        val observingSince = operation.observingSince
+        val withinDeadline = if (observingSince == null) VehicleSafety.fresh(confirmedAt, now)
+            else now >= observingSince && now - observingSince <= OBSERVATION_WINDOW_MILLIS
+        return !closed && operation.epoch == epoch && operation.executionAllowed() &&
+            blockedReason() == null && withinDeadline
     }
 
     /** Call from a foreground heartbeat. Timeouts never become success or retries. */
@@ -218,6 +260,9 @@ class SafeVehicleAdapter(
             finish(it, if (it.command.stage == CommandStage.REQUESTED) CommandStage.UNKNOWN else CommandStage.FAILED,
                 "Command timed out; no retry")
         }
+        pending.values.toList().filter {
+            it.observingSince != null && !it.readingBack && nowMillis() >= it.nextReadAt
+        }.forEach(::readBack)
         preparing.toMap().forEach { (id, waiting) ->
             if (!VehicleSafety.fresh(waiting.second, nowMillis())) {
                 preparing.remove(id)

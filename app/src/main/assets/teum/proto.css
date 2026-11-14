@@ -6,6 +6,11 @@
 @property --a1 { syntax: '<color>'; inherits: true; initial-value: #FF6B35; }
 @property --a2 { syntax: '<color>'; inherits: true; initial-value: #FFAA5C; }
 @property --a3 { syntax: '<color>'; inherits: true; initial-value: #FFE0C2; }
+@property --a4 { syntax: '<color>'; inherits: true; initial-value: #A9BACF; }
+/* 메시 카드 색: 홈 큰 카드가 다른 활동으로 바뀔 때 색이 번지듯 넘어간다 */
+@property --m1 { syntax: '<color>'; inherits: true; initial-value: #FF7A45; }
+@property --m2 { syntax: '<color>'; inherits: true; initial-value: #B9A4FF; }
+@property --m3 { syntax: '<color>'; inherits: true; initial-value: #FFC48A; }
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -13,9 +18,22 @@
   --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
   --font: 'Asta Sans', system-ui, sans-serif;
   --num: 'Manrope', 'Asta Sans', sans-serif;
-  --dot: 'Doto', 'Manrope', monospace;
   --voice: 'MaruBuri', 'Gowun Batang', serif;
   --lime: #D9F25E;
+  /* ── 18차 시스템: 간격 · 모서리 · 높이를 한 벌로 ──
+     간격은 4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64만 쓴다. 자주 쓰는 자리는 이름으로:
+       --gap-s 16    붙어 있는 같은 종류 (칸 · 타일 · 칩 · 알약 · 카드 사이, 버튼 사이)
+       --gap-m 24    한 그릇 안의 묶음 사이 (숫자 → 막대, 글 → 버튼, 팝업 안)
+       --gap-l 40    화면의 덩어리 사이 (글 → 내용 → 버튼, 큰 카드 → 칸)
+       --gap-col 64  2:0에서 기둥 사이 (글 기둥 ↔ 내용 기둥)
+       --in-l 40 · --in-m 24   큰 그릇 · 작은 타일 안쪽 여백. 화면 가장자리는 --pad 48
+     모서리: 누르는 것은 모두 알약(999), 그릇은 크기에 따라 스쿼클 세 단계. 그릇 안에 든 그릇은 한 단계 작게
+       --r-l 88  큰 그릇 (홈 큰 카드 · 카드 · 종이 · 목록 · 팝업 · 캡션) — 안쪽 40에 놓인 100px 알약 버튼 끝과 둥글기가 어울린다
+       --r-m 64  작은 타일 (칸 · 타일 · 시간 카드 · 확인 타일 · 장소 그림 · 기분 고르기 · 카드 안의 패스)
+       --r-s 32  썸네일 (앨범 커버 · 앱 아이콘)
+     누르는 것의 높이: 100 · 80 · 64, 목록 줄 112 */
+  --gap-s: 16px; --gap-m: 24px; --gap-l: 40px; --gap-col: 64px; --in-l: 40px; --in-m: 24px;
+  --r-l: 88px; --r-m: 64px; --r-s: 32px;
   --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 * { box-sizing: border-box; }
@@ -67,36 +85,63 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ── 앱 창 (틈틈 브랜드) ─────────────────────────────── */
 .app { position: absolute; inset: 0; container: app / inline-size; isolation: isolate; overflow: hidden;
   background: var(--bg); color: var(--ink); font-family: var(--font); word-break: keep-all;
-  --pad: 48px; transition: --a1 1.6s var(--ease-breath), --a2 1.6s var(--ease-breath), --a3 1.6s var(--ease-breath), background-color .6s; }
-.app[data-theme="light"] { --bg: oklch(0.93 0.005 40); --ink: #1B1714; --ink-2: rgb(27 23 20 / .74); --ink-3: rgb(27 23 20 / .6); --glass: rgb(255 255 255 / .46); --glass-hi: rgb(255 255 255 / .85); --line: rgb(27 23 20 / .12); --shadow: 0 24px 64px rgb(90 60 30 / .12); --btn: #1B1714; --btn-ink: #F8F4EE; --aura-o: .85; }
-.app[data-theme="dark"] { --bg: #131110; --ink: #F6F1E9; --ink-2: rgb(246 241 233 / .76); --ink-3: rgb(246 241 233 / .6); --glass: rgb(255 255 255 / .07); --glass-hi: rgb(255 255 255 / .16); --line: rgb(255 255 255 / .1); --shadow: 0 24px 64px rgb(0 0 0 / .35); --btn: #F6F1E9; --btn-ink: #131110; --aura-o: 1; }
+  --pad: 48px; transition: --a1 1.6s var(--ease-breath), --a2 1.6s var(--ease-breath), --a3 1.6s var(--ease-breath), --a4 1.6s var(--ease-breath), background-color .6s; }
+.scr[data-theme] { color: var(--ink); }
+.app[data-theme="light"], .scr[data-theme="light"] { --mark: #3A3532; --mark-ink: #F6F1E9; --bg: oklch(0.93 0.005 40); --ink: #1B1714; --ink-2: rgb(27 23 20 / .74); --ink-3: rgb(27 23 20 / .6); --glass: rgb(255 255 255 / .17); --glass-hi: rgb(255 255 255 / .85); --rim-1: rgb(255 255 255 / .95); --rim-2: rgb(255 255 255 / .32); --rim-3: rgb(255 255 255 / .72); --glow: rgb(255 255 255 / .6); --drop: 0 26px 50px -30px rgb(90 60 30 / .3); --line: rgb(27 23 20 / .12); --shadow: 0 24px 64px rgb(90 60 30 / .12); --btn: #1B1714; --btn-ink: #F8F4EE; --aura-o: .85; }
+.app[data-theme="dark"], .scr[data-theme="dark"] { --mark: #EDE7DE; --mark-ink: #1E1A17; --bg: #131110; --ink: #F6F1E9; --ink-2: rgb(246 241 233 / .76); --ink-3: rgb(246 241 233 / .6); --glass: rgb(255 255 255 / .045); --glass-hi: rgb(255 255 255 / .16); --rim-1: rgb(255 255 255 / .5); --rim-2: rgb(255 255 255 / .08); --rim-3: rgb(255 255 255 / .3); --glow: rgb(255 255 255 / .13); --drop: 0 26px 50px -30px rgb(0 0 0 / .6); --line: rgb(255 255 255 / .1); --shadow: 0 24px 64px rgb(0 0 0 / .35); --btn: #F6F1E9; --btn-ink: #131110; --aura-o: 1; }
 
 /* 빛의 팔레트 (활동과 무드마다) */
-[data-aura="home"]    { --a1: #FF7A45; --a2: #C8B6FF; --a3: #FFC48A; }
-[data-aura="sunrise"] { --a1: #FF5E3A; --a2: #B9A4FF; --a3: #FFB067; }
-[data-aura="dusk"]    { --a1: #D9479B; --a2: #5B47C9; --a3: #FFB38F; }
-[data-aura="night"]   { --a1: #3B2C8F; --a2: #1B1440; --a3: #8B5CC9; }
-[data-aura="coral"]   { --a1: #FF5F8F; --a2: #A57BD8; --a3: #FFC15E; }
-[data-aura="ember"]   { --a1: #FF4E2E; --a2: #8B6BFF; --a3: #FFC25C; }
-[data-aura="rose"]    { --a1: #FF5C8A; --a2: #6FB8FF; --a3: #FFD0DE; }
-[data-aura="calm"]    { --a1: #5A6CFF; --a2: #8FE3CF; --a3: #E3E7FF; }
-[data-aura="firm"]    { --a1: #FF4220; --a2: #7A2C6E; --a3: #FFC03D; }
-[data-aura="warm"]    { --a1: #FF6F86; --a2: #B79BFF; --a3: #FFC0A0; }
-[data-aura="focus"]   { --a1: #8FB0D4; --a2: #D7F25A; --a3: #EEF3F8; }
-[data-aura="flex"]    { --a1: #4FB985; --a2: #7DBDFF; --a3: #F0EC7A; }
-[data-aura="still"]   { --a1: #6B6158; --a2: #A89A8C; --a3: #E2D8CC; }
+[data-aura="home"]    { --a1: #FF7A45; --a2: #C8B6FF; --a3: #FFC48A; --a4: #A9BACF; }
+[data-aura="sunrise"] { --a1: #FF5E3A; --a2: #B9A4FF; --a3: #FFB067; --a4: #FFD95C; }
+[data-aura="dusk"]    { --a1: #D9479B; --a2: #5B47C9; --a3: #FFB38F; --a4: #9DAE80; }
+[data-aura="night"]   { --a1: #3B2C8F; --a2: #1B1440; --a3: #8B5CC9; --a4: #26357A; }
+[data-aura="coral"]   { --a1: #FF5F8F; --a2: #A57BD8; --a3: #FFC15E; --a4: #A3B98F; }
+[data-aura="ember"]   { --a1: #FF4E2E; --a2: #8B6BFF; --a3: #FFC25C; --a4: #E9B6E6; }
+[data-aura="rose"]    { --a1: #FF5C8A; --a2: #6FB8FF; --a3: #FFD0DE; --a4: #B9CB9C; }
+[data-aura="calm"]    { --a1: #5A6CFF; --a2: #8FE3CF; --a3: #E3E7FF; --a4: #C6B8F4; }
+[data-aura="firm"]    { --a1: #FF4220; --a2: #7A2C6E; --a3: #FFC03D; --a4: #A6B4C9; }
+[data-aura="warm"]    { --a1: #FF6F86; --a2: #B79BFF; --a3: #FFC0A0; --a4: #A8BE8E; }
+[data-aura="focus"]   { --a1: #8FB0D4; --a2: #D7F25A; --a3: #EEF3F8; --a4: #F2CDBE; }
+[data-aura="flex"]    { --a1: #4FB985; --a2: #7DBDFF; --a3: #F0EC7A; --a4: #E3CAF2; }
+[data-aura="still"]   { --a1: #6B6158; --a2: #A89A8C; --a3: #E2D8CC; --a4: #C4CAD3; }
 
-/* 오라: 창 전체에 번지는 빛 (blur 없이 radial-gradient — 가볍고 경계가 안 생긴다) */
+/* 오라 (16차, RonDesignLab): 창보다 큰 빛 덩어리 네 개가 가장자리 밖까지 번진다. 칸 뒤에만 깔린 빛이 아니라 화면 전체의 색 바탕.
+   따뜻한 주색(a1) · 둘째 색(a2) · 밝은 색(a3)에 차분한 대비색(a4: 블루그레이·올리브·라일락)을 겹쳐 레퍼런스처럼 색이 섞이며 넘어간다.
+   유리는 이 위에 놓여 서리 낀 색을 비춘다. blur 없이 radial-gradient (가볍고 경계가 안 생긴다) */
 .aura { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: var(--aura-o); transition: opacity 1.2s ease; }
-.aura i { position: absolute; border-radius: 50%; aspect-ratio: 1; background: radial-gradient(closest-side, var(--c), transparent); }
-.aura i:nth-child(1) { --c: var(--a1); width: 120%; left: 22%; top: -38%; opacity: .62; animation: drift-a 26s var(--ease-breath) infinite alternate; }
-.aura i:nth-child(2) { --c: var(--a2); width: 100%; left: -42%; top: 38%; opacity: .55; animation: drift-b 32s var(--ease-breath) infinite alternate; }
-.aura i:nth-child(3) { --c: var(--a3); width: 80%; left: 46%; top: 62%; opacity: .7; animation: drift-a 38s var(--ease-breath) infinite alternate-reverse; }
+.aura i { position: absolute; border-radius: 50%; aspect-ratio: 1; background: radial-gradient(closest-side, var(--c), color-mix(in oklab, var(--c) 55%, transparent) 46%, transparent);
+  transition: left 2.4s var(--ease-breath), top 2.4s var(--ease-breath), width 2.4s var(--ease-breath); }
+.aura i:nth-child(1) { --c: var(--a1); width: 150%; left: 18%; top: -42%; opacity: .74; animation: drift-a 26s var(--ease-breath) infinite alternate; }
+.aura i:nth-child(2) { --c: var(--a2); width: 130%; left: -62%; top: 30%; opacity: .66; animation: drift-b 32s var(--ease-breath) infinite alternate; }
+.aura i:nth-child(3) { --c: var(--a3); width: 90%; left: 32%; top: 16%; opacity: .78; animation: drift-a 38s var(--ease-breath) infinite alternate-reverse; }
+.aura i:nth-child(4) { --c: var(--a4); width: 120%; left: 22%; top: 66%; opacity: .7; animation: drift-b 44s var(--ease-breath) infinite alternate-reverse; }
+/* 다크: 밝은 색(a3)과 차분한 색(a4)은 검은 바탕 위에서 흙빛으로 탁해진다 → 옅게, 주색·둘째 색이 빛나게 */
+.app[data-theme="dark"] .aura i:nth-child(3) { opacity: .26; }
+.app[data-theme="dark"] .aura i:nth-child(4) { opacity: .24; }
+@container app (width >= 1200px) {
+  .aura i:nth-child(1) { width: 82%; left: 44%; top: -48%; }
+  .aura i:nth-child(2) { width: 76%; left: -26%; top: 26%; }
+  .aura i:nth-child(3) { width: 50%; left: 30%; top: 8%; }
+  .aura i:nth-child(4) { width: 70%; left: 56%; top: 54%; }
+}
 .aura::after { content: ""; position: absolute; inset: 0; background-image: var(--grain); opacity: .09; mix-blend-mode: multiply; }
 .app[data-theme="dark"] .aura::after { filter: invert(1); mix-blend-mode: screen; opacity: .06; }
-.aura.low { opacity: calc(var(--aura-o) * .45); }
+.aura.low { opacity: calc(var(--aura-o) * .62); }
 .aura.rise i:nth-child(1) { left: -10%; top: 40%; width: 130%; }
 .aura.rise i:nth-child(2) { left: 30%; top: 55%; }
+/* 홈: 왼쪽 큰 카드가 이미 진한 그라디언트라 바탕 빛은 옅게, 카드를 피해 오른쪽 위 · 칸 줄 뒤 · 화면 밖으로 흘린다 */
+.aura.home { opacity: calc(var(--aura-o) * .66); }
+.app[data-theme="dark"] .aura.home { opacity: calc(var(--aura-o) * .5); } /* 다크는 빛이 더 세게 보여 둥근 버튼이 경고색처럼 물든다 */
+.aura.home i:nth-child(1) { width: 100%; left: 40%; top: -36%; }
+.aura.home i:nth-child(2) { width: 110%; left: -54%; top: 62%; }
+.aura.home i:nth-child(3) { width: 70%; left: 20%; top: 76%; }
+.aura.home i:nth-child(4) { width: 100%; left: 56%; top: 64%; }
+@container app (width >= 1200px) {
+  .aura.home i:nth-child(1) { width: 56%; left: 64%; top: -42%; }
+  .aura.home i:nth-child(2) { width: 50%; left: 36%; top: 54%; }
+  .aura.home i:nth-child(3) { width: 40%; left: 58%; top: 16%; }
+  .aura.home i:nth-child(4) { width: 52%; left: 74%; top: 48%; }
+}
 @keyframes drift-a { to { transform: translate(-6%, 5%) scale(1.06); } }
 @keyframes drift-b { to { transform: translate(8%, -6%) scale(.95); } }
 
@@ -124,12 +169,21 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @keyframes listen { 50% { transform: scale(1.05); } }
 
 /* 유리 */
-.glass { background: var(--glass); -webkit-backdrop-filter: blur(48px) saturate(150%); backdrop-filter: blur(48px) saturate(150%);
-  box-shadow: inset 0 1.5px 0 var(--glass-hi), inset 0 0 0 1.5px color-mix(in srgb, var(--glass-hi) 45%, transparent); }
+/* 유리 (RonDesignLab · Hims · Eli · SuperPower에서 잰 값)
+   - 채움 흰색 17%(라이트) · 4.5%(다크)로 맑게, 뒤는 48px 흐림 + 채도 185%로 젖빛을 낸다. 표면 알갱이(17차에 제거)는 글자를 흐리고 확대 축소 때 바둑판처럼 이음새가 보여 쓰지 않는다
+   - 테두리 1.5px: 빛이 왼쪽 위에서 온다 → 왼쪽 위·오른쪽 아래 모서리가 밝고 곧은 변 가운데는 사라진다
+   - 두께: 안쪽 위아래 가장자리에 빛이 옅게 고인다
+   - 굴절: 크롬 계열에서 가장자리 뒤 배경이 바깥쪽으로 휜다 (app.js LENS, screens.css 14차) */
+:where(.glass, .btn.sec, .seg3) { position: relative; }
+.glass { background: var(--glass); -webkit-backdrop-filter: blur(48px) saturate(185%); backdrop-filter: blur(48px) saturate(185%);
+  box-shadow: inset 0 26px 36px -34px var(--glow), inset 0 -26px 36px -32px var(--glow), var(--drop); }
+:is(.glass, .btn.sec, .seg3, .wheels .band)::before { content: ""; position: absolute; inset: 0; border-radius: inherit; corner-shape: inherit; padding: 1.5px; pointer-events: none;
+  background: linear-gradient(140deg, var(--rim-1), var(--rim-2) 24%, transparent 44%, transparent 60%, var(--rim-2) 78%, var(--rim-3));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
 
 /* 타이포 (Pleos 위계 크기를 그대로: 48 / 36 / 30 / 28 / 24 / 20) */
-.h1 { margin: 0; font: 700 48px/64px var(--font); letter-spacing: -0.025em; }
-.h2 { margin: 0; font: 700 36px/48px var(--font); letter-spacing: -0.02em; }
+.h1 { margin: 0; font: 500 48px/64px var(--font); letter-spacing: -0.025em; }
+.h2 { margin: 0; font: 500 36px/48px var(--font); letter-spacing: -0.02em; }
 .lead { margin: 0; font: 400 30px/44px var(--font); color: var(--ink-2); }
 .body { margin: 0; font: 400 28px/40px var(--font); color: var(--ink-2); }
 .lab { margin: 0; font: 400 24px/32px var(--font); color: var(--ink-3); }
@@ -138,56 +192,63 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .big { font: 200 120px/1 var(--num); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
 .big small, .mid small { font: 400 32px/1 var(--font); letter-spacing: 0; margin-left: 6px; color: var(--ink-2); }
 .mid { font: 300 64px/1 var(--num); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.dotnum { font: 700 150px/1 var(--dot); letter-spacing: .02em; }
+.dotnum { display: inline-flex; line-height: 0; }
+.dots { display: block; width: auto; flex: none; }
 .ink3 { color: var(--ink-3); } .ink2 { color: var(--ink-2); }
 
 /* 버튼 (터치 크기는 Pleos: L 100 · M 80 · 최소 64. 모양은 알약) */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 14px; height: 100px; padding: 0 44px; border-radius: 999px; white-space: nowrap;
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; height: 100px; padding: 0 48px; border-radius: 999px; white-space: nowrap;
   font: 700 30px/1 var(--font); transition: transform .16s var(--ease-out), background-color .2s ease, opacity .2s ease; }
-.btn:active { transform: scale(.97); }
 .btn .lucide { width: 36px; height: 36px; }
 .btn.pri { background: var(--btn); color: var(--btn-ink); justify-content: space-between; padding: 0 12px 0 48px; }
 .btn.pri .go { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: var(--btn-ink); color: var(--btn); }
 .btn.pri .go .lucide { width: 34px; height: 34px; stroke-width: 2; }
-.btn.sec { background: var(--glass); color: var(--ink); -webkit-backdrop-filter: blur(32px); backdrop-filter: blur(32px); box-shadow: inset 0 0 0 1.5px var(--glass-hi); }
-.btn.m { height: 80px; padding: 0 36px; font-size: 28px; }
+.btn.sec { background: var(--glass); color: var(--ink); -webkit-backdrop-filter: blur(40px) saturate(185%); backdrop-filter: blur(40px) saturate(185%); box-shadow: inset 0 18px 24px -22px var(--glow), inset 0 -18px 24px -20px var(--glow); }
+.btn.m { height: 80px; padding: 0 32px; font-size: 28px; }
 .btn.wide { width: 100%; }
 .btn.on { box-shadow: inset 0 0 0 3px var(--ink); }
-.link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 64px; padding: 0 20px; border-radius: 999px; font: 400 26px/1 var(--font); color: var(--ink-3); }
-.link:active { background: var(--glass); }
+.link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 64px; padding: 0 24px; border-radius: 999px; font: 400 26px/1 var(--font); color: var(--ink-3); }
 .iconbtn { display: grid; place-items: center; width: 80px; height: 80px; border-radius: 50%; color: var(--ink); flex: none; transition: transform .16s var(--ease-out); }
-.iconbtn:active { transform: scale(.95); }
 .iconbtn .lucide { width: 40px; height: 40px; }
-.chip { display: inline-flex; align-items: center; gap: 12px; height: 64px; padding: 0 28px; border-radius: 999px; font: 400 24px/1 var(--font); color: var(--ink); white-space: nowrap; }
+.chip { display: inline-flex; align-items: center; gap: 12px; height: 64px; padding: 0 24px; border-radius: 999px; font: 400 24px/1 var(--font); color: var(--ink); white-space: nowrap; }
 .chip.on { background: var(--btn); color: var(--btn-ink); }
 .sw { width: 20px; height: 20px; border-radius: 50%; flex: none; background: radial-gradient(circle at 35% 30%, var(--a3), var(--a1)); }
 
 /* ── 화면 레이아웃: Portrait는 위→아래, Landscape(창 폭 1200↑)는 왼쪽 글·버튼(운전석 쪽) + 오른쪽 그래픽 ── */
-.scr { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 32px var(--pad) 48px; animation: scr-in .3s ease both; }
-/* 화면 전환: 나갈 때는 가는 방향으로 빠르게 흐려지고, 들어올 때는 그래픽 → 글 → 버튼 순서로 온다. --dir은 앞으로 1, 뒤로 -1 */
-.scr.out { animation: scr-out .2s cubic-bezier(.4, 0, 1, 1) both; }
-@keyframes scr-in { from { opacity: 0; } }
-@keyframes scr-out { to { opacity: 0; transform: translateX(calc(var(--dir, 1) * -28px)) scale(.985); filter: blur(6px); } }
-.scr:not(.quiet) > .vis { animation: vis-in .7s var(--ease-out) backwards; }
-.scr:not(.quiet) > .side > *, .scr:not(.quiet) > .hgrid > *, .scr:not(.quiet) > .pbody { animation: rise .55s var(--ease-out) backwards; }
-.scr:not(.quiet) > .side > :nth-child(2), .scr:not(.quiet) > .hgrid > :nth-child(2) { animation-delay: 70ms; }
-.scr:not(.quiet) > .side > :nth-child(n+3) { animation-delay: 140ms; }
-@keyframes vis-in { from { opacity: 0; transform: scale(.9); filter: blur(14px); } }
-@keyframes rise { from { opacity: 0; transform: translate(calc(var(--dir, 1) * 32px), 6px); } }
+/* 화면 전환 (Material 공유 축 방식, --dir: 앞으로 1 · 뒤로 -1)
+   - 머리(이전·닫기·진행 표시)는 앞뒤 화면에서 같은 버튼이면 움직이지 않는다(.same). 달라진 버튼만 흐려졌다 나타난다(.fresh)
+   - 이전 내용은 140ms 만에 사라지며 24px 물러난다. 새 내용은 120ms부터 보이고 32px 옆에서 스프링으로 들어온다
+     → 두 내용이 같이 보이는 순간이 거의 없어 부딪히지 않는다. 그래픽 → 글 순서로 30ms 차이
+   - 화면 안에서 내용만 바꿀 때(온보딩 장 넘기기: .x-out / .x-in)도 같은 타임라인을 쓴다 */
+.scr { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 32px var(--pad) var(--pad);
+  transition: transform .45s cubic-bezier(.23, 1, .32, 1), opacity .45s cubic-bezier(.23, 1, .32, 1); }
+.scr.leaving { pointer-events: none; }
+.scr.leaving > .keep > .same { visibility: hidden; }
+.scr.leaving > .keep > :not(.same) { animation: fade-out .14s linear forwards; }
+.scr.entering > .keep > .fresh { animation: in-fade .3s cubic-bezier(.23, 1, .32, 1) .12s backwards; }
+.scr.leaving > :not(.keep), .x-out { pointer-events: none; animation: fade-out .14s linear forwards, out-x .16s cubic-bezier(.4, 0, 1, 1) forwards; }
+@keyframes out-x { to { transform: translateX(calc(var(--dir, 1) * -24px)); } }
+.scr.entering > :not(.keep), .x-in { animation: in-fade .3s cubic-bezier(.23, 1, .32, 1) .12s backwards, in-x var(--spring-ms, .6s) var(--spring, cubic-bezier(.23, 1, .32, 1)) .09s backwards; }
+.scr.entering > :not(.keep):nth-child(n+3), .slide-copy > .x-in { animation-delay: .15s, .12s; }
+.x-fade { animation: in-fade .3s cubic-bezier(.23, 1, .32, 1) .12s backwards; }
+@keyframes in-fade { from { opacity: 0; } }
+@keyframes in-x { from { transform: translateX(calc(var(--dir, 1) * 32px)); } }
+/* 모달이 떠 있을 때 뒤 화면은 살짝 물러나 흐려진다 */
+.app.focus #scr > .scr { transform: scale(.97); opacity: .5; }
 .top { display: flex; align-items: center; justify-content: space-between; min-height: 80px; gap: 16px; }
 .tag { display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 18px; border-radius: 999px; font: 400 24px/1 var(--font); color: var(--ink-2); }
 .tag .sw { width: 16px; height: 16px; }
 .vis { flex: 1; display: grid; place-items: center; position: relative; min-height: 0; }
 .side { display: flex; flex-direction: column; }
 .copy { display: flex; flex-direction: column; gap: 12px; }
-.acts { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
-.acts .two { display: flex; gap: 16px; }
+.acts { display: flex; flex-direction: column; gap: var(--gap-s); margin-top: var(--gap-l); }
+.acts .two { display: flex; gap: var(--gap-s); }
 .acts .two > * { flex: 1; }
 .center { text-align: center; align-items: center; }
 .progress { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; }
 .progress::before { content: ""; position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p, .3)); background: linear-gradient(90deg, var(--a2), var(--a1)); transition: transform 1s linear; }
 @container app (min-width: 1200px) {
-  .scr { display: grid; grid-template-columns: 720px 1fr; grid-template-rows: auto 1fr; column-gap: 64px; padding: 32px 56px 56px; }
+  .scr { display: grid; grid-template-columns: 720px 1fr; grid-template-rows: auto 1fr; column-gap: var(--gap-col); padding: 32px var(--pad) var(--pad); }
   .scr > .top { grid-column: 1 / -1; }
   .scr > .vis { grid-column: 2; grid-row: 2; }
   .scr > .side { grid-column: 1; grid-row: 2; justify-content: flex-end; }
@@ -198,9 +259,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 
 /* 카드·목록 */
-.card { border-radius: 48px; padding: 40px; }
-.list { border-radius: 40px; overflow: hidden; }
-.li { display: flex; align-items: center; gap: 24px; min-height: 112px; padding: 0 32px; }
+.card { border-radius: var(--r-l); padding: var(--in-l); }
+.list { border-radius: var(--r-l); overflow: hidden; }
+.li { display: flex; align-items: center; gap: 24px; min-height: 112px; padding: 0 var(--in-l); }
 .li + .li { box-shadow: inset 0 1px 0 var(--line); }
 .li .t { flex: 1; min-width: 0; }
 .li .t b { display: block; font: 700 28px/36px var(--font); }
@@ -208,37 +269,28 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .li .v { font: 400 26px/1 var(--font); color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
 .li .v .lucide { width: 32px; height: 32px; color: var(--ink-3); }
 .li .ok { color: #2BB673; }
-.choice { display: flex; align-items: center; gap: 24px; width: 100%; height: 120px; padding: 0 36px; border-radius: 999px; text-align: left; font: 700 32px/1 var(--font); transition: transform .16s var(--ease-out), box-shadow .2s ease; }
+.choice { display: flex; align-items: center; gap: 24px; width: 100%; height: 112px; padding: 0 var(--in-l) 0 28px; border-radius: 999px; text-align: left; font: 700 32px/1 var(--font); transition: transform .16s var(--ease-out), box-shadow .2s ease; }
 .choice:active { transform: scale(.98); }
 .choice .orb { --s: 56px; }
 .choice small { margin-left: auto; font: 400 24px/1 var(--font); color: var(--ink-3); }
 .choice.on { box-shadow: inset 0 0 0 3px var(--ink), var(--shadow); }
 .switch { position: relative; width: 80px; height: 48px; border-radius: 24px; background: var(--line); flex: none; }
-.switch::after { content: ""; position: absolute; left: 8px; top: 8px; width: 32px; height: 32px; border-radius: 50%; background: #fff; transition: transform .3s var(--ease-out); box-shadow: 0 2px 6px rgb(0 0 0 / .2); }
+.switch { transition: background-color .25s ease; }
+.switch::before { content: ""; position: absolute; inset: -16px -8px; } /* 보이는 크기는 80×48, 누를 수 있는 영역은 Pleos 최소 64를 넘는 96×80 */
+.switch::after { content: ""; position: absolute; left: 8px; top: 8px; width: 32px; height: 32px; border-radius: 50%; background: #fff; transition: transform var(--pop-ms, .3s) var(--spring-pop, ease-out); box-shadow: 0 2px 6px rgb(0 0 0 / .2); }
 .switch.on { background: var(--pleos-informative-active); }
 .switch.on::after { transform: translateX(32px); }
 
-/* 오늘 4칸 */
-.day { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.slot { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border-radius: 32px; min-height: 168px; text-align: left; }
-.slot .mk { position: relative; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; box-shadow: inset 0 0 0 2px var(--line); }
-.slot .mk .lucide { width: 24px; height: 24px; stroke-width: 2.4; }
-.slot.done .mk { background: radial-gradient(circle at 35% 30%, var(--a3), var(--a1)); box-shadow: none; color: #1B1714; }
-.slot.next .mk::after { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 6px color-mix(in srgb, var(--lime) 30%, transparent); }
-.slot b { font: 700 26px/1.2 var(--font); }
-.slot span { font: 400 22px/1.2 var(--font); color: var(--ink-3); }
-
 /* 오버레이: 확인 팝업·토스트·캡션 */
 .modal-bg { position: absolute; inset: 0; z-index: 30; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 40%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); animation: fade-in .3s ease both; }
-.modal { width: min(744px, calc(100% - 96px)); padding: 56px 48px 48px; border-radius: 56px; animation: pop-in .4s var(--ease-out) both; }
-.modal .acts { margin-top: 48px; }
+.modal { width: min(744px, calc(100% - 96px)); padding: 48px; border-radius: var(--r-l); animation: pop-in .4s var(--ease-out) both; }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes pop-in { from { opacity: 0; transform: translateY(16px) scale(.97); } }
-.toast { position: absolute; z-index: 31; left: 50%; bottom: 40px; translate: -50% 0; display: flex; align-items: center; gap: 20px; height: 104px; padding: 0 40px 0 24px; border-radius: 999px; font: 700 28px/1 var(--font); white-space: nowrap; animation: toast-in .5s var(--ease-out) both; }
+.toast { position: absolute; z-index: 31; left: 50%; bottom: 40px; translate: -50% 0; display: flex; align-items: center; gap: 16px; height: 100px; padding: 0 40px 0 18px; border-radius: 999px; font: 700 28px/1 var(--font); white-space: nowrap; animation: toast-in .5s var(--ease-out) both; }
 .toast .orb { --s: 64px; }
 .toast small { font: 400 24px/1 var(--font); color: var(--ink-3); margin-left: 4px; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(24px); } }
-.caption { position: absolute; z-index: 32; left: 32px; right: 32px; bottom: 32px; display: flex; align-items: center; gap: 20px; padding: 28px 36px; border-radius: 40px; font: 400 28px/40px var(--font); color: var(--ink); animation: toast-in .5s var(--ease-out) both; }
+.caption { position: absolute; z-index: 32; left: var(--pad); right: var(--pad); bottom: 40px; display: flex; align-items: center; gap: 24px; padding: 24px var(--in-l); border-radius: var(--r-l); font: 400 28px/40px var(--font); color: var(--ink); animation: toast-in .5s var(--ease-out) both; }
 .caption .lucide { width: 40px; height: 40px; color: var(--ink-3); }
 
 /* 주행 중: 모션 없음 (Pleos) */
@@ -246,7 +298,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 @media (prefers-reduced-motion: reduce) {
   .aura i, .breath .orb, .breath .halo, .breath .rings, .slowpulse .orb, .listen .orb { animation: none; }
-  .scr { animation-name: fade-in; }
-  .scr.out { animation: fade-out .15s ease both; }
-  .scr > .vis, .scr > .side > *, .scr > .hgrid > *, .scr > .pbody { animation: none !important; }
+  .scr.entering > *, .scr.leaving > *, .x-in, .x-out { transform: none !important; }
+  .scr.entering > :not(.keep), .x-in { animation: in-fade .2s ease backwards !important; }
+  .scr.leaving > :not(.keep), .x-out { animation: fade-out .12s ease forwards !important; }
+  .aura i { transition: none; }
+  .app.focus #scr > .scr { transform: none; }
+  .modal { animation: fade-in .2s ease both !important; }
 }

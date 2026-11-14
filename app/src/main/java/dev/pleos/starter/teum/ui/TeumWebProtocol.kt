@@ -21,7 +21,10 @@ import dev.pleos.starter.teum.session.ClockReading
 import dev.pleos.starter.teum.vehicle.VehicleSafety
 
 enum class WebJourney { MORNING, LUNCH, PREPARATION, EVENING, QUICK }
-enum class WebVehicleFeature { HVAC_TEMPERATURE, AMBIENT_BRIGHTNESS, SEAT_POSITION, WINDOW_POSITION }
+enum class WebVehicleFeature {
+    HVAC_TEMPERATURE, AMBIENT_BRIGHTNESS, AMBIENT_COLOR, AMBIENT_SWITCH, SEAT_POSITION,
+    WINDOW_POSITION, SEAT_VENTILATION, SMART_GLASS_STATE, SMART_GLASS_LEVEL
+}
 enum class WebPermission { MICROPHONE, LOCATION }
 enum class WebPreferenceFlag {
     VOICE_GUIDE, MORNING, NAP, PREPARATION, EVENING, ASK_BEFORE_HOME_ARRIVAL,
@@ -53,9 +56,14 @@ sealed interface TeumWebAction {
     data class SelectRecall(val recordId: String) : TeumWebAction
     data class HistoryConsent(val enabled: Boolean) : TeumWebAction
     data class SoundEnabled(val enabled: Boolean) : TeumWebAction
-    data class InspectVehicle(val feature: WebVehicleFeature) : TeumWebAction
+    data class InspectVehicle(val feature: WebVehicleFeature, val area: String? = null) : TeumWebAction
     data class PreviewVehicle(val feature: WebVehicleFeature, val value: Double) : TeumWebAction
     data class ConfirmVehicle(val previewId: Long) : TeumWebAction
+    object InspectBackrest : TeumWebAction
+    data class PulseBackrest(
+        val area: String, val direction: dev.pleos.starter.teum.vehicle.BackrestDirection
+    ) : TeumWebAction
+    object StopBackrest : TeumWebAction
     data class SavePlaceLabel(val home: Boolean, val label: String) : TeumWebAction
     data class CaptureLocation(val home: Boolean) : TeumWebAction
     data class SaveSchedule(val workStartMinute: Int?, val lunchReturnMinute: Int?, val walkingReserveMinutes: Int?) : TeumWebAction
@@ -262,9 +270,33 @@ object TeumWebProtocol {
                 fields.keys("enabled")
                 TeumWebAction.SoundEnabled(fields.boolean("enabled"))
             }
+            "inspectBackrest" -> {
+                fields.keys()
+                TeumWebAction.InspectBackrest
+            }
+            "stopBackrest" -> {
+                fields.keys()
+                TeumWebAction.StopBackrest
+            }
+            "pulseBackrest" -> {
+                fields.keys("area", "direction")
+                val area = fields.text("area", 256)
+                require(area.isNotEmpty() && area.none { it.isISOControl() })
+                TeumWebAction.PulseBackrest(area,
+                    dev.pleos.starter.teum.vehicle.BackrestDirection.valueOf(fields.text("direction", 16)))
+            }
             "inspectVehicle" -> {
-                fields.keys("feature")
-                TeumWebAction.InspectVehicle(WebVehicleFeature.valueOf(fields.text("feature", 40)))
+                val area = if (fields.has("area")) {
+                    fields.keys("feature", "area")
+                    fields.text("area", 256).also {
+                        require(it.isNotEmpty())
+                        require(it.none { character -> character.isISOControl() })
+                    }
+                } else {
+                    fields.keys("feature")
+                    null
+                }
+                TeumWebAction.InspectVehicle(WebVehicleFeature.valueOf(fields.text("feature", 40)), area)
             }
             "previewVehicle" -> {
                 fields.keys("feature", "value")

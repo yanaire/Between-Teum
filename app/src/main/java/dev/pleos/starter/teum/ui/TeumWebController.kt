@@ -109,7 +109,9 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     private val runtime = JourneyRuntime(JourneyClock { reading }, TeumJourneySnapshotStore(activity))
     private val projection = TeumWebProjection()
     private val permissions = TeumWebPermissions(activity) { submit { publish(true) } }
-    private val host: TeumWebViewHost = TeumWebViewHost(activity, ::onRequest) {
+    private val host: TeumWebViewHost = TeumWebViewHost(
+        activity, ::onRequest, onDocumentChanged = { closeVehicleBridge() }
+    ) {
         arrivalDocumentAlive = false
         foregroundEpoch++
         brakeSource?.close()
@@ -202,6 +204,9 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     @Volatile private var safety = VehicleSafety()
     @Volatile private var route = TeumWebRoute.ON_01
     @Volatile private var vehicleBridge: TeumWebVehicleBridge? = null
+    private var backrestController: dev.pleos.starter.teum.vehicle.PleosBackrestController? = null
+    @Volatile private var backrestState = JsonObject()
+    private var publishedBackrestState = JsonObject()
     private var revision = 0L
     private var napMinutes = 20
     private var selectedDate = LocalDate.now()
@@ -229,6 +234,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     private var focusObserver: ViewTreeObserver? = null
     private val focusListener = ViewTreeObserver.OnWindowFocusChangeListener { focused ->
         windowFocused = focused
+        updateBackrestState()
         submit { publish(arrivalStep()) }
     }
     private val ticker = object : Runnable {
@@ -238,6 +244,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
             cabinSource?.refresh()
             brakeSource?.refresh()
             vehicleBridge?.tick()
+            updateBackrestState()
             submit {
                 if (runtime.state?.active == true) {
                     if (safety.blockedReason(reading.elapsedMillis) != null) {
@@ -272,6 +279,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
 
     fun onStart() {
         val owner = ++foregroundEpoch
+        musicSafety = VehicleSafety()
         foreground = true
         windowFocused = host.view.hasWindowFocus()
         focusObserver = host.view.viewTreeObserver.also {
@@ -293,6 +301,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
             if (owner != foregroundEpoch) return@AaosSafetySource
             musicSafety = observed
             vehicleBridge?.updateSafety(observed)
+            updateBackrestState()
             brakeSource?.observeSafety(observed)
             if (observed.blockedReason(SystemClock.elapsedRealtime()) != null) stopOutputs()
             submit {
@@ -335,6 +344,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
 
     fun onStop() {
         foreground = false
+        musicSafety = VehicleSafety()
         foregroundEpoch++
         windowFocused = false
         focusObserver?.takeIf { it.isAlive }?.removeOnWindowFocusChangeListener(focusListener)
@@ -362,6 +372,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
 
     fun onDestroy() {
         foregroundEpoch++
+        musicSafety = VehicleSafety()
         brakeSource?.close()
         brakeSource = null
         focusObserver?.takeIf { it.isAlive }?.removeOnWindowFocusChangeListener(focusListener)
@@ -448,7 +459,8 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
             val current = runtime.state
             if (current?.active == true && action != TeumWebAction.ReadState) {
                 token(request)
-                val permitted = action is TeumWebAction.Navigate || action is TeumWebAction.JourneyCommand ||
+                val permitted = action == TeumWebAction.StopBackrest ||
+                    action is TeumWebAction.Navigate || action is TeumWebAction.JourneyCommand ||
                     action is TeumWebAction.JourneyInput || action == TeumWebAction.FinishEarly ||
                     action is TeumWebAction.ReconfigureEntry && current.phase == JourneyPhase.ENTRY_REVIEW ||
                     action is TeumWebAction.SkipSuggestion && current.phase == JourneyPhase.ENTRY_REVIEW ||
@@ -564,6 +576,8 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 is TeumWebAction.InspectVehicle,
                 is TeumWebAction.PreviewVehicle,
                 is TeumWebAction.ConfirmVehicle -> requestVehicleAction(request, action)
+                TeumWebAction.InspectBackrest, TeumWebAction.StopBackrest,
+                is TeumWebAction.PulseBackrest -> requestBackrestAction(request, action)
                 is TeumWebAction.SaveRecord -> error("A legacy record cannot be created from an original journey")
                 else -> error("Preference intent was not handled by its native owner")
             }
@@ -584,7 +598,10 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
             else -> return
         }
         if (feature != null && feature !in setOf(
-                WebVehicleFeature.AMBIENT_BRIGHTNESS, WebVehicleFeature.WINDOW_POSITION
+                WebVehicleFeature.AMBIENT_BRIGHTNESS, WebVehicleFeature.AMBIENT_COLOR,
+                WebVehicleFeature.AMBIENT_SWITCH, WebVehicleFeature.WINDOW_POSITION,
+                WebVehicleFeature.SEAT_VENTILATION, WebVehicleFeature.SMART_GLASS_STATE,
+                WebVehicleFeature.SMART_GLASS_LEVEL
             )) {
             notice = "이 차량 제어는 현재 화면에서 사용할 수 없어요."
             return
@@ -596,18 +613,19 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         val requestEpoch = request.epoch
         main.post {
             if (!foreground || destroyed || requestEpoch != host.epoch || route != TeumWebRoute.ST_07) return@post
+            if (backrestController?.snapshot()?.busy == true) return@post
             val bridge = vehicleBridge ?: if (action is TeumWebAction.InspectVehicle) {
                 TeumWebVehicleBridge(
                     PleosSettingsPort(activity),
                     { SystemClock.elapsedRealtime() },
-                    safety,
+                    musicSafety,
                     { host.epoch },
-                    { foreground && !destroyed },
+                    { foreground && !destroyed && route == TeumWebRoute.ST_07 },
                     { submit { publish(true) } }
                 ).also { vehicleBridge = it }
             } else return@post
             when (action) {
-                is TeumWebAction.InspectVehicle -> bridge.inspect(action.feature, requestEpoch)
+                is TeumWebAction.InspectVehicle -> bridge.inspect(action.feature, requestEpoch, action.area)
                 is TeumWebAction.PreviewVehicle -> bridge.preview(action.feature, action.value, requestEpoch)
                 is TeumWebAction.ConfirmVehicle -> bridge.confirm(action.previewId, requestEpoch)
                 else -> Unit
@@ -615,7 +633,46 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
         }
     }
 
+    private fun requestBackrestAction(request: TeumWebRequest, action: TeumWebAction) {
+        main.post {
+            if (action == TeumWebAction.StopBackrest) {
+                backrestController?.stop()
+            } else {
+                if (!foreground || destroyed || request.epoch != host.epoch ||
+                    route != TeumWebRoute.ST_07) return@post
+                if (backrestController == null && action == TeumWebAction.InspectBackrest) {
+                    backrestController = dev.pleos.starter.teum.vehicle.PleosBackrestController(activity)
+                }
+                updateBackrestState()
+                when (action) {
+                    TeumWebAction.InspectBackrest -> backrestController?.inspect()
+                    is TeumWebAction.PulseBackrest -> {
+                        if (vehicleBridge?.commandInFlight() != true) {
+                            vehicleBridge?.cancelPending()
+                            backrestController?.start(action.area, action.direction)
+                        }
+                    }
+                    else -> Unit
+                }
+            }
+            updateBackrestState()
+            submit { publish(true) }
+        }
+    }
+
+    private fun updateBackrestState() {
+        backrestController?.let { controller ->
+            controller.safety(musicSafety,
+                foreground && !destroyed && windowFocused && route == TeumWebRoute.ST_07, host.epoch)
+            controller.tick()
+            backrestState = controller.snapshot().toWebState()
+        }
+    }
+
     private fun closeVehicleBridge() {
+        backrestController?.close()
+        backrestController = null
+        backrestState = JsonObject()
         val closing = vehicleBridge ?: return
         vehicleBridge = null
         closing.close()
@@ -1032,7 +1089,9 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
     }
 
     private fun publish(changed: Boolean, previous: PreviousTransition? = null) {
-        if (changed) revision++
+        val backrestSnapshot = backrestState
+        if (changed || publishedBackrestState != backrestSnapshot) revision++
+        publishedBackrestState = backrestSnapshot
         val zone = ZoneId.systemDefault()
         val today = localDay()
         if (cachedData == null || cachedDay != today) {
@@ -1064,6 +1123,7 @@ class TeumWebController(private val activity: Activity, root: ViewGroup) {
                 vehicleCapabilities.entrySet().forEach { (key, value) -> add(key, value) }
             })
             add("vehicleControls", vehicleControls)
+            add("backrestControl", backrestSnapshot.deepCopy())
             add("cabin", JsonObject().apply {
                 add("armchair", cabin.getValue("seat").positionFact())
                 add("app-window", cabin.getValue("windows").positionFact())
