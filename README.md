@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/icon.svg" width="80" height="80" alt="틈 앱 아이콘">
+  <img src="assets/readme/teum-icon.png" width="80" height="80" alt="틈 앱 아이콘">
 </p>
 
 <h1 align="center">틈</h1>
@@ -10,10 +10,17 @@
 퇴근 정리에 활용하도록 돕습니다. 상황과 복귀 시간을 선택하고, 안내에 따라
 활동을 시작해 마무리할 수 있습니다.
 
-[틈 서비스 시나리오 보기 (PDF)](assets/readme/scenario.pdf)
-
 > **에뮬레이터 전용 시연입니다.** 실제 차량에서의 동작과 안전성은 검증되지
 > 않았습니다. 알려진 차량 제어 결함이 있으므로 실차에 설치하거나 사용하지 마세요.
+
+## 서비스 시나리오
+
+![틈 서비스 시나리오 1페이지](assets/readme/scenario-01.jpg)
+![틈 서비스 시나리오 2페이지](assets/readme/scenario-02.jpg)
+![틈 서비스 시나리오 3페이지](assets/readme/scenario-03.jpg)
+![틈 서비스 시나리오 4페이지](assets/readme/scenario-04.jpg)
+![틈 서비스 시나리오 5페이지](assets/readme/scenario-05.jpg)
+![틈 서비스 시나리오 6페이지](assets/readme/scenario-06.jpg)
 
 ## 틈 둘러보기
 
