@@ -275,7 +275,7 @@ const MARK = w => { const k = w / 560; return `<span class="mk" style="width:${w
   `<span style="left:${Math.round(x * k)}px;top:${Math.round(y * k)}px">${SHAPE(SIG[s], SIGPAL[s], Math.round(z * k))}</span>`).join('')}</span>`; };
 S['ON-01'] = { aura: 'home', view: s => scr({ cls: 'mid-side',
   vis: `<div class="merge4">${MERGE.map(([k, z, x, y, dx, dy], i) => `<div class="gfx ${i % 2 ? 'float2' : 'float'}" style="left:${x}px;top:${y}px;--i:${i};--dx:${dx}px;--dy:${dy}px">${SHAPE(SIG[k], SIGPAL[k], z)}</div>`).join('')}</div>`,
-  side: copy('틈틈', '주차한 차 안에서 5~30분,<br>쉬어 가는 앱이에요'), acts: pri('시작하기', 'ON-02') }) };
+  side: copy('틈', '주차한 차 안에서 5~30분,<br>쉬어 가는 앱이에요'), acts: pri('시작하기', 'ON-02') }) };
 const SLIDE = [['쉴 수 있을 때<br>차가 먼저 알려 줘요', '출근 전, 점심 뒤, 중요한 일정 전, 퇴근 후에 남는 시간을 계산해요', 'sunrise'],
   ['쉬는 동안 편한 자세와<br>소리를 정해요', '차량 기능은 지원과 실제 상태를 확인해요', 'dusk'],
   ['쉰 시간은<br>차곡차곡 쌓여요', '일주일 동안 모은 시간을 볼 수 있어요', 'flex']];
