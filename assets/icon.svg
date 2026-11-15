@@ -1,4 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#9333ea"/>
-  <text x="32" y="32" dy="0.35em" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="32" font-weight="600" fill="#ffffff">현</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 712.727 712.727"><rect width="712.727" height="712.727" rx="190" fill="#17120F"/><g transform="translate(76.36 106.36)"><g transform="translate(0 200)" style="mix-blend-mode:screen"><svg class="shape  " width="310" height="310" viewBox="0 0 400 400" aria-hidden="true">
+    <defs><linearGradient id="s1l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D9479B"/><stop offset="1" stop-color="#4B3CB8"/></linearGradient>
+    <radialGradient id="s1a" cx=".78" cy=".8" r=".62"><stop offset="0" stop-color="#FFB38F"/><stop offset="1" stop-color="#FFB38F" stop-opacity="0"/></radialGradient>
+    <radialGradient id="s1b" cx=".32" cy=".28" r=".42"><stop offset="0" stop-color="#FFE3D3" stop-opacity=".95"/><stop offset="1" stop-color="#FFE3D3" stop-opacity="0"/></radialGradient><filter id="s1f" filterUnits="userSpaceOnUse" x="-120" y="-120" width="640" height="640" color-interpolation-filters="sRGB">
+
+    <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="s"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".95" numOctaves="2" seed="5" result="n"/>
+    <feColorMatrix in="n" values="0 0 0 0 .12  0 0 0 0 .08  0 0 0 0 .06  .55 0 0 0 -.28" result="na"/>
+    <feComposite in="na" in2="s" operator="in" result="g"/>
+    <feMerge><feMergeNode in="s"/><feMergeNode in="g"/></feMerge></filter><linearGradient id="s1r" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFB38F"/><stop offset=".5" stop-color="#D9479B"/><stop offset="1" stop-color="#4B3CB8"/></linearGradient></defs><g filter="url(#s1f)"><g transform="rotate(-9 200 210)"><rect class="pb" x="96" y="98" width="276" height="124" rx="62" fill="#4B3CB8" opacity=".9"/><rect x="28" y="176" width="316" height="140" rx="70" fill="url(#s1r)"/>
+        <ellipse class="pa" cx="124" cy="236" rx="66" ry="30" fill="#FFE3D3" opacity=".55"/></g></g></svg></g><g transform="translate(60 0)" style="mix-blend-mode:screen"><svg class="shape  " width="300" height="300" viewBox="0 0 400 400" aria-hidden="true">
+    <defs><linearGradient id="s2l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5E3A"/><stop offset="1" stop-color="#B9A4FF"/></linearGradient>
+    <radialGradient id="s2a" cx=".78" cy=".8" r=".62"><stop offset="0" stop-color="#FFB067"/><stop offset="1" stop-color="#FFB067" stop-opacity="0"/></radialGradient>
+    <radialGradient id="s2b" cx=".32" cy=".28" r=".42"><stop offset="0" stop-color="#FFF1DE" stop-opacity=".95"/><stop offset="1" stop-color="#FFF1DE" stop-opacity="0"/></radialGradient><filter id="s2f" filterUnits="userSpaceOnUse" x="-120" y="-120" width="640" height="640" color-interpolation-filters="sRGB">
+
+    <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="s"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".95" numOctaves="2" seed="5" result="n"/>
+    <feColorMatrix in="n" values="0 0 0 0 .12  0 0 0 0 .08  0 0 0 0 .06  .55 0 0 0 -.28" result="na"/>
+    <feComposite in="na" in2="s" operator="in" result="g"/>
+    <feMerge><feMergeNode in="s"/><feMergeNode in="g"/></feMerge></filter><pattern id="s2p" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="2.5" fill="#fff"/></pattern><mask id="s2h"><rect width="400" height="400" fill="url(#s2p)"/></mask><filter id="s2g" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter><linearGradient id="s2r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB067"/><stop offset=".55" stop-color="#FF5E3A"/><stop offset="1" stop-color="#B9A4FF"/></linearGradient>
+        <radialGradient id="s2s"><stop offset="0" stop-color="#FFF1DE"/><stop offset="1" stop-color="#FFF1DE" stop-opacity="0"/></radialGradient></defs><g mask="url(#s2h)"><path d="M96 372V204a104 104 0 0 1 208 0v168z" transform="translate(40 -14)" fill="#B9A4FF"/></g>
+        <g filter="url(#s2f)"><path d="M96 372V204a104 104 0 0 1 208 0v168z" fill="url(#s2r)"/><circle class="pa" cx="196" cy="176" r="92" fill="url(#s2s)"/></g></svg></g><g transform="translate(230 180)" style="mix-blend-mode:screen"><svg class="shape  " width="310" height="310" viewBox="0 0 400 400" aria-hidden="true">
+    <defs><linearGradient id="s3l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4E2E"/><stop offset="1" stop-color="#8B6BFF"/></linearGradient>
+    <radialGradient id="s3a" cx=".78" cy=".8" r=".62"><stop offset="0" stop-color="#FFC25C"/><stop offset="1" stop-color="#FFC25C" stop-opacity="0"/></radialGradient>
+    <radialGradient id="s3b" cx=".32" cy=".28" r=".42"><stop offset="0" stop-color="#FFE7CF" stop-opacity=".95"/><stop offset="1" stop-color="#FFE7CF" stop-opacity="0"/></radialGradient><filter id="s3f" filterUnits="userSpaceOnUse" x="-120" y="-120" width="640" height="640" color-interpolation-filters="sRGB">
+
+    <feGaussianBlur in="SourceGraphic" stdDeviation="0" result="s"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".95" numOctaves="2" seed="5" result="n"/>
+    <feColorMatrix in="n" values="0 0 0 0 .12  0 0 0 0 .08  0 0 0 0 .06  .55 0 0 0 -.28" result="na"/>
+    <feComposite in="na" in2="s" operator="in" result="g"/>
+    <feMerge><feMergeNode in="s"/><feMergeNode in="g"/></feMerge></filter><pattern id="s3p" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="2.5" fill="#fff"/></pattern><mask id="s3h"><rect width="400" height="400" fill="url(#s3p)"/></mask><filter id="s3g" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter><radialGradient id="s3q" cx=".7" cy=".75" r=".7"><stop offset="0" stop-color="#FFC25C"/><stop offset=".6" stop-color="#8B6BFF"/><stop offset="1" stop-color="#8B6BFF"/></radialGradient></defs><g filter="url(#s3g)" opacity=".55"><circle class="pa" cx="160" cy="170" r="118" fill="url(#s3l)"/><circle class="pb" cx="244" cy="232" r="118" fill="url(#s3q)"/></g>
+        <g mask="url(#s3h)"><circle class="pa" cx="160" cy="170" r="118" fill="url(#s3l)"/><circle class="pa" cx="160" cy="170" r="118" fill="url(#s3b)"/><circle class="pb" cx="244" cy="232" r="118" fill="url(#s3q)" style="mix-blend-mode:multiply"/></g></svg></g><g transform="translate(240 -10)" style="mix-blend-mode:screen"><svg class="shape  " width="300" height="300" viewBox="0 0 400 400" aria-hidden="true">
+    <defs><linearGradient id="s4l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5F8F"/><stop offset="1" stop-color="#6B2E8F"/></linearGradient>
+    <radialGradient id="s4a" cx=".78" cy=".8" r=".62"><stop offset="0" stop-color="#FFC15E"/><stop offset="1" stop-color="#FFC15E" stop-opacity="0"/></radialGradient>
+    <radialGradient id="s4b" cx=".32" cy=".28" r=".42"><stop offset="0" stop-color="#FFF1DC" stop-opacity=".95"/><stop offset="1" stop-color="#FFF1DC" stop-opacity="0"/></radialGradient><filter id="s4f" filterUnits="userSpaceOnUse" x="-120" y="-120" width="640" height="640" color-interpolation-filters="sRGB">
+
+    <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="s"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".95" numOctaves="2" seed="5" result="n"/>
+    <feColorMatrix in="n" values="0 0 0 0 .12  0 0 0 0 .08  0 0 0 0 .06  .55 0 0 0 -.28" result="na"/>
+    <feComposite in="na" in2="s" operator="in" result="g"/>
+    <feMerge><feMergeNode in="s"/><feMergeNode in="g"/></feMerge></filter><linearGradient id="s4o" x1=".35" y1="0" x2=".65" y2="1"><stop offset="0" stop-color="#FFC15E"/><stop offset=".6" stop-color="#FF5F8F"/></linearGradient>
+        <radialGradient id="s4i"><stop offset="0" stop-color="#6B2E8F"/><stop offset=".5" stop-color="#6B2E8F" stop-opacity=".75"/><stop offset="1" stop-color="#6B2E8F" stop-opacity="0"/></radialGradient></defs><g filter="url(#s4f)"><path d="M200 92L326 312H74Z" fill="url(#s4o)" stroke="url(#s4o)" stroke-width="84" stroke-linejoin="round"/>
+        <ellipse class="pb" cx="240" cy="276" rx="118" ry="74" fill="url(#s4i)"/></g></svg></g></g></svg>
